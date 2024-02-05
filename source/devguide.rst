@@ -2,3 +2,5 @@
 
 Extending the MultiLA software platform
 =======================================
+
+- pandoc

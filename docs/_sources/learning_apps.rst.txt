@@ -30,7 +30,7 @@ You can now create your learning application in RMarkdown syntax. See the `learn
 Frontmatter options
 ^^^^^^^^^^^^^^^^^^^
 
-For a learnrextra based learning application, the "output" option in the frontmatter of your RMarkdown should be set to ``learnrextra::tutorial`` (as it set by default in the template):
+For a learnrextra based learning application, the "output" option in the frontmatter of your RMarkdown should be set to ``learnrextra::tutorial`` (as it is set by default in the template):
 
 .. code-block:: yaml
 
@@ -43,6 +43,14 @@ There are two options for this output type:
 
 - ``language`` is an ISO-639 two-letter language code for the language used in the learning application and sets the language of the learning application interface.
 - ``apiserver`` is the endpoint of the web API used to collect the tracking data; by default it's set to send to port 8000 on localhost, e.g. on a local development machine; the following chapter will explain more about this.
+
+Furthermore you should add the follwing line to the initial R *setup* code chunk (as it is also set by default in the template):
+
+.. code-block:: r
+
+    rmarkdown::find_pandoc(cache = FALSE)
+
+This makes sure that when deploying your app on a server, the server's installation of pandoc will be used for compiling your app instead of the outdated version that is provided internally by Shiny.
 
 Dynamic summary syntax
 ^^^^^^^^^^^^^^^^^^^^^^
