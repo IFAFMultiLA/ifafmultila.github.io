@@ -5,3 +5,5 @@
 .. _learnrextra: https://github.com/IFAFMultiLA/learnrextra
 .. _Shiny: https://shiny.posit.co/
 .. _Django: https://www.djangoproject.com/
+.. _renv: https://rstudio.github.io/renv/
+.. _gradethis: https://pkgs.rstudio.com/gradethis/
