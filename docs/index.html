@@ -13,7 +13,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MultiLA Web API and administration backend" href="intro.html" />
+    <link rel="next" title="Creating learning applications" href="learning_apps.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -49,61 +49,24 @@
 <li><p>self-hosted solution to run in a Docker environment and a R shiny server</p></li>
 </ul>
 </section>
-<section id="based-on-open-source-projects">
-<h2>Based on open-source projects<a class="headerlink" href="#based-on-open-source-projects" title="Link to this heading">¶</a></h2>
-<a class="reference external image-reference" href="https://rstudio.github.io/learnr/"><img alt="_images/learnr.png" src="_images/learnr.png" style="width: 100px;" /></a>
-<a class="reference external image-reference" href="https://shiny.posit.co/"><img alt="_images/shiny.png" src="_images/shiny.png" style="width: 100px;" /></a>
-<a class="reference external image-reference" href="https://www.djangoproject.com/"><img alt="_images/django.resized.png" src="_images/django.resized.png" style="width: 100px;" /></a>
+<section id="structure-of-the-documentation">
+<h2>Structure of the documentation<a class="headerlink" href="#structure-of-the-documentation" title="Link to this heading">¶</a></h2>
+<p>This documentation is divided into several chapters for different target audiences.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="learning_apps.html"><span class="doc">Creating learning applications</span></a> (authoring tool guide)</p></li>
+<li><p><a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the administration interface</span></a> (server administration guide)</p></li>
+<li><p><a class="reference internal" href="trackingdata.html"><span class="doc">Working with tracking data</span></a> (learning analytics guide)</p></li>
+<li><p><a class="reference internal" href="devguide.html"><span class="doc">Extending the MultiLA software platform</span></a> (developer guide)</p></li>
+</ul>
 </section>
 <section id="table-of-contents">
 <h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">MultiLA Web API and administration backend</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#technical-requirements">Technical requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#software-and-frameworks-used-in-this-project">Software and frameworks used in this project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#relevant-documentation-parts-in-used-frameworks">Relevant documentation parts in used frameworks</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="components.html">Software components</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="components.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="components.html#code-repositories-overview">Code repositories overview</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="clientserver.html">Client-server communication</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="clientserver.html#client-server-communication-flowchart">Client-server communication flowchart</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="clientserver.html#without-login-anonymous">Without login (“anonymous”)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clientserver.html#with-login">With login</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="clientserver.html#application-configuration">Application configuration</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="devsetup.html">Local development setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="devsetup.html#option-1-using-a-venv-on-the-local-machine">Option 1: Using a venv on the local machine</a></li>
-<li class="toctree-l2"><a class="reference internal" href="devsetup.html#option-2-using-a-python-interpreter-inside-a-docker-container">Option 2: Using a Python interpreter inside a docker container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="devsetup.html#common-set-up-steps-for-both-options">Common set up steps for both options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="devsetup.html#generating-the-documentation">Generating the documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="codebook.html">Codebook for MultiLA web API data export</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="codebook.html#file-app-sessions-csv">File <code class="docutils literal notranslate"><span class="pre">app_sessions.csv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="codebook.html#file-tracking-sessions-csv">File <code class="docutils literal notranslate"><span class="pre">tracking_sessions.csv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="codebook.html#file-user-feedback-csv">File <code class="docutils literal notranslate"><span class="pre">user_feedback.csv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="codebook.html#file-tracking-events-csv">File <code class="docutils literal notranslate"><span class="pre">tracking_events.csv</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="codebook.html#learnr-events">Learnr events</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Server deployment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#initial-deployment">Initial deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#publishing-updates">Publishing updates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#optional-db-administration-interface">Optional DB administration interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deployment.html#db-backups">DB backups</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the administration interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trackingdata.html">Working with tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
 </ul>
 </div>
 </section>
@@ -114,6 +77,12 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</section>
+<section id="based-on-open-source-projects">
+<h2>Based on open-source projects<a class="headerlink" href="#based-on-open-source-projects" title="Link to this heading">¶</a></h2>
+<a class="reference external image-reference" href="https://rstudio.github.io/learnr/"><img alt="_images/learnr.png" src="_images/learnr.png" style="width: 100px;" /></a>
+<a class="reference external image-reference" href="https://shiny.posit.co/"><img alt="_images/shiny.png" src="_images/shiny.png" style="width: 100px;" /></a>
+<a class="reference external image-reference" href="https://www.djangoproject.com/"><img alt="_images/django.resized.png" src="_images/django.resized.png" style="width: 100px;" /></a>
 </section>
 </section>
 
@@ -135,19 +104,17 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">MultiLA Web API and administration backend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="components.html">Software components</a></li>
-<li class="toctree-l1"><a class="reference internal" href="clientserver.html">Client-server communication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devsetup.html">Local development setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="codebook.html">Codebook for MultiLA web API data export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Server deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the administration interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trackingdata.html">Working with tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="intro.html" title="next chapter">MultiLA Web API and administration backend</a></li>
+      <li>Next: <a href="learning_apps.html" title="next chapter">Creating learning applications</a></li>
   </ul></li>
 </ul>
 </div>
