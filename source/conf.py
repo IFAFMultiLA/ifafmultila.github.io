@@ -39,7 +39,7 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 
-exclude_patterns = []
+exclude_patterns = ['rst_epilog.rst']
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = False
@@ -54,6 +54,11 @@ autodoc_typehints_format = 'short'
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
+# make rst_epilog a variable, so you can add other epilog parts to it
+rst_epilog = ""    # read "global references" from rst_epilog.rst file
+with open('rst_epilog.rst') as f:
+    rst_epilog += f.read()
 
 # -- Options for HTML output -------------------------------------------------
 
