@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Extending the MultiLA software platform" href="devguide.html" />
-    <link rel="prev" title="Hosting learning applications and the administration interface" href="serversetup.html" />
+    <link rel="prev" title="Hosting learning applications and the web API" href="serversetup.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -34,7 +34,67 @@
             
   <section id="working-with-tracking-data">
 <span id="tracking-data"></span><h1>Working with tracking data<a class="headerlink" href="#working-with-tracking-data" title="Link to this heading">¶</a></h1>
-<p>Monitoring, data preparation and explorative analyses.</p>
+<section id="setting-up-a-learning-application-for-tracking">
+<h2>Setting up a learning application for tracking<a class="headerlink" href="#setting-up-a-learning-application-for-tracking" title="Link to this heading">¶</a></h2>
+<p>In the chapter “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>”, you set up a server with the web API that acts as endpoint at <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/</span></code> for collecting the tracking data that comes from the learning applications. For each application that you deploy, you need to set this endpoint in the frontmatter options of its RMarkdown file under <code class="docutils literal notranslate"><span class="pre">apiserver</span></code>, e.g.:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># ...</span>
+<span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">learnrextra::tutorial</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">        </span><span class="nt">apiserver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://&lt;SERVER&gt;/api/</span>
+<span class="c1"># ...</span>
+</pre></div>
+</div>
+<p>This will make sure that the deployed learning applications know where to send the collected data.</p>
+</section>
+<section id="registering-a-learning-application-with-the-multila-administration-backend">
+<h2>Registering a learning application with the MultiLA administration backend<a class="headerlink" href="#registering-a-learning-application-with-the-multila-administration-backend" title="Link to this heading">¶</a></h2>
+<p>Each learning application for which you want to collect tracking data is required to be registered in the administration interface that is available under <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/admin/</span></code> after you installed it on a server as explained in chapter “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>”.</p>
+<p>After logging in to the administration interface, go to <em>API &gt; Applications</em> and select <em>Add application</em>. You will see a form as follows:</p>
+<img alt="_images/admin-add-app.png" class="align-center" src="_images/admin-add-app.png" />
+<p>Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>.</p>
+<p>For each learning application, you can create several <em>application configuration.</em> These allow you to create different variants of the same base application. You need to at least create one default configuration, so go to <em>API &gt; Application configurations &gt; Add</em>. You will see the following form:</p>
+<img alt="_images/admin-add-config.png" class="align-center" src="_images/admin-add-config.png" />
+<p>First, select the application for which you want to create a configuration. Next, create a label and optionally modify the default configuration code. The configuration code is a JSON structure with the following options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">HTML</span> <span class="n">element</span> <span class="n">IDs</span> <span class="n">to</span> <span class="n">exclude</span><span class="o">&gt;</span><span class="p">],</span>
+  <span class="s2">&quot;js&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">JavaScript</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
+  <span class="s2">&quot;css&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">CSS</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
+  <span class="s2">&quot;feedback&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span> <span class="c1"># enable/disable specific user feedback features</span>
+  <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># enable/disable displaying summary</span>
+  <span class="s2">&quot;tracking&quot;</span><span class="p">:</span> <span class="p">{</span>       <span class="c1"># enable/disable specific tracking features</span>
+    <span class="s2">&quot;mouse&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>    <span class="c1"># mouse tracking w/ mus.js</span>
+    <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>   <span class="c1"># tracking of input changes</span>
+    <span class="s2">&quot;attribute_changes&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># tracking of attribute changes</span>
+    <span class="s2">&quot;chapters&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>  <span class="c1"># tracking of switching betw. chapters</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After you created one or more application configurations, you finally have to create at least one <em>application session.</em> An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL that you can share. To create an application session, go to <em>API &gt; Application sessions &gt; Add</em> and you will be presented the following form:</p>
+<img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" />
+<p>Select the application configuration (and hence the target learning application) and specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). It’s main purpose is to allow tracking users across different devices and time distinct user sessions. If you don’t need that, you should disable user authentication.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This hierarchy of <em>applications → application configurations → application sessions</em> allows to create several variants of a single learning application (e.g. for A/B testing – see below) and furthermore allows to bind tracking to specific events, e.g. by creating a session for a specific teaching course or workshop. You will then later be able to download and analyse data for these specific application sessions.</p>
+</div>
+<p>After saving, a unique session ID will be created along with a shareable URL that has the format <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/?sess=&lt;UNIQUE_ID&gt;</span></code>, as you can also see in the following screenshot:</p>
+<img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" />
+<p>The URL is very important: If visiting this URL and consenting to data collection, a <em>tracking session</em> will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.</p>
+<p>Note that it is also possible to set a “default application session.” This means that every time someone visits the learning application under its base URL <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>, the collected data will be automatically associated with the default application session. If no default application session is set, a user will either be forwared to the last application session she or he visited for that application or otherwise tracking will either be disabled. You can set a default application session under <em>API &gt; Applications.</em></p>
+</section>
+<section id="optional-creating-application-sessions-gates-for-a-b-tests">
+<h2>(Optional) Creating application sessions gates for A/B tests<a class="headerlink" href="#optional-creating-application-sessions-gates-for-a-b-tests" title="Link to this heading">¶</a></h2>
+</section>
+<section id="monitoring-user-tracking">
+<h2>Monitoring user tracking<a class="headerlink" href="#monitoring-user-tracking" title="Link to this heading">¶</a></h2>
+</section>
+<section id="downloading-and-preparing-tracking-data-for-analysis">
+<h2>Downloading and preparing tracking data for analysis<a class="headerlink" href="#downloading-and-preparing-tracking-data-for-analysis" title="Link to this heading">¶</a></h2>
+</section>
+<section id="descriptive-and-explorative-analysis-of-tracking-data">
+<h2>Descriptive and explorative analysis of tracking data<a class="headerlink" href="#descriptive-and-explorative-analysis-of-tracking-data" title="Link to this heading">¶</a></h2>
+</section>
 </section>
 
 
@@ -56,8 +116,16 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the administration interface</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Working with tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the web API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Working with tracking data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-a-learning-application-for-tracking">Setting up a learning application for tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registering-a-learning-application-with-the-multila-administration-backend">Registering a learning application with the MultiLA administration backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-creating-application-sessions-gates-for-a-b-tests">(Optional) Creating application sessions gates for A/B tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-user-tracking">Monitoring user tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-and-preparing-tracking-data-for-analysis">Downloading and preparing tracking data for analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#descriptive-and-explorative-analysis-of-tracking-data">Descriptive and explorative analysis of tracking data</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
 </ul>
 
@@ -65,7 +133,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="serversetup.html" title="previous chapter">Hosting learning applications and the administration interface</a></li>
+      <li>Previous: <a href="serversetup.html" title="previous chapter">Hosting learning applications and the web API</a></li>
       <li>Next: <a href="devguide.html" title="next chapter">Extending the MultiLA software platform</a></li>
   </ul></li>
 </ul>

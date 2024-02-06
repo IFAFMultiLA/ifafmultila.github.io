@@ -27,11 +27,11 @@ It's highly recommended to use `renv`_ during deployment.
 
 First, create a snapshot of the necessary packages for your learning app by running ``renv::snapshot()`` locally. Create a folder for your application on the server. Then copy *only* the following files from your local machine to the app folder on the server:
 
-- RMarkdown document (.Rmd)
-- ``renv.lock``
+- RMarkdown document (.Rmd) – make sure to set the ``apiserver`` in the frontmatter options to the URL at which the web API will be available, e.g. ``https://<SERVER>/api/``
+- ``renv.lock`` with all dependencies necessary to run your learning application
 - possible embedded images, CSS, JavaScript, etc. in folder ``images`` or ``www``
 
-On the server, navigate to the app folder and open an R session there (by simply invokin ``R`` in the terminal. There, run the following code to set up renv for the app and install all packages that reported in ``renv.lock``:
+On the server, navigate to the app folder and open an R session there (by simply invoking ``R`` in the terminal. There, run the following code to set up renv for the app and install all packages that reported in ``renv.lock``:
 
 .. code-block:: R
 

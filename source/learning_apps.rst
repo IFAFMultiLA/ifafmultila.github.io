@@ -30,14 +30,18 @@ You can now create your learning application in RMarkdown syntax. See the `learn
 Frontmatter options
 ^^^^^^^^^^^^^^^^^^^
 
+.. note:: *Frontmatter* is the initial header block in Markdown documents denoted by beginning and trailing separator lines "``---``".
+
 For a learnrextra based learning application, the "output" option in the frontmatter of your RMarkdown should be set to ``learnrextra::tutorial`` (as it is set by default in the template):
 
 .. code-block:: yaml
 
+    # ...
     output:
         learnrextra::tutorial:
             language: en
             apiserver: http://localhost:8000/
+    # ...
 
 There are two options for this output type:
 

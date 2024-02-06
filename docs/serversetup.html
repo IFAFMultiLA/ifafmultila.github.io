@@ -52,11 +52,11 @@
 <p>It’s highly recommended to use <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> during deployment.</p>
 <p>First, create a snapshot of the necessary packages for your learning app by running <code class="docutils literal notranslate"><span class="pre">renv::snapshot()</span></code> locally. Create a folder for your application on the server. Then copy <em>only</em> the following files from your local machine to the app folder on the server:</p>
 <ul class="simple">
-<li><p>RMarkdown document (.Rmd)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">renv.lock</span></code></p></li>
+<li><p>RMarkdown document (.Rmd) – make sure to set the <code class="docutils literal notranslate"><span class="pre">apiserver</span></code> in the frontmatter options to the URL at which the web API will be available, e.g. <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">renv.lock</span></code> with all dependencies necessary to run your learning application</p></li>
 <li><p>possible embedded images, CSS, JavaScript, etc. in folder <code class="docutils literal notranslate"><span class="pre">images</span></code> or <code class="docutils literal notranslate"><span class="pre">www</span></code></p></li>
 </ul>
-<p>On the server, navigate to the app folder and open an R session there (by simply invokin <code class="docutils literal notranslate"><span class="pre">R</span></code> in the terminal. There, run the following code to set up renv for the app and install all packages that reported in <code class="docutils literal notranslate"><span class="pre">renv.lock</span></code>:</p>
+<p>On the server, navigate to the app folder and open an R session there (by simply invoking <code class="docutils literal notranslate"><span class="pre">R</span></code> in the terminal. There, run the following code to set up renv for the app and install all packages that reported in <code class="docutils literal notranslate"><span class="pre">renv.lock</span></code>:</p>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">renv</span><span class="o">::</span><span class="nf">init</span><span class="p">()</span>
 <span class="n">renv</span><span class="o">::</span><span class="nf">restore</span><span class="p">()</span>
 </pre></div>
