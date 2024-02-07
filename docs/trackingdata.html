@@ -85,6 +85,9 @@
 </section>
 <section id="optional-creating-application-sessions-gates-for-a-b-tests">
 <h2>(Optional) Creating application sessions gates for A/B tests<a class="headerlink" href="#optional-creating-application-sessions-gates-for-a-b-tests" title="Link to this heading">¶</a></h2>
+<p>If you want to use the MultiLA platform to do A/B testing for your learning applications, you can use the <em>application session gates</em> feature. First, create two or more application sessions (for different learning applications or different configurations for the same application). Then, got to <em>API &gt; Application session gates &gt; Add</em> and you will be presented the following form:</p>
+<img alt="_images/admin-add-gate.png" class="align-center" src="_images/admin-add-gate.png" />
+<p>Enter a label to identify the gate and select two or more application sessions at the bottom of the form. After saving the form, a unique <em>gate ID</em> will be generated along with an URL. Every visit to that URL will forward the user to one of the application sessions in an alternating manner (i.e. sessions A / B / C / A / B / C / … if you have added three sessions to the gate).</p>
 </section>
 <section id="monitoring-user-tracking">
 <h2>Monitoring user tracking<a class="headerlink" href="#monitoring-user-tracking" title="Link to this heading">¶</a></h2>

@@ -76,6 +76,13 @@ Note that it is also possible to set a "default application session." This means
 (Optional) Creating application sessions gates for A/B tests
 ------------------------------------------------------------
 
+If you want to use the MultiLA platform to do A/B testing for your learning applications, you can use the *application session gates* feature. First, create two or more application sessions (for different learning applications or different configurations for the same application). Then, got to *API > Application session gates > Add* and you will be presented the following form:
+
+
+.. image:: img/admin-add-gate.png
+    :align: center
+
+Enter a label to identify the gate and select two or more application sessions at the bottom of the form. After saving the form, a unique *gate ID* will be generated along with an URL. Every visit to that URL will forward the user to one of the application sessions in an alternating manner (i.e. sessions A / B / C / A / B / C / ... if you have added three sessions to the gate).
 
 Monitoring user tracking
 ------------------------
