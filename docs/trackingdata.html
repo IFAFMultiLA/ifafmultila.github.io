@@ -91,6 +91,18 @@
 </section>
 <section id="monitoring-user-tracking">
 <h2>Monitoring user tracking<a class="headerlink" href="#monitoring-user-tracking" title="Link to this heading">¶</a></h2>
+<p>You can monitor the collection of live tracking and user feedback data. An overview of currently collected data is presented under <em>Data manager &gt; View:</em></p>
+<img alt="_images/admin-datamngr-view.png" class="align-center" src="_images/admin-datamngr-view.png" />
+<p>This overview gives some basic descriptive statistics of the collected data per application, application configuration or application session. By clicking on the small “info” icon in the <em>Num. of feedback items</em> column, you can view the user feedback for a given application, application configuration or application session.</p>
+<p>You can watch live tracking data by visiting <em>Data maanger &gt; Tracking sessions.</em> This will list all <em>tracking sessions</em> for which data is or was being collected.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <em>tracking session</em> is a time frame of interaction with a learning application that can be attributed to a single user. If a user visits an application session URL, a new tracking session is started if the user gave consent to tracking and if the user doesn’t already have a running tracking session for that application sessions (this is determined via browser cookies). If the user already has a running tracking session for that application session (e.g. by coming back to the page after restarting the browser), this tracking session is continued and all new tracking data is added to the already existing data in the tracking session.</p>
+</div>
+<p>The tracking sessions overview will present you a table like this:</p>
+<img alt="_images/admin-trackingsess-overview.png" class="align-center" src="_images/admin-trackingsess-overview.png" />
+<p>The newest tracking session is by default shown on top. Session start and end give the time frame of the tracking session. If there’s no end time, this means that the tracking session is either currently running or that no tracking session end time could be determined (this may happen if the user’s browser for some reason doesn’t send a signal when closing the page).</p>
+<p>The <em>Options</em> column allows you to see details of the tracking session and the collected data by clicking on the “info” icon. The circular arrow icon allows you to replay tracking session, i.e. to view the sequence of interactions that the user had with the learning applications like a video. Note that this feature currently doesn’t always work as expected.</p>
 </section>
 <section id="downloading-and-preparing-tracking-data-for-analysis">
 <h2>Downloading and preparing tracking data for analysis<a class="headerlink" href="#downloading-and-preparing-tracking-data-for-analysis" title="Link to this heading">¶</a></h2>

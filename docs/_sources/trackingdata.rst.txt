@@ -78,7 +78,6 @@ Note that it is also possible to set a "default application session." This means
 
 If you want to use the MultiLA platform to do A/B testing for your learning applications, you can use the *application session gates* feature. First, create two or more application sessions (for different learning applications or different configurations for the same application). Then, got to *API > Application session gates > Add* and you will be presented the following form:
 
-
 .. image:: img/admin-add-gate.png
     :align: center
 
@@ -87,6 +86,25 @@ Enter a label to identify the gate and select two or more application sessions a
 Monitoring user tracking
 ------------------------
 
+You can monitor the collection of live tracking and user feedback data. An overview of currently collected data is presented under *Data manager > View:*
+
+.. image:: img/admin-datamngr-view.png
+    :align: center
+
+This overview gives some basic descriptive statistics of the collected data per application, application configuration or application session. By clicking on the small "info" icon in the *Num. of feedback items* column, you can view the user feedback for a given application, application configuration or application session.
+
+You can watch live tracking data by visiting *Data maanger > Tracking sessions.* This will list all *tracking sessions* for which data is or was being collected.
+
+.. note:: A *tracking session* is a time frame of interaction with a learning application that can be attributed to a single user. If a user visits an application session URL, a new tracking session is started if the user gave consent to tracking and if the user doesn't already have a running tracking session for that application sessions (this is determined via browser cookies). If the user already has a running tracking session for that application session (e.g. by coming back to the page after restarting the browser), this tracking session is continued and all new tracking data is added to the already existing data in the tracking session.
+
+The tracking sessions overview will present you a table like this:
+
+.. image:: img/admin-trackingsess-overview.png
+    :align: center
+
+The newest tracking session is by default shown on top. Session start and end give the time frame of the tracking session. If there's no end time, this means that the tracking session is either currently running or that no tracking session end time could be determined (this may happen if the user's browser for some reason doesn't send a signal when closing the page).
+
+The *Options* column allows you to see details of the tracking session and the collected data by clicking on the "info" icon. The circular arrow icon allows you to replay tracking session, i.e. to view the sequence of interactions that the user had with the learning applications like a video. Note that this feature currently doesn't always work as expected.
 
 Downloading and preparing tracking data for analysis
 ----------------------------------------------------
