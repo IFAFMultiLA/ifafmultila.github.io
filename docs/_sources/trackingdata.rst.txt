@@ -129,3 +129,4 @@ Next, run ``prepare.R``. This will transform the raw data for all application se
 Descriptive and explorative analysis of tracking data
 -----------------------------------------------------
 
+The `TrackingDataScripts`_ repository also contains functions to aid descriptive and explorative analyses of the prepared tracking data. See the file ``analysis_helpers.R`` there and the analysis reports in RMarkdown format.
