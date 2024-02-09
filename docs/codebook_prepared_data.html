@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Codebook for MultiLA prepared tracking data &#8212; MultiLA  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Codebook for MultiLA web API raw tracking data" href="codebook_raw_data.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="codebook-for-multila-prepared-tracking-data">
+<span id="codebook-prepared-data"></span><h1>Codebook for MultiLA prepared tracking data<a class="headerlink" href="#codebook-for-multila-prepared-tracking-data" title="Link to this heading">¶</a></h1>
+<p>The prepared data will be stored under</p>
+<blockquote>
+<div><p>data/prepared/&lt;application_session_id&gt;_tracking_data.rds</p>
+</div></blockquote>
+<p>in the TrackingDataScripts project. It contains a dataframe of tracked events with the following variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_app_sess_code</span></code>: user application session code (session code for an individual anonymous or registered user interacting with a specific application session) – factor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_app_sess_user_id</span></code>: user ID for registered users; no further data on individual users is provided in this dataset – integer for registered users or NA for anonymous users</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">track_sess_id</span></code>: tracking session ID (ID indicating a continuous interaction of a user with the application session on a single device) – integer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">track_sess_start</span></code>: start of the tracking session (first visit of a user on this device for this application session) – POSIXct time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">track_sess_end</span></code>: end of the tracking session (user closes the browser window of logs out) – POSIXct time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_agent</span></code>: “user agent”” string from the browser – character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">client_ip</span></code>: client IP address (if it could be determined)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">form_factor</span></code>: factor; <code class="docutils literal notranslate"><span class="pre">&quot;desktop&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tablet&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;phone&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_win_width</span></code>: initial client browser window width; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_win_height</span></code>: initial client browser window height; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_contentview_width</span></code>: initial content view width; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_contentview_height</span></code>: initial content view height; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_contentscroll_width</span></code>: initial content scroll area width; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_contentscroll_height</span></code>: initial content scroll area height; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_time</span></code>: time the event took place; POSIXct time with millisecond accuracy</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: event type; factor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chapter_index</span></code>: content chapter index; integer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chapter_id</span></code>: content chapter ID label; factor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_label</span></code>: question or exercise label; factor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_id</span></code>: question or exercise ID; character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_event</span></code>: learnr code exercise event type; character string (<code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;submitted&quot;</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_output</span></code>: learnr code exercise R output; character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_correct</span></code>: learnr code exercise result assessment – correct or uncorrect; logical</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xpath</span></code>: XPath to HTML element related to the event (if any); character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">css</span></code>: CSS selector to HTML element related to the event (if any); character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value related to the event; for input events this is the value that was entered; for code exercises this is the code the user submitted; for question exercises, this is the submitted answer (multiple answers are formatted as <code class="docutils literal notranslate"><span class="pre">[answer1,</span> <span class="pre">answer2,</span> <span class="pre">...</span> <span class="pre">answern]</span></code>); character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coord1</span></code>: X coordinate for spatial events like mouse moves or clicks; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coord2</span></code>: Y coordinate for spatial events like mouse moves or clicks; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">win_width</span></code>: current client browser window width at the time when the event occurred; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">win_height</span></code>: current client browser window height at the time when the event occurred; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">contentview_width</span></code>: current content view width at the time when the event occurred; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">contentview_height</span></code>: current content view height at the time when the event occurred; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">win_scroll_x</span></code>: current client browser window scroll X position; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">win_scroll_y</span></code>: current client browser window scroll Y position; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">content_scroll_x</span></code>: current content area scroll X position; numeric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">content_scroll_y</span></code>: current content area scroll Y position; numeric</p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MultiLA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the web API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trackingdata.html">Working with tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="codebook_raw_data.html">Codebook for MultiLA web API raw tracking data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Codebook for MultiLA prepared tracking data</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="codebook_raw_data.html" title="previous chapter">Codebook for MultiLA web API raw tracking data</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Markus Konrad.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/codebook_prepared_data.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

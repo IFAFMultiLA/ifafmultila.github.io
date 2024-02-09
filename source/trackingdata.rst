@@ -109,6 +109,22 @@ The *Options* column allows you to see details of the tracking session and the c
 Downloading and preparing tracking data for analysis
 ----------------------------------------------------
 
+Downloading the tracking data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can navigate to *Data manager > Export* in order to generate a ZIP file with the collected tracking data.
+
+.. image:: img/admin-export.png
+    :align: center
+
+You can select which for which application session you want to create a data export or choose to create a data export for all application sessions (which is not recommended as it may create a very large file and take a long to time generate the data export). The generated ZIP file will then be listed in the table below. Once it is ready, you can download it to your computer. The ZIP file contains a PDF with a codebook and four CSV files with the data. The codebook explains the structure of the data in detail. It is also contained in this documentation's appendix under ":doc:`codebook_raw_data`."
+
+Preparing the tracking data for analysis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The MultiLA project provides R scripts to transform the complex raw tracking data to a flat data frame that is better suited for further data analyses. These scripts are part of the `TrackingDataScripts`_ repository. You should clone or download the repository. The unzipped CSV files with the collected data should then be placed under ``data/raw/<application_session_id>/``. It should contain four CSV files: ``app_sessions.csv``, ``tracking_events.csv``, ``tracking_sessions.csv`` and ``user_feedback.csv``.
+
+Next, run ``prepare.R``. This will transform the raw data for all application sessions in ``data/raw`` to a flat data frame which is in detail described on the repository's README page or in the appendix under ":doc:`codebook_prepared_data`." The resulting data will be located at ``data/prepared/<application_session_id>_tracking_data.rds``.
 
 Descriptive and explorative analysis of tracking data
 -----------------------------------------------------

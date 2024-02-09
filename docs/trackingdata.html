@@ -106,6 +106,17 @@
 </section>
 <section id="downloading-and-preparing-tracking-data-for-analysis">
 <h2>Downloading and preparing tracking data for analysis<a class="headerlink" href="#downloading-and-preparing-tracking-data-for-analysis" title="Link to this heading">¶</a></h2>
+<section id="downloading-the-tracking-data">
+<h3>Downloading the tracking data<a class="headerlink" href="#downloading-the-tracking-data" title="Link to this heading">¶</a></h3>
+<p>You can navigate to <em>Data manager &gt; Export</em> in order to generate a ZIP file with the collected tracking data.</p>
+<img alt="_images/admin-export.png" class="align-center" src="_images/admin-export.png" />
+<p>You can select which for which application session you want to create a data export or choose to create a data export for all application sessions (which is not recommended as it may create a very large file and take a long to time generate the data export). The generated ZIP file will then be listed in the table below. Once it is ready, you can download it to your computer. The ZIP file contains a PDF with a codebook and four CSV files with the data. The codebook explains the structure of the data in detail. It is also contained in this documentation’s appendix under “<a class="reference internal" href="codebook_raw_data.html"><span class="doc">Codebook for MultiLA web API raw tracking data</span></a>.”</p>
+</section>
+<section id="preparing-the-tracking-data-for-analysis">
+<h3>Preparing the tracking data for analysis<a class="headerlink" href="#preparing-the-tracking-data-for-analysis" title="Link to this heading">¶</a></h3>
+<p>The MultiLA project provides R scripts to transform the complex raw tracking data to a flat data frame that is better suited for further data analyses. These scripts are part of the <a class="reference external" href="https://github.com/IFAFMultiLA/TrackingDataScripts">TrackingDataScripts</a> repository. You should clone or download the repository. The unzipped CSV files with the collected data should then be placed under <code class="docutils literal notranslate"><span class="pre">data/raw/&lt;application_session_id&gt;/</span></code>. It should contain four CSV files: <code class="docutils literal notranslate"><span class="pre">app_sessions.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">tracking_events.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">tracking_sessions.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">user_feedback.csv</span></code>.</p>
+<p>Next, run <code class="docutils literal notranslate"><span class="pre">prepare.R</span></code>. This will transform the raw data for all application sessions in <code class="docutils literal notranslate"><span class="pre">data/raw</span></code> to a flat data frame which is in detail described on the repository’s README page or in the appendix under “<a class="reference internal" href="codebook_prepared_data.html"><span class="doc">Codebook for MultiLA prepared tracking data</span></a>.” The resulting data will be located at <code class="docutils literal notranslate"><span class="pre">data/prepared/&lt;application_session_id&gt;_tracking_data.rds</span></code>.</p>
+</section>
 </section>
 <section id="descriptive-and-explorative-analysis-of-tracking-data">
 <h2>Descriptive and explorative analysis of tracking data<a class="headerlink" href="#descriptive-and-explorative-analysis-of-tracking-data" title="Link to this heading">¶</a></h2>
@@ -137,11 +148,19 @@
 <li class="toctree-l2"><a class="reference internal" href="#registering-a-learning-application-with-the-multila-administration-backend">Registering a learning application with the MultiLA administration backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#optional-creating-application-sessions-gates-for-a-b-tests">(Optional) Creating application sessions gates for A/B tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#monitoring-user-tracking">Monitoring user tracking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#downloading-and-preparing-tracking-data-for-analysis">Downloading and preparing tracking data for analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-and-preparing-tracking-data-for-analysis">Downloading and preparing tracking data for analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#downloading-the-tracking-data">Downloading the tracking data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparing-the-tracking-data-for-analysis">Preparing the tracking data for analysis</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#descriptive-and-explorative-analysis-of-tracking-data">Descriptive and explorative analysis of tracking data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="codebook_raw_data.html">Codebook for MultiLA web API raw tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebook_prepared_data.html">Codebook for MultiLA prepared tracking data</a></li>
 </ul>
 
 <div class="relations">
