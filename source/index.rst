@@ -20,6 +20,41 @@ Main features
 - data preparation and analysis scripts to get started with learning analytics for the collected data
 - self-hosted solution to run in a Docker environment and a R shiny server
 
+Structure of the documentation
+------------------------------
+
+This documentation is divided into several chapters for different target audiences.
+
+- :doc:`learning_apps` (authoring tool guide)
+- :doc:`serversetup` (server administration guide)
+- :doc:`trackingdata` (learning analytics guide)
+- :doc:`devguide` (developer guide)
+
+Table of contents
+-----------------
+
+.. toctree::
+
+    learning_apps
+    serversetup
+    trackingdata
+    devguide
+
+Appendix
+-----------------
+
+.. toctree::
+
+    codebook_raw_data
+    codebook_prepared_data
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
 Based on open-source projects
 -----------------------------
 
@@ -34,29 +69,3 @@ Based on open-source projects
 .. image:: img/django.resized.png
     :width: 100px
     :target: `Django`_
-
-Table of contents
------------------
-
-.. toctree::
-
-  intro
-  components
-  clientserver
-  devsetup
-  codebook
-  deployment
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-.. _IFAF MultiLA project: https://www.htw-berlin.de/forschung/online-forschungskatalog/projekte/projekt/?eid=3251
-.. _HTW Berlin: https://www.htw-berlin.de/
-.. _HWR Berlin: https://www.hwr-berlin.de/
-.. _learnr: https://rstudio.github.io/learnr/
-.. _Shiny: https://shiny.posit.co/
-.. _Django: https://www.djangoproject.com/

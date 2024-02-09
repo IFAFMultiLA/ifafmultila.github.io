@@ -18,6 +18,10 @@ This repository contains the source for the documentation of the MultiLA softwar
 
 Note: `make clean` will remove all output in the `docs` folder.
 
+## Generating codebooks
+
+There are two codebooks (data structure documentations) that are part of this repository and the overall documentation: one for the raw tracking data as it is exported from the MultiLA administration interface and one for the prepared tracking data as it is generated through the `prepare.R` script in the [TrackingDataScripts repository](https://github.com/IFAFMultiLA/TrackingDataScripts). Separate PDFs for these codebooks can be generated via `make codebook_pdfs`. They can be copied to their respective repositories via `make copy_codebooks`. 
+
 ## Publish the documentation
 
 Make a git commit of your changes including the updated HTML files in the `docs` folder. The documentation will automatically be published to [ifafmultila.github.io](https://ifafmultila.github.io/) a few seconds to minutes after you push your commits to the repository on GitHub.

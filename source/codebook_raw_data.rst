@@ -1,7 +1,7 @@
-.. _codebook:
+.. _codebook_raw_data:
 
-Codebook for MultiLA web API data export
-========================================
+Codebook for MultiLA web API raw tracking data
+==============================================
 
 This data export archive contains three files in CSV format, all of
 which can be joined via common identifiers that are documented below and

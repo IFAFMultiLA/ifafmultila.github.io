@@ -12,13 +12,21 @@ BUILDDIR      = docs
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
+.PHONY: help copy_codebooks
 
 html:
 	touch docs/.nojekyll
 	@$(SPHINXBUILD) -b $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-# Catch-all target: route all unknown targets to Sphinx using the new
-# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+codebook_pdfs:
+	pandoc -o codebooks/codebook_raw_data.pdf source/codebook_raw_data.rst
+	pandoc -o codebooks/codebook_prepared_data.pdf source/codebook_prepared_data.rst
+
+copy_codebooks: codebooks
+	cp codebooks/codebook_raw_data.pdf ../webapi/data/codebook.pdf
+	cp codebooks/codebook_prepared_data.pdf ../TrackingDataScripts/
+
+clean:
+	-rm -rI docs/*
+	-rm -rI docs/.*
+	-rm -I codebooks/*.pdf

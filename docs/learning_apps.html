@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Creating learning applications &#8212; MultiLA  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hosting learning applications and the web API" href="serversetup.html" />
+    <link rel="prev" title="MultiLA software plattform" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="creating-learning-applications">
+<span id="learning-apps"></span><h1>Creating learning applications<a class="headerlink" href="#creating-learning-applications" title="Link to this heading">¶</a></h1>
+<p>The <em>MultiLA</em> software platform authoring tool is based on an extension for the R package <a class="reference external" href="https://rstudio.github.io/learnr/">learnr</a>. This extension is called <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">learnrextra</a> and is so far not available on CRAN, but can be installed via GitHub (see instructions below). Writing learning applications or tutorials works the same as with learnr, but learnrextra provides some additional features which will be explained below.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p><strong>Basic requirements:</strong> You should have R and RStudio installed.</p>
+<ol class="arabic simple">
+<li><p>(optional) Create a new RStudio project with <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> for each new learning application.</p></li>
+<li><p>Install the <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">learnrextra</a> package from GitHub, e.g. via <code class="docutils literal notranslate"><span class="pre">renv::install(&quot;https://github.com/IFAFMultiLA/learnrextra&quot;)</span></code>.</p></li>
+<li><p>Install the <a class="reference external" href="https://pkgs.rstudio.com/gradethis/">gradethis</a> package from GitHub, e.g. via <code class="docutils literal notranslate"><span class="pre">renv::install(&quot;https://github.com/rstudio/gradethis&quot;)</span></code>.</p></li>
+<li><p>Restart RStudio (unfortunately this is needed by RStudio in order to load the installed templates required for the next step).</p></li>
+<li><p>Create an RMarkdown document via <em>File &gt; New file &gt; RMarkdown document …</em> and select <em>From template &gt; Interactive tutorial (learnrextra)</em>.</p></li>
+<li><p>Optionally update the language in the markdown <em>frontmatter</em> (header).</p></li>
+<li><p>Check that generating (“knitting”) the document works by clicking “Run document”.</p></li>
+</ol>
+<p>You can find a minimal RMarkdown-based learning application in the <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp">learnrextra_testapp</a> repository.</p>
+<p>Note that it is also possible to use the tracking functionality of <em>learnrextra</em> in a standard R <a class="reference external" href="https://shiny.posit.co/">Shiny</a> application. For this to work, you only need to load the learnrextra package and call <code class="docutils literal notranslate"><span class="pre">use_learnrextra()</span></code> in the UI code of your app. See the <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp_shiny">learnrextra_testapp_shiny</a> repository for a minimal Shiny application with learnrextra.</p>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
+<p>You can now create your learning application in RMarkdown syntax. See the <a class="reference external" href="https://rstudio.github.io/learnr/">learnr</a> documentation for how to do that. You will learn there how to add text, figures, interactive illustrations, equations, code exercises, quiz questions, videos and more to your learning application.</p>
+<section id="frontmatter-options">
+<h3>Frontmatter options<a class="headerlink" href="#frontmatter-options" title="Link to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Frontmatter</em> is the initial header block in Markdown documents denoted by beginning and trailing separator lines “<code class="docutils literal notranslate"><span class="pre">---</span></code>“.</p>
+</div>
+<p>For a learnrextra based learning application, the “output” option in the frontmatter of your RMarkdown should be set to <code class="docutils literal notranslate"><span class="pre">learnrextra::tutorial</span></code> (as it is set by default in the template):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># ...</span>
+<span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">learnrextra::tutorial</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">        </span><span class="nt">apiserver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:8000/</span>
+<span class="c1"># ...</span>
+</pre></div>
+</div>
+<p>There are two options for this output type:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">language</span></code> is an ISO-639 two-letter language code for the language used in the learning application and sets the language of the learning application interface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apiserver</span></code> is the endpoint of the web API used to collect the tracking data; by default it’s set to send to port 8000 on localhost, e.g. on a local development machine; the following chapter will explain more about this.</p></li>
+</ul>
+<p>Furthermore you should add the follwing line to the initial R <em>setup</em> code chunk (as it is also set by default in the template):</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rmarkdown</span><span class="o">::</span><span class="nf">find_pandoc</span><span class="p">(</span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This makes sure that when deploying your app on a server, the server’s installation of pandoc will be used for compiling your app instead of the outdated version that is provided internally by Shiny.</p>
+</section>
+<section id="dynamic-summary-syntax">
+<h3>Dynamic summary syntax<a class="headerlink" href="#dynamic-summary-syntax" title="Link to this heading">¶</a></h3>
+<p>An advanced feature of learnrextra is the <em>dynamic summary panel:</em> While working through the learning application, summarized content can be shown dynamically on a panel in the right side, depending on the learning progress. The summary pnael is shown in the following screenshot on the right side:</p>
+<img alt="_images/learningapp_summary.png" class="align-center" src="_images/learningapp_summary.png" />
+<p>To add dynamic summary content in your learning application, insert a “fenced div” block named <code class="docutils literal notranslate"><span class="pre">summary</span></code> at the position where the summary should be shown when the user has scrolled past it:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>::: summary
+
+<span class="gu">#### Example headline</span>
+
+Initial content underneath this headline.
+
+:::
+</pre></div>
+</div>
+<p>It’s important to structure summary content with level-4 headlines (<code class="docutils literal notranslate"><span class="pre">####</span> <span class="pre">(headline)</span></code>). If you place another <code class="docutils literal notranslate"><span class="pre">summary</span></code> block somewhere in your document with the same headline, new content will automatically be added underneath that headline:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>::: summary
+
+<span class="gu">#### Example headline</span>
+
+Additional content underneath this headline.
+
+:::
+</pre></div>
+</div>
+<p>If you add <code class="docutils literal notranslate"><span class="pre">{.replace}</span></code> behind the headline, this will cause to completely replace the content underneath that headline:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>::: summary
+
+<span class="gu">#### Example headline {.replace}</span>
+
+Replaced content underneath this headline.
+
+:::
+</pre></div>
+</div>
+</section>
+</section>
+<section id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Link to this heading">¶</a></h2>
+<p>The learning applications can be hosted on any R <a class="reference external" href="https://shiny.posit.co/">Shiny</a> server. The next chapter on “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>” will give more information on deploying learning applications within the MultiLA software platform.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MultiLA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Creating learning applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#frontmatter-options">Frontmatter options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dynamic-summary-syntax">Dynamic summary syntax</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#deployment">Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the web API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trackingdata.html">Working with tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="codebook_raw_data.html">Codebook for MultiLA web API raw tracking data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebook_prepared_data.html">Codebook for MultiLA prepared tracking data</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">MultiLA software plattform</a></li>
+      <li>Next: <a href="serversetup.html" title="next chapter">Hosting learning applications and the web API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Markus Konrad.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/learning_apps.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
