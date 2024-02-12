@@ -1,36 +1,170 @@
 <!DOCTYPE html>
-
-<html lang="en" data-content_root="./">
+<html  lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Hosting learning applications and the web API &#8212; MultiLA  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Working with tracking data" href="trackingdata.html" />
-    <link rel="prev" title="Creating learning applications" href="learning_apps.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+      <title>Hosting learning applications and the web API</title>
+    
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
-  
-  
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="Working with tracking data" href="trackingdata.html" />
+  <link rel="prev" title="Creating learning applications" href="learning_apps.html" /> 
+  </head>
 
-  </head><body>
-  
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="index.html" class="home-link">
+    
+      <span class="site-name">MultiLA</span>
+    
+  </router-link>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
           
+          <navlinks>
+            
 
-          <div class="body" role="main">
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="learning_apps.html" class="reference internal ">Creating learning applications</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">Hosting learning applications and the web API</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#hosting-learning-applications" class="reference internal">Hosting learning applications</a></li>
+                
+                  <li class="toctree-l2"><a href="#setting-up-the-web-api-and-the-administration-interface" class="reference internal">Setting up the web API and the administration interface</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="trackingdata.html" class="reference internal ">Working with tracking data</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="devguide.html" class="reference internal ">Extending the MultiLA software platform</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="codebook_raw_data.html" class="reference internal ">Codebook for MultiLA web API raw tracking data</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="codebook_prepared_data.html" class="reference internal ">Codebook for MultiLA prepared tracking data</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    
+    <li>Hosting learning applications and the web API</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="learning_apps.html"
+       title="previous chapter">← Creating learning applications</a>
+  </li>
+  <li class="next">
+    <a href="trackingdata.html"
+       title="next chapter">Working with tracking data →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
             
   <section id="hosting-learning-applications-and-the-web-api">
 <span id="serversetup"></span><h1>Hosting learning applications and the web API<a class="headerlink" href="#hosting-learning-applications-and-the-web-api" title="Link to this heading">¶</a></h1>
@@ -40,7 +174,7 @@
 <section id="server-setup">
 <h3>Server setup<a class="headerlink" href="#server-setup" title="Link to this heading">¶</a></h3>
 <p>The server needs to have R installed. It’s highly recommended to use <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> during development and also for deployment, so you should install this package also on the server.</p>
-<p>For hosting learning applications, you need to install and setup a Shiny server as explained in the <a class="reference external" href="https://docs.posit.co/shiny-server/">Shiny administrator’s guide</a>. You must also install a recent version of <a class="reference external" href="https://pandoc.org/">pandoc</a> on the server (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">pandoc</span></code> on Ubuntu).</p>
+<p>For hosting learning applications, you need to install and setup a Shiny server as explained in the <a class="reference external" href="https://docs.posit.co/shiny-server/">Shiny administrator’s guide</a>. You must also install a recent version of <a class="reference external" href="https://pandoc.org/">pandoc</a> on the server (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">pandoc</span></code> on Debian or Ubuntu based Linux systems).</p>
 <p>It’s recommended to implement at least the following security measures on the server:</p>
 <ul class="simple">
 <li><p>Run the Shiny applications via an HTTPS proxy (as explained <a class="reference external" href="https://emeraldreverie.org/1/01/01/">this blog post</a>).</p></li>
@@ -204,92 +338,26 @@ to a backup destination e.g. via <code class="docutils literal notranslate"><spa
 
 
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">MultiLA</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Hosting learning applications and the web API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#hosting-learning-applications">Hosting learning applications</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#server-setup">Server setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#learning-application-deployment">Learning application deployment</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#setting-up-the-web-api-and-the-administration-interface">Setting up the web API and the administration interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#initial-deployment">Initial deployment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#optional-publishing-updates">(Optional) Publishing updates</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#optional-db-administration-interface">(Optional) DB administration interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#optional-db-backups">(Optional) DB backups</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="trackingdata.html">Working with tracking data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="codebook_raw_data.html">Codebook for MultiLA web API raw tracking data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="codebook_prepared_data.html">Codebook for MultiLA prepared tracking data</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="learning_apps.html" title="previous chapter">Creating learning applications</a></li>
-      <li>Next: <a href="trackingdata.html" title="next chapter">Working with tracking data</a></li>
-  </ul></li>
-</ul>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="learning_apps.html"
+       title="previous chapter">← Creating learning applications</a>
+  </li>
+  <li class="next">
+    <a href="trackingdata.html"
+       title="next chapter">Working with tracking data →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2024, Markus Konrad.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2024, Markus Konrad.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/serversetup.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
+            </div>
+          </div>
+      </page>
+    </div></div>
     
-
     
   </body>
 </html>

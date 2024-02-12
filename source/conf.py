@@ -66,7 +66,7 @@ with open('rst_epilog.rst') as f:
 # a list of builtin themes.
 #
 
-html_theme = "alabaster"
+html_theme = "press"
 # html_static_path = ['static']
 
 # Output file base name for HTML help builder.

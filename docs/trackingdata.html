@@ -1,36 +1,178 @@
 <!DOCTYPE html>
-
-<html lang="en" data-content_root="./">
+<html  lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Working with tracking data &#8212; MultiLA  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Extending the MultiLA software platform" href="devguide.html" />
-    <link rel="prev" title="Hosting learning applications and the web API" href="serversetup.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+      <title>Working with tracking data</title>
+    
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
-  
-  
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="Extending the MultiLA software platform" href="devguide.html" />
+  <link rel="prev" title="Hosting learning applications and the web API" href="serversetup.html" /> 
+  </head>
 
-  </head><body>
-  
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="index.html" class="home-link">
+    
+      <span class="site-name">MultiLA</span>
+    
+  </router-link>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
           
+          <navlinks>
+            
 
-          <div class="body" role="main">
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="index.html#table-of-contents">table of contents</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="learning_apps.html" class="reference internal ">Creating learning applications</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="serversetup.html" class="reference internal ">Hosting learning applications and the web API</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">Working with tracking data</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#setting-up-a-learning-application-for-tracking" class="reference internal">Setting up a learning application for tracking</a></li>
+                
+                  <li class="toctree-l2"><a href="#registering-a-learning-application-with-the-multila-administration-backend" class="reference internal">Registering a learning application with the MultiLA administration backend</a></li>
+                
+                  <li class="toctree-l2"><a href="#optional-creating-application-sessions-gates-for-a-b-tests" class="reference internal">(Optional) Creating application sessions gates for A/B tests</a></li>
+                
+                  <li class="toctree-l2"><a href="#monitoring-user-tracking" class="reference internal">Monitoring user tracking</a></li>
+                
+                  <li class="toctree-l2"><a href="#downloading-and-preparing-tracking-data-for-analysis" class="reference internal">Downloading and preparing tracking data for analysis</a></li>
+                
+                  <li class="toctree-l2"><a href="#descriptive-and-explorative-analysis-of-tracking-data" class="reference internal">Descriptive and explorative analysis of tracking data</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="devguide.html" class="reference internal ">Extending the MultiLA software platform</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="codebook_raw_data.html" class="reference internal ">Codebook for MultiLA web API raw tracking data</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="codebook_prepared_data.html" class="reference internal ">Codebook for MultiLA prepared tracking data</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    
+    <li>Working with tracking data</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="serversetup.html"
+       title="previous chapter">← Hosting learning applications and the web API</a>
+  </li>
+  <li class="next">
+    <a href="devguide.html"
+       title="next chapter">Extending the MultiLA software platform →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
             
   <section id="working-with-tracking-data">
 <span id="tracking-data"></span><h1>Working with tracking data<a class="headerlink" href="#working-with-tracking-data" title="Link to this heading">¶</a></h1>
@@ -51,10 +193,10 @@
 <h2>Registering a learning application with the MultiLA administration backend<a class="headerlink" href="#registering-a-learning-application-with-the-multila-administration-backend" title="Link to this heading">¶</a></h2>
 <p>Each learning application for which you want to collect tracking data is required to be registered in the administration interface that is available under <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/admin/</span></code> after you installed it on a server as explained in chapter “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>”.</p>
 <p>After logging in to the administration interface, go to <em>API &gt; Applications</em> and select <em>Add application</em>. You will see a form as follows:</p>
-<img alt="_images/admin-add-app.png" class="align-center" src="_images/admin-add-app.png" />
+<a class="reference internal image-reference" href="_images/admin-add-app.png"><img alt="_images/admin-add-app.png" class="align-center" src="_images/admin-add-app.png" style="width: 100%;" /></a>
 <p>Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>.</p>
 <p>For each learning application, you can create several <em>application configuration.</em> These allow you to create different variants of the same base application. You need to at least create one default configuration, so go to <em>API &gt; Application configurations &gt; Add</em>. You will see the following form:</p>
-<img alt="_images/admin-add-config.png" class="align-center" src="_images/admin-add-config.png" />
+<a class="reference internal image-reference" href="_images/admin-add-config.png"><img alt="_images/admin-add-config.png" class="align-center" src="_images/admin-add-config.png" style="width: 100%;" /></a>
 <p>First, select the application for which you want to create a configuration. Next, create a label and optionally modify the default configuration code. The configuration code is a JSON structure with the following options:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">HTML</span> <span class="n">element</span> <span class="n">IDs</span> <span class="n">to</span> <span class="n">exclude</span><span class="o">&gt;</span><span class="p">],</span>
@@ -72,27 +214,27 @@
 </pre></div>
 </div>
 <p>After you created one or more application configurations, you finally have to create at least one <em>application session.</em> An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL that you can share. To create an application session, go to <em>API &gt; Application sessions &gt; Add</em> and you will be presented the following form:</p>
-<img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" />
+<a class="reference internal image-reference" href="_images/admin-add-session.png"><img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" style="width: 100%;" /></a>
 <p>Select the application configuration (and hence the target learning application) and specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). It’s main purpose is to allow tracking users across different devices and time distinct user sessions. If you don’t need that, you should disable user authentication.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This hierarchy of <em>applications → application configurations → application sessions</em> allows to create several variants of a single learning application (e.g. for A/B testing – see below) and furthermore allows to bind tracking to specific events, e.g. by creating a session for a specific teaching course or workshop. You will then later be able to download and analyse data for these specific application sessions.</p>
 </div>
 <p>After saving, a unique session ID will be created along with a shareable URL that has the format <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/?sess=&lt;UNIQUE_ID&gt;</span></code>, as you can also see in the following screenshot:</p>
-<img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" />
+<a class="reference internal image-reference" href="_images/admin-add-session.png"><img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" style="width: 100%;" /></a>
 <p>The URL is very important: If visiting this URL and consenting to data collection, a <em>tracking session</em> will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.</p>
 <p>Note that it is also possible to set a “default application session.” This means that every time someone visits the learning application under its base URL <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>, the collected data will be automatically associated with the default application session. If no default application session is set, a user will either be forwared to the last application session she or he visited for that application or otherwise tracking will either be disabled. You can set a default application session under <em>API &gt; Applications.</em></p>
 </section>
 <section id="optional-creating-application-sessions-gates-for-a-b-tests">
 <h2>(Optional) Creating application sessions gates for A/B tests<a class="headerlink" href="#optional-creating-application-sessions-gates-for-a-b-tests" title="Link to this heading">¶</a></h2>
 <p>If you want to use the MultiLA platform to do A/B testing for your learning applications, you can use the <em>application session gates</em> feature. First, create two or more application sessions (for different learning applications or different configurations for the same application). Then, got to <em>API &gt; Application session gates &gt; Add</em> and you will be presented the following form:</p>
-<img alt="_images/admin-add-gate.png" class="align-center" src="_images/admin-add-gate.png" />
+<a class="reference internal image-reference" href="_images/admin-add-gate.png"><img alt="_images/admin-add-gate.png" class="align-center" src="_images/admin-add-gate.png" style="width: 100%;" /></a>
 <p>Enter a label to identify the gate and select two or more application sessions at the bottom of the form. After saving the form, a unique <em>gate ID</em> will be generated along with an URL. Every visit to that URL will forward the user to one of the application sessions in an alternating manner (i.e. sessions A / B / C / A / B / C / … if you have added three sessions to the gate).</p>
 </section>
 <section id="monitoring-user-tracking">
 <h2>Monitoring user tracking<a class="headerlink" href="#monitoring-user-tracking" title="Link to this heading">¶</a></h2>
 <p>You can monitor the collection of live tracking and user feedback data. An overview of currently collected data is presented under <em>Data manager &gt; View:</em></p>
-<img alt="_images/admin-datamngr-view.png" class="align-center" src="_images/admin-datamngr-view.png" />
+<a class="reference internal image-reference" href="_images/admin-datamngr-view.png"><img alt="_images/admin-datamngr-view.png" class="align-center" src="_images/admin-datamngr-view.png" style="width: 100%;" /></a>
 <p>This overview gives some basic descriptive statistics of the collected data per application, application configuration or application session. By clicking on the small “info” icon in the <em>Num. of feedback items</em> column, you can view the user feedback for a given application, application configuration or application session.</p>
 <p>You can watch live tracking data by visiting <em>Data maanger &gt; Tracking sessions.</em> This will list all <em>tracking sessions</em> for which data is or was being collected.</p>
 <div class="admonition note">
@@ -100,7 +242,7 @@
 <p>A <em>tracking session</em> is a time frame of interaction with a learning application that can be attributed to a single user. If a user visits an application session URL, a new tracking session is started if the user gave consent to tracking and if the user doesn’t already have a running tracking session for that application sessions (this is determined via browser cookies). If the user already has a running tracking session for that application session (e.g. by coming back to the page after restarting the browser), this tracking session is continued and all new tracking data is added to the already existing data in the tracking session.</p>
 </div>
 <p>The tracking sessions overview will present you a table like this:</p>
-<img alt="_images/admin-trackingsess-overview.png" class="align-center" src="_images/admin-trackingsess-overview.png" />
+<a class="reference internal image-reference" href="_images/admin-trackingsess-overview.png"><img alt="_images/admin-trackingsess-overview.png" class="align-center" src="_images/admin-trackingsess-overview.png" style="width: 100%;" /></a>
 <p>The newest tracking session is by default shown on top. Session start and end give the time frame of the tracking session. If there’s no end time, this means that the tracking session is either currently running or that no tracking session end time could be determined (this may happen if the user’s browser for some reason doesn’t send a signal when closing the page).</p>
 <p>The <em>Options</em> column allows you to see details of the tracking session and the collected data by clicking on the “info” icon. The circular arrow icon allows you to replay tracking session, i.e. to view the sequence of interactions that the user had with the learning applications like a video. Note that this feature currently doesn’t always work as expected.</p>
 </section>
@@ -109,7 +251,7 @@
 <section id="downloading-the-tracking-data">
 <h3>Downloading the tracking data<a class="headerlink" href="#downloading-the-tracking-data" title="Link to this heading">¶</a></h3>
 <p>You can navigate to <em>Data manager &gt; Export</em> in order to generate a ZIP file with the collected tracking data.</p>
-<img alt="_images/admin-export.png" class="align-center" src="_images/admin-export.png" />
+<a class="reference internal image-reference" href="_images/admin-export.png"><img alt="_images/admin-export.png" class="align-center" src="_images/admin-export.png" style="width: 100%;" /></a>
 <p>You can select which for which application session you want to create a data export or choose to create a data export for all application sessions (which is not recommended as it may create a very large file and take a long to time generate the data export). The generated ZIP file will then be listed in the table below. Once it is ready, you can download it to your computer. The ZIP file contains a PDF with a codebook and four CSV files with the data. The codebook explains the structure of the data in detail. It is also contained in this documentation’s appendix under “<a class="reference internal" href="codebook_raw_data.html"><span class="doc">Codebook for MultiLA web API raw tracking data</span></a>.”</p>
 </section>
 <section id="preparing-the-tracking-data-for-analysis">
@@ -126,89 +268,26 @@
 
 
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">MultiLA</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the web API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Working with tracking data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#setting-up-a-learning-application-for-tracking">Setting up a learning application for tracking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#registering-a-learning-application-with-the-multila-administration-backend">Registering a learning application with the MultiLA administration backend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#optional-creating-application-sessions-gates-for-a-b-tests">(Optional) Creating application sessions gates for A/B tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#monitoring-user-tracking">Monitoring user tracking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#downloading-and-preparing-tracking-data-for-analysis">Downloading and preparing tracking data for analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#downloading-the-tracking-data">Downloading the tracking data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#preparing-the-tracking-data-for-analysis">Preparing the tracking data for analysis</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#descriptive-and-explorative-analysis-of-tracking-data">Descriptive and explorative analysis of tracking data</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="devguide.html">Extending the MultiLA software platform</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="codebook_raw_data.html">Codebook for MultiLA web API raw tracking data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="codebook_prepared_data.html">Codebook for MultiLA prepared tracking data</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="serversetup.html" title="previous chapter">Hosting learning applications and the web API</a></li>
-      <li>Next: <a href="devguide.html" title="next chapter">Extending the MultiLA software platform</a></li>
-  </ul></li>
-</ul>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="serversetup.html"
+       title="previous chapter">← Hosting learning applications and the web API</a>
+  </li>
+  <li class="next">
+    <a href="devguide.html"
+       title="next chapter">Extending the MultiLA software platform →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2024, Markus Konrad.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2024, Markus Konrad.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/trackingdata.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
+            </div>
+          </div>
+      </page>
+    </div></div>
     
-
     
   </body>
 </html>
