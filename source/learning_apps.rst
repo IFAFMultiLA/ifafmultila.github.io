@@ -65,6 +65,7 @@ An advanced feature of learnrextra is the *dynamic summary panel:* While working
 
 .. image:: img/learningapp_summary.png
     :align: center
+    :width: 100%
 
 To add dynamic summary content in your learning application, insert a "fenced div" block named ``summary`` at the position where the summary should be shown when the user has scrolled past it:
 

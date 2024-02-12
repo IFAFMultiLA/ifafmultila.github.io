@@ -26,6 +26,7 @@ Without login ("anonymous")
 - user authentication is based on a user token that is generated on first visit and then stored to cookies for re-use
 
 .. image:: img/client-server-noauth.png
+    :width: 100%
 
 
 With login
@@ -34,6 +35,7 @@ With login
 - requires that the user has registered an account with email and password
 
 .. image:: img/client-server-login.png
+    :width: 100%
 
 
 Application configuration

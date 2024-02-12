@@ -39,12 +39,6 @@ Table of contents
     serversetup
     trackingdata
     devguide
-
-Appendix
------------------
-
-.. toctree::
-
     codebook_raw_data
     codebook_prepared_data
 

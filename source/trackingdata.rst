@@ -29,6 +29,7 @@ After logging in to the administration interface, go to *API > Applications* and
 
 .. image:: img/admin-add-app.png
     :align: center
+    :width: 100%
 
 Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``.
 
@@ -36,6 +37,7 @@ For each learning application, you can create several *application configuration
 
 .. image:: img/admin-add-config.png
     :align: center
+    :width: 100%
 
 First, select the application for which you want to create a configuration. Next, create a label and optionally modify the default configuration code. The configuration code is a JSON structure with the following options:
 
@@ -59,6 +61,7 @@ After you created one or more application configurations, you finally have to cr
 
 .. image:: img/admin-add-session.png
     :align: center
+    :width: 100%
 
 Select the application configuration (and hence the target learning application) and specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). It's main purpose is to allow tracking users across different devices and time distinct user sessions. If you don't need that, you should disable user authentication.
 
@@ -68,6 +71,7 @@ After saving, a unique session ID will be created along with a shareable URL tha
 
 .. image:: img/admin-add-session.png
     :align: center
+    :width: 100%
 
 The URL is very important: If visiting this URL and consenting to data collection, a *tracking session* will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.
 
@@ -80,6 +84,7 @@ If you want to use the MultiLA platform to do A/B testing for your learning appl
 
 .. image:: img/admin-add-gate.png
     :align: center
+    :width: 100%
 
 Enter a label to identify the gate and select two or more application sessions at the bottom of the form. After saving the form, a unique *gate ID* will be generated along with an URL. Every visit to that URL will forward the user to one of the application sessions in an alternating manner (i.e. sessions A / B / C / A / B / C / ... if you have added three sessions to the gate).
 
@@ -90,6 +95,7 @@ You can monitor the collection of live tracking and user feedback data. An overv
 
 .. image:: img/admin-datamngr-view.png
     :align: center
+    :width: 100%
 
 This overview gives some basic descriptive statistics of the collected data per application, application configuration or application session. By clicking on the small "info" icon in the *Num. of feedback items* column, you can view the user feedback for a given application, application configuration or application session.
 
@@ -101,6 +107,7 @@ The tracking sessions overview will present you a table like this:
 
 .. image:: img/admin-trackingsess-overview.png
     :align: center
+    :width: 100%
 
 The newest tracking session is by default shown on top. Session start and end give the time frame of the tracking session. If there's no end time, this means that the tracking session is either currently running or that no tracking session end time could be determined (this may happen if the user's browser for some reason doesn't send a signal when closing the page).
 
@@ -116,6 +123,7 @@ You can navigate to *Data manager > Export* in order to generate a ZIP file with
 
 .. image:: img/admin-export.png
     :align: center
+    :width: 100%
 
 You can select which for which application session you want to create a data export or choose to create a data export for all application sessions (which is not recommended as it may create a very large file and take a long to time generate the data export). The generated ZIP file will then be listed in the table below. Once it is ready, you can download it to your computer. The ZIP file contains a PDF with a codebook and four CSV files with the data. The codebook explains the structure of the data in detail. It is also contained in this documentation's appendix under ":doc:`codebook_raw_data`."
 

@@ -11,6 +11,7 @@ Overview of the software components
 The following image show an overview of the MultiLA platform components:
 
 .. image:: img/sw-arch.png
+    :width: 100%
 
 - the web API is central and provides a common platform for setting up client applications, configuring and sharing them, and tracking user data and feedback
 - all data – user generated or operational – is stored in the database
