@@ -13,7 +13,7 @@ Server setup
 
 The server needs to have R installed. It's highly recommended to use `renv`_ during development and also for deployment, so you should install this package also on the server.
 
-For hosting learning applications, you need to install and setup a Shiny server as explained in the `Shiny administrator's guide <https://docs.posit.co/shiny-server/>`_. You must also install a recent version of `pandoc <https://pandoc.org/>`_ on the server (``sudo apt install pandoc`` on Ubuntu).
+For hosting learning applications, you need to install and setup a Shiny server as explained in the `Shiny administrator's guide <https://docs.posit.co/shiny-server/>`_. You must also install a recent version of `pandoc <https://pandoc.org/>`_ on the server (``sudo apt install pandoc`` on Debian or Ubuntu based Linux systems).
 
 It's recommended to implement at least the following security measures on the server:
 

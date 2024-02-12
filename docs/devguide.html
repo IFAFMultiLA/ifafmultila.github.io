@@ -34,9 +34,46 @@
             
   <section id="extending-the-multila-software-platform">
 <span id="devguide"></span><h1>Extending the MultiLA software platform<a class="headerlink" href="#extending-the-multila-software-platform" title="Link to this heading">¶</a></h1>
+<p>This part of the documentation represents the development guide for all components of the MultiLA software platform. The chapter starts with an overview of the components and how they communicate with each other. Then, development and deployment of the different components is discussed.</p>
+<section id="overview-of-the-software-components">
+<h2>Overview of the software components<a class="headerlink" href="#overview-of-the-software-components" title="Link to this heading">¶</a></h2>
+<p>The following image show an overview of the MultiLA platform components:</p>
+<img alt="_images/sw-arch.png" src="_images/sw-arch.png" />
 <ul class="simple">
-<li><p>pandoc</p></li>
+<li><p>the web API is central and provides a common platform for setting up client applications, configuring and sharing them, and tracking user data and feedback</p></li>
+<li><p>all data – user generated or operational – is stored in the database</p>
+<ul>
+<li><p>only the web API service has direct access to the database – client applications cannot access the database directly</p></li>
 </ul>
+</li>
+<li><p>for <em>learnr</em> and Shiny based client applications, there is a package <em>learnrextra</em> that provides all necessary (JavaScript) code to interact with the web API and to make client applications <em>configurable</em></p>
+<ul>
+<li><p>this allows to quickly create several client applications that share the same code for interfacing with the web API and that can be configured in some details (e.g. including/excluding certain sections, aesthetic changes, etc.)</p></li>
+</ul>
+</li>
+<li><p>the R Shiny server doesn’t communicate with the MultiLA web API, only the JavaScript code on the client side implements the communication</p></li>
+<li><p>in general, any (web) application can use the MultiLA web API, which means for example R Shiny applications or Jupyter Notebook applications</p></li>
+<li><p>it is possible to connect external services for authentication (e.g. Moodle)</p></li>
+</ul>
+<section id="code-repositories-overview">
+<h3>Code repositories overview<a class="headerlink" href="#code-repositories-overview" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Web API and database: <a class="reference external" href="https://github.com/IFAFMultiLA/webapi">https://github.com/IFAFMultiLA/webapi</a></p></li>
+<li><p><em>learnrextra</em> R package: <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">https://github.com/IFAFMultiLA/learnrextra</a></p></li>
+<li><p>learning applications (using <em>learnrextra</em>):</p>
+<ul>
+<li><p>TestgenauigkeitBayes (Bayes’ Theorem applied to medical testing): <a class="reference external" href="https://github.com/IFAFMultiLA/TestgenauigkeitBayes">https://github.com/IFAFMultiLA/TestgenauigkeitBayes</a></p></li>
+<li><p>Wahrscheinlichkeitsverteilungen (probability distributions): <a class="reference external" href="https://github.com/IFAFMultiLA/Wahrscheinlichkeitsverteilungen">https://github.com/IFAFMultiLA/Wahrscheinlichkeitsverteilungen</a></p></li>
+<li><p>basic learnrextra test application in RMarkdown/learnr  <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp">https://github.com/IFAFMultiLA/learnrextra_testapp</a></p></li>
+<li><p>basic learnrextra test application in Shiny <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp_shiny">https://github.com/IFAFMultiLA/learnrextra_testapp_shiny</a></p></li>
+<li><p>basic learnr test application with Python <a class="reference external" href="https://github.com/IFAFMultiLA/learnr_py">https://github.com/IFAFMultiLA/learnr_py</a></p></li>
+</ul>
+</li>
+<li><p>scripts for preparing and analysing collected tracking data: <a class="reference external" href="https://github.com/IFAFMultiLA/TrackingDataScripts">https://github.com/IFAFMultiLA/TrackingDataScripts</a></p></li>
+<li><p>this documentation: <a class="reference external" href="https://github.com/IFAFMultiLA/ifafmultila.github.io">https://github.com/IFAFMultiLA/ifafmultila.github.io</a></p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -60,7 +97,13 @@
 <li class="toctree-l1"><a class="reference internal" href="learning_apps.html">Creating learning applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="serversetup.html">Hosting learning applications and the web API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trackingdata.html">Working with tracking data</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending the MultiLA software platform</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending the MultiLA software platform</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-the-software-components">Overview of the software components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#code-repositories-overview">Code repositories overview</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="codebook_raw_data.html">Codebook for MultiLA web API raw tracking data</a></li>

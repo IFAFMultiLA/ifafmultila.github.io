@@ -10,6 +10,8 @@ Installation
 
 **Basic requirements:** You should have R and RStudio installed.
 
+.. important:: You should also have a recent version of `pandoc <https://pandoc.org/>`_ installed on your system (e.g. via `sudo apt install pandoc` on Debian or Ubuntu based Linux systems).
+
 1. (optional) Create a new RStudio project with `renv`_ for each new learning application.
 2. Install the `learnrextra`_ package from GitHub, e.g. via ``renv::install("https://github.com/IFAFMultiLA/learnrextra")``.
 3. Install the `gradethis`_ package from GitHub, e.g. via ``renv::install("https://github.com/rstudio/gradethis")``.
