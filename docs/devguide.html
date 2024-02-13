@@ -110,6 +110,10 @@
                 
                   <li class="toctree-l2"><a href="#overview-of-the-software-components" class="reference internal">Overview of the software components</a></li>
                 
+                  <li class="toctree-l2"><a href="#client-server-communication" class="reference internal">Client-server communication</a></li>
+                
+                  <li class="toctree-l2"><a href="#development-of-multila-platform-components" class="reference internal">Development of MultiLA platform components</a></li>
+                
               </ul>
             
           </li>
@@ -204,6 +208,335 @@
 <li><p>scripts for preparing and analysing collected tracking data: <a class="reference external" href="https://github.com/IFAFMultiLA/TrackingDataScripts">https://github.com/IFAFMultiLA/TrackingDataScripts</a></p></li>
 <li><p>this documentation: <a class="reference external" href="https://github.com/IFAFMultiLA/ifafmultila.github.io">https://github.com/IFAFMultiLA/ifafmultila.github.io</a></p></li>
 </ul>
+</section>
+</section>
+<section id="client-server-communication">
+<h2>Client-server communication<a class="headerlink" href="#client-server-communication" title="Link to this heading">¶</a></h2>
+<p>The client-server communication happens on the basis of a RESTful web API implemented in the <a class="reference external" href="https://github.com/IFAFMultiLA/webapi">WebAPI repository</a> and the main implementation is in <code class="docutils literal notranslate"><span class="pre">api/views.py</span></code>. The API exposes an OpenAPI schema under the URL <code class="docutils literal notranslate"><span class="pre">http[s]://&lt;HOST&gt;/openapi</span></code> when <code class="docutils literal notranslate"><span class="pre">settings.DEBUG</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<section id="client-server-communication-flowchart">
+<h3>Client-server communication flowchart<a class="headerlink" href="#client-server-communication-flowchart" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>an application session may either require a login or not – this can be configured in the administration backend for  each application session as “authentication mode”</p></li>
+<li><p>all API endpoints except for <code class="docutils literal notranslate"><span class="pre">session/</span></code> and <code class="docutils literal notranslate"><span class="pre">session_login/</span></code> require an HTTP authorization token, a.k.a “user token”, even when no login is required</p></li>
+<li><p>this makes sure that each request to the API is linked to a user – either to a registered user (when a login is required) or to an anonymous user that is only identified with a unique code (when no login is required)</p></li>
+</ul>
+<p>Without login (“anonymous”):</p>
+<ul class="simple">
+<li><p>doesn’t require an account</p></li>
+<li><p>user authentication is based on a user token that is generated on first visit and then stored to cookies for re-use</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/client-server-noauth.png"><img alt="_images/client-server-noauth.png" src="_images/client-server-noauth.png" style="width: 100%;" /></a>
+<p>With login:</p>
+<ul class="simple">
+<li><p>requires that the user has registered an account with email and password</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/client-server-login.png"><img alt="_images/client-server-login.png" src="_images/client-server-login.png" style="width: 100%;" /></a>
+</section>
+<section id="application-configuration">
+<h3>Application configuration<a class="headerlink" href="#application-configuration" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>to each application, a configuration can be passed when starting the application session</p></li>
+<li><p>the API sends the configuration as JSON object after the initial session request (anonymous session) or after log in (session that requires login) – this is displayed as <code class="docutils literal notranslate"><span class="pre">app_config</span></code> key in the above figures</p></li>
+<li><p>on the client side, the <em>learnrextra</em> R package handles reading the configuration and setting up the application accordingly</p></li>
+<li><p>the application configuration JSON object has the following format and options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">HTML</span> <span class="n">element</span> <span class="n">IDs</span> <span class="n">to</span> <span class="n">exclude</span><span class="o">&gt;</span><span class="p">],</span>
+  <span class="s2">&quot;js&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">JavaScript</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
+  <span class="s2">&quot;css&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">CSS</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
+  <span class="s2">&quot;feedback&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span> <span class="c1"># enable/disable specific user feedback features</span>
+  <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># enable/disable displaying summary</span>
+  <span class="s2">&quot;tracking&quot;</span><span class="p">:</span> <span class="p">{</span>       <span class="c1"># enable/disable specific tracking features</span>
+    <span class="s2">&quot;mouse&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>    <span class="c1"># mouse tracking w/ mus.js</span>
+    <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>   <span class="c1"># tracking of input changes</span>
+    <span class="s2">&quot;attribute_changes&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># tracking of attribute changes</span>
+    <span class="s2">&quot;chapters&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>  <span class="c1"># tracking of switching betw. chapters</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="development-of-multila-platform-components">
+<h2>Development of MultiLA platform components<a class="headerlink" href="#development-of-multila-platform-components" title="Link to this heading">¶</a></h2>
+<p>This section shows how to set up your local development environment for working on the MultiLA platform components.</p>
+<section id="general-requirements-and-setup">
+<h3>General requirements and setup<a class="headerlink" href="#general-requirements-and-setup" title="Link to this heading">¶</a></h3>
+<p>The development setup has been tested on Ubuntu Linux but should work on other Unix based platforms (like MacOS) without problems. Windows may require more effort, but should also work. It’s necessary to have recent versions of <a class="reference external" href="https://pandoc.org/">pandoc</a> and <a class="reference external" href="https://www.docker.com/">Docker</a> (for the WebAPI) installed on your system and it’s recommended to have installed <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p>
+<p>It’s recommended to put all components of the MultiLA platform in one folder on your machine. We will refer to this folder as <code class="docutils literal notranslate"><span class="pre">multila/</span></code>. The recommended structure of this directory is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>apps/                   – contains all learning applications
+learnrextra/            – R package from https://github.com/IFAFMultiLA/learnrextra
+TrackingDataScripts/    – tracking data preparation &amp; analysis from https://github.com/IFAFMultiLA/TrackingDataScripts
+webapi/                 – MultiLA Web API from https://github.com/IFAFMultiLA/webapi
+</pre></div>
+</div>
+<p>You should clone the git repositories that you need into the respective folders. The following section describe how to get the respective components working on your machine so that they interact with each other just as on a server.</p>
+</section>
+<section id="webapi">
+<h3>WebAPI<a class="headerlink" href="#webapi" title="Link to this heading">¶</a></h3>
+<p>The MultiLA web API collects the tracking data from the learning applications. It also provides an administration interface for registering learning applications, setting up experiments and managing tracking data. It’s based on <a class="reference external" href="https://www.djangoproject.com/">Django</a> and the <a class="reference external" href="https://www.django-rest-framework.org/">Django REST framework</a>.</p>
+<section id="relevant-documentation-parts-in-used-frameworks">
+<h4>Relevant documentation parts in used frameworks<a class="headerlink" href="#relevant-documentation-parts-in-used-frameworks" title="Link to this heading">¶</a></h4>
+<p>Django:</p>
+<ul class="simple">
+<li><p>Models and databases (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/intro/tutorial02/">tutorial</a> /
+<a class="reference external" href="https://docs.djangoproject.com/en/4.2/topics/db/">topic guide</a>)</p></li>
+<li><p>Views (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/intro/tutorial03/">tutorial</a> /
+<a class="reference external" href="https://docs.djangoproject.com/en/4.2/topics/http/views/">topic guide</a>)</p></li>
+<li><p>Automated admin interface (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/intro/tutorial02/">tutorial</a> /
+<a class="reference external" href="https://docs.djangoproject.com/en/4.2/#the-admin">documentation</a>)</p></li>
+<li><p>Testing (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/topics/testing/">topic guide</a>)</p></li>
+</ul>
+<p>Django REST framework:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.django-rest-framework.org/tutorial/1-serialization/">Serialization</a></p></li>
+<li><p><a class="reference external" href="https://www.django-rest-framework.org/tutorial/2-requests-and-responses/">Requests and Responses</a></p></li>
+<li><p><a class="reference external" href="https://www.django-rest-framework.org/api-guide/testing/">Testing</a></p></li>
+</ul>
+</section>
+<section id="requirements">
+<h4>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Docker with Docker Compose v2 (recommended: run Docker in <em>rootless</em> mode)</p>
+<ul>
+<li><p>all you need is to <a class="reference external" href="https://docs.docker.com/engine/install/">install the Docker Engine</a> for your operating system (Docker Desktop is  optional)</p></li>
+<li><p>it is recommended to <a class="reference external" href="https://docs.docker.com/engine/security/rootless/">set up Docker in rootless mode</a> if your operating system supports it</p></li>
+</ul>
+</li>
+<li><p>Python 3.11 if not running the web application in a Docker container</p></li>
+</ul>
+</section>
+<section id="initial-setup">
+<h4>Initial setup<a class="headerlink" href="#initial-setup" title="Link to this heading">¶</a></h4>
+<p>After cloning the repository, it’s recommended to create a Makefile that contains shortcuts for important terminal commands that allow you to manage and deploy the project. You can use the following template for the Makefile:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">COMPFILE</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>docker/compose_dev.yml
+<span class="nv">COMP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>COMPFILE<span class="k">)</span>
+<span class="nv">EXEC</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>web
+<span class="nv">EXECDB</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db
+<span class="nv">SERVER</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>&lt;SERVER<span class="w"> </span>FOR<span class="w"> </span>DEPLOYMENT&gt;
+<span class="nv">APPDIR</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>&lt;DIRECTORY<span class="w"> </span>ON<span class="w"> </span>SERVER<span class="w"> </span>FOR<span class="w"> </span>DEPLOYMENT&gt;
+<span class="nv">SERVER_APP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span>:<span class="k">$(</span>APPDIR<span class="k">)</span>
+<span class="nv">RSYNC_COMMON</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-rcv<span class="w"> </span>--exclude-from<span class="o">=</span>.rsyncexclude
+<span class="nv">NOW</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>date<span class="w"> </span>-Is<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s2">&quot;s/://g&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d+<span class="w"> </span>-f<span class="w"> </span><span class="m">1</span>
+
+<span class="nf">up</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>up
+
+<span class="nf">down</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>down
+
+<span class="nf">build</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>build
+
+<span class="nf">create</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>create
+
+<span class="nf">enter</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>/bin/bash<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;web container is not running&quot;</span>
+
+<span class="nf">superuser</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>createsuperuser
+
+<span class="nf">djangoshell</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>shell
+
+<span class="nf">migrations</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>makemigrations
+
+<span class="nf">migrate</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>migrate
+
+<span class="nf">dump</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dumpdata<span class="w"> </span>-o<span class="w"> </span>/fixtures/dump-<span class="sb">`</span><span class="k">$(</span>NOW<span class="k">)</span><span class="sb">`</span>.json.gz<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>dumpdata<span class="w"> </span>-o<span class="w"> </span>data/fixtures/dump-<span class="sb">`</span><span class="k">$(</span>NOW<span class="k">)</span><span class="sb">`</span>.json.gz
+
+<span class="nf">dbbackup</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXECDB<span class="k">)</span><span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;pg_dump -U admin -F c multila &gt; /data_backup/local_dev_multila-`$(NOW)`.pgdump&#39;</span>
+
+<span class="nf">collectstatic</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>collectstatic
+
+<span class="nf">test</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>api<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>api
+
+<span class="nf">sync</span><span class="o">:</span>
+<span class="w">    </span>rsync<span class="w"> </span><span class="k">$(</span>RSYNC_COMMON<span class="k">)</span><span class="w"> </span>.<span class="w"> </span><span class="k">$(</span>SERVER_APP<span class="k">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ssh<span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span><span class="w"> </span><span class="s2">&quot;mv </span><span class="k">$(</span>APPDIR<span class="k">)</span><span class="s2">/Makefile_server </span><span class="k">$(</span>APPDIR<span class="k">)</span><span class="s2">/Makefile&quot;</span>
+
+<span class="nf">testsync</span><span class="o">:</span>
+<span class="w">    </span>rsync<span class="w"> </span><span class="k">$(</span>RSYNC_COMMON<span class="k">)</span><span class="w"> </span>-n<span class="w"> </span>.<span class="w"> </span><span class="k">$(</span>SERVER_APP<span class="k">)</span>
+
+<span class="nf">adminer_tunnel</span><span class="o">:</span>
+<span class="w">    </span>ssh<span class="w"> </span>-N<span class="w"> </span>-L<span class="w"> </span><span class="m">8081</span>:localhost:8081<span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span>
+
+<span class="nf">server_restart_web</span><span class="o">:</span>
+<span class="w">    </span>ssh<span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span><span class="w"> </span><span class="s1">&#39;cd $(APPDIR) &amp;&amp; make restart_web&#39;</span>
+</pre></div>
+</div>
+<p>You should also create a second Makefile, named <code class="docutils literal notranslate"><span class="pre">Makefile_server</span></code>, that will be copied to the server on deployment and contains management commands to be run on the server:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">COMPFILE</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>docker/compose_prod.yml
+<span class="nv">COMP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>COMPFILE<span class="k">)</span>
+<span class="nv">EXEC</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>web
+<span class="nv">EXECDB</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db
+<span class="nv">NOW</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>date<span class="w"> </span>-Is<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s2">&quot;s/://g&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d+<span class="w"> </span>-f<span class="w"> </span><span class="m">1</span>
+
+<span class="nf">up</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="nf">logs</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="nf">down</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>down
+
+<span class="nf">restart_web</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>restart<span class="w"> </span>web
+
+<span class="nf">build</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>build
+
+<span class="nf">create</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>create
+
+<span class="nf">enter</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>/bin/bash
+
+<span class="nf">migrate</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+
+<span class="nf">check</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>check<span class="w"> </span>--deploy
+
+<span class="nf">test</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>api
+
+<span class="nf">superuser</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+
+<span class="nf">copy_static</span><span class="o">:</span>
+<span class="w">    </span>cp<span class="w"> </span>-r<span class="w"> </span>static_files/*<span class="w"> </span>/var/www/api_static_files/
+
+<span class="nf">dbbackup</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXECDB<span class="k">)</span><span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;pg_dump -U admin -F c multila &gt; /data_backup/multila-`$(NOW)`.pgdump&#39;</span>
+</pre></div>
+</div>
+<p>There are two ways to set up a local development environment: either by using a Python virtual environment <em>(venv)</em>
+on the local machine to run the Python interpreter or by using a Python interpreter inside a Docker container. The
+latter is currently harder to set up in conjunction with an IDE.</p>
+</section>
+<section id="option-1-using-a-venv-on-the-local-machine">
+<h4>Option 1: Using a venv on the local machine<a class="headerlink" href="#option-1-using-a-venv-on-the-local-machine" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>create a Python 3.11 virtual environment and activate it (e.g. via <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">venv</span></code> in the project root
+directory and then activating it via <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">venv/bin/activate</span></code>)</p></li>
+<li><p>install the required packages via pip: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p></li>
+<li><p>create a project in your IDE, set up the Python interpreter as the one you just created in the virtual environment</p></li>
+<li><p>copy <code class="docutils literal notranslate"><span class="pre">docker/compose_dev_db_only.yml</span></code> to <code class="docutils literal notranslate"><span class="pre">docker/compose_dev.yml</span></code></p></li>
+<li><p>start the docker services for the first time via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">up</span></code> or via your IDE’s docker interface</p>
+<ul>
+<li><p><strong>note:</strong> the first start of the “web” service may fail, since the database is initialized in parallel and may not
+be ready yet when “web” is started – simply starting the services as second time should solve the problem</p></li>
+</ul>
+</li>
+<li><p>optional: create a launch configuration for Django in your IDE</p></li>
+<li><p>start the web application using the launch configuration in your IDE or use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/manage.py</span> <span class="pre">runserver</span></code></p></li>
+</ul>
+</section>
+<section id="option-2-using-a-python-interpreter-inside-a-docker-container">
+<h4>Option 2: Using a Python interpreter inside a docker container<a class="headerlink" href="#option-2-using-a-python-interpreter-inside-a-docker-container" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>copy <code class="docutils literal notranslate"><span class="pre">docker/compose_dev_full.yml</span></code> to <code class="docutils literal notranslate"><span class="pre">docker/compose_dev.yml</span></code></p></li>
+<li><p>create a project in your IDE, set up a connection to Docker and set up to use the Python interpreter inside the
+<code class="docutils literal notranslate"><span class="pre">multila-web</span></code> service</p>
+<ul>
+<li><p>for set up with PyCharm Professional, <a class="reference external" href="https://www.jetbrains.com/help/pycharm/using-docker-compose-as-a-remote-interpreter.html">see here</a></p></li>
+</ul>
+</li>
+<li><p>start all services for a first time</p>
+<ul>
+<li><p><strong>note:</strong> the first start of the “web” service may fail, since the database is initialized in parallel and may not
+be ready yet when “web” is started – simply starting the services as second time should solve the problem</p></li>
+</ul>
+</li>
+<li><p>alternatively, to manually control the docker services outside your IDE, use the commands specified in the Makefile:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">create</span></code> to create the containers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">up</span></code> to launch all services</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="common-set-up-steps-for-both-options">
+<h4>Common set up steps for both options<a class="headerlink" href="#common-set-up-steps-for-both-options" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>when all services were started successfully, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">migrate</span></code> to run the initial database migrations</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">superuser</span></code> to create a backend admin user</p></li>
+<li><p>the web application is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code></p></li>
+<li><p>a simple database administration web interface is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/admin</span></code></p></li>
+<li><p>to check if everything works, you should run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="learnrextra-r-package-setup">
+<span id="learnrextra-dev"></span><h3>learnrextra R package setup<a class="headerlink" href="#learnrextra-r-package-setup" title="Link to this heading">¶</a></h3>
+<p>The <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">learnrextra</a> R package is a central part of the MultiLA software platform. It’s an extension to the <a class="reference external" href="https://rstudio.github.io/learnr/">learnr</a> to create learning applications that allow to anonymously track usage data and collect this data via the web API. It furthermore provides some extra features to learnr such as an optional summary panel and the ability to create several variants of a single base learning application via configurations.</p>
+<p>For local development, it’s recommended that you clone this repository on your machine. Then, either create a new learning application as explained in “<a class="reference internal" href="learning_apps.html"><span class="doc">Creating learning applications</span></a>” or use the <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp">test application</a>. However, make sure that you install learnrextra in your learning application from the local path of the cloned repository (<code class="docutils literal notranslate"><span class="pre">renv::install(&quot;&lt;LOCAL</span> <span class="pre">PATH</span> <span class="pre">TO</span> <span class="pre">REPOSITORY&gt;&quot;)</span></code>).</p>
+<section id="installation">
+<h4>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>install <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> if you haven’t yet</p></li>
+<li><p>then install all R dependencies via <code class="docutils literal notranslate"><span class="pre">renv::restore()</span></code></p></li>
+<li><p>run “Check” in the RStudio “Build” panel to check if R package building works</p></li>
+<li><p>also install <a class="reference external" href="https://nodejs.org/">NodeJS</a> and the <a class="reference external" href="https://www.npmjs.com/">Node package manager (npm)</a></p></li>
+<li><p>then run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code> to install all JavaScript dependencies</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">build</span></code> to check if building the JavaScript sources works</p></li>
+</ul>
+</section>
+<section id="project-structure">
+<h4>Project structure<a class="headerlink" href="#project-structure" title="Link to this heading">¶</a></h4>
+<p>Folder <code class="docutils literal notranslate"><span class="pre">inst/rmarkdown/templates/tutorial</span></code>:</p>
+<ul class="simple">
+<li><p>template for creating new learning applications</p></li>
+<li><p>sub-folder <code class="docutils literal notranslate"><span class="pre">resources</span></code> contains main JavaScript code, additional CSS and HTML</p></li>
+</ul>
+<p>Folder <code class="docutils literal notranslate"><span class="pre">learnrextra-js</span></code>:</p>
+<ul class="simple">
+<li><p>contains JavaScript code for additional custom packages that need to be built locally (see section below)</p></li>
+<li><p>sub-folder <code class="docutils literal notranslate"><span class="pre">format</span></code> contains JavaScript code for the <code class="docutils literal notranslate"><span class="pre">tutorial</span></code> object</p></li>
+<li><p>sub-folder <code class="docutils literal notranslate"><span class="pre">musjs</span></code> contains JavaScript code for a modified variant of the <a class="reference external" href="https://github.com/ineventapp/musjs">musjs project</a></p></li>
+</ul>
+<p>Folder <code class="docutils literal notranslate"><span class="pre">R</span></code>:</p>
+<ul class="simple">
+<li><p>contains R code for the few functions that this packages exposes</p></li>
+</ul>
+</section>
+<section id="building-custom-javascript-packages">
+<span id="dev-learnrextra-rebuild-js"></span><h4>Building custom JavaScript packages<a class="headerlink" href="#building-custom-javascript-packages" title="Link to this heading">¶</a></h4>
+<p>Every time you change JavaScript code for one of the custom JavaScript packages in the <code class="docutils literal notranslate"><span class="pre">learnrextra-js</span></code> folder, you need to re-build these packages via <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">build</span></code>. The built code is then automatically copied to <code class="docutils literal notranslate"><span class="pre">inst/rmarkdown/templates/tutorial/resources</span></code>.</p>
+</section>
+<section id="building-the-documentation">
+<h4>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading">¶</a></h4>
+<p>To build the documentation for the R functions of this package, you need to run the R command <code class="docutils literal notranslate"><span class="pre">devtools::document()</span></code>.</p>
+</section>
+</section>
+<section id="learning-application-setup">
+<h3>Learning application setup<a class="headerlink" href="#learning-application-setup" title="Link to this heading">¶</a></h3>
+<p>You should create a new learning application according to the chapter “<a class="reference internal" href="learning_apps.html"><span class="doc">Creating learning applications</span></a>”. You must however make sure that you install the learnrextra package from the local path that you used in “<a class="reference internal" href="#learnrextra-dev"><span class="std std-ref">learnrextra R package setup</span></a>.” For example, when you cloned the learnrextra package in the directory <code class="docutils literal notranslate"><span class="pre">multila/learnrextra</span></code> and create a new learning application under <code class="docutils literal notranslate"><span class="pre">multila/apps/myapp</span></code>, then you should install learnrextra in the learning application <em>myapp</em> via <code class="docutils literal notranslate"><span class="pre">renv::install(&quot;../../learnrextra&quot;)</span></code> so that it uses a relative path that points to <code class="docutils literal notranslate"><span class="pre">multila/learnrextra</span></code>.</p>
+<p>After creating a basic version of your new learning app, you should try out that the tracking works locally on your machine. First, make sure that the web API is up and running on port 8000. Then, register a new learning application along with an application configuration and an application session. This learning application will be launched locally on your machine and will be running on <code class="docutils literal notranslate"><span class="pre">http://localhost:8001/</span></code>. Details on how to register an application are explained in the section “<a class="reference internal" href="trackingdata.html#tracking-register-app"><span class="std std-ref">Registering a learning application with the MultiLA administration backend</span></a>.”</p>
+<p>Next, make sure that the local web API endpoint is also set as target API server in the learning application’s frontmatter as <code class="docutils literal notranslate"><span class="pre">apiserver:</span> <span class="pre">http://localhost:8000/</span></code> (see “<a class="reference internal" href="learning_apps.html#learning-apps-frontmatter"><span class="std std-ref">Frontmatter options</span></a>”). Then, start your learning application locally on the fixed port 8001 (by default RStudio will always use a different free port). You can do so by running the following command in R:</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">rmarkdown</span><span class="o">::</span><span class="nf">run</span><span class="p">(</span><span class="s">&quot;&lt;RMARKDOWN_DOCUMENT&gt;.Rmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">shiny_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8001</span><span class="p">,</span><span class="w"> </span><span class="n">launch.browser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When you created the application session in the MultiLA administration interface, an URL with an unique session identifier was created such as <code class="docutils literal notranslate"><span class="pre">http://localhost:8001/?sess=xyz</span></code>. Visit this URL with a browser while the web API and the learning application are running. This should start the learning application and, after giving consent, also start a tracking session. You can check that a tracking session was created and tracking data is being collected by navigating to <em>Data manager &gt; Tracking sessions</em> in the MultiLA administration interface (see “<a class="reference internal" href="trackingdata.html#tracking-monitoring"><span class="std std-ref">Monitoring user tracking</span></a>”). If no tracking session was created, check the JavaScript console in the learning application for errors.</p>
+<section id="reloading-changes-during-local-development">
+<h4>Reloading changes during local development<a class="headerlink" href="#reloading-changes-during-local-development" title="Link to this heading">¶</a></h4>
+<p>When developing a new learning application, you can simply rebuild and relaunch the learning application with the command above when you want to review your changes. If you make changes to the learnrextra package code however, more effort is needed: First, you may need to rebuild JavaScript packages as explained in “<a class="reference internal" href="#dev-learnrextra-rebuild-js"><span class="std std-ref">Building custom JavaScript packages</span></a>”. Then, you will need to re-install the package in your learning application before you rebuild und relaunch it. A shortcut for that may be written in a Makefile like so:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nf">devserver</span><span class="o">:</span>
+<span class="w">    </span>-rm<span class="w"> </span>&lt;RMARKDOWN_DOCUMENT&gt;.html
+<span class="w">    </span>R<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;renv::install(&quot;&lt;LOCAL_PATH_TO_LEARNREXTRA_REPO&gt;&quot;);rmarkdown::run(&quot;&lt;RMARKDOWN_DOCUMENT&gt;.Rmd&quot;, shiny_args = list(port = 8001, launch.browser = FALSE))&#39;</span>
+</pre></div>
+</div>
+<p>You can then use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">devserver</span></code> to automatically re-install learnrextra from the local repository and relaunch the learning application.</p>
+</section>
 </section>
 </section>
 </section>

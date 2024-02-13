@@ -196,7 +196,8 @@
 </pre></div>
 </div>
 <p>Please note that you need to run <code class="docutils literal notranslate"><span class="pre">renv::snapshot()</span></code> locally every time you update/install packages and that you also need to copy the updated <code class="docutils literal notranslate"><span class="pre">renv.lock</span></code> to the app folder on the server and run <code class="docutils literal notranslate"><span class="pre">renv::restore()</span></code> within an R session there.</p>
-<p>Check that the application was sucessfully deployed by visiting the respective URL in your browser (depends on the Shiny server setup). If anything fails, check the Shiny logs (<code class="docutils literal notranslate"><span class="pre">~/ShinyApps/log</span></code>, <code class="docutils literal notranslate"><span class="pre">/var/log/shiny-server/access.log</span></code>, <code class="docutils literal notranslate"><span class="pre">/var/log/shiny-server.log</span></code>).</p>
+<p>Check that the application was successfully deployed by visiting the respective URL in your browser (depends on the Shiny server setup). If anything fails, check the Shiny logs (<code class="docutils literal notranslate"><span class="pre">~/ShinyApps/log</span></code>, <code class="docutils literal notranslate"><span class="pre">/var/log/shiny-server/access.log</span></code>, <code class="docutils literal notranslate"><span class="pre">/var/log/shiny-server.log</span></code>).</p>
+<p>When you publish an update for your learning application, you must also set a new timestamp to a special file named <code class="docutils literal notranslate"><span class="pre">restart.txt</span></code> in the learning application project folder on the server via <code class="docutils literal notranslate"><span class="pre">touch</span> <span class="pre">restart.txt</span></code>.</p>
 </section>
 </section>
 <section id="setting-up-the-web-api-and-the-administration-interface">

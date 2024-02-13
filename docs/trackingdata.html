@@ -190,7 +190,7 @@
 <p>This will make sure that the deployed learning applications know where to send the collected data.</p>
 </section>
 <section id="registering-a-learning-application-with-the-multila-administration-backend">
-<h2>Registering a learning application with the MultiLA administration backend<a class="headerlink" href="#registering-a-learning-application-with-the-multila-administration-backend" title="Link to this heading">¶</a></h2>
+<span id="tracking-register-app"></span><h2>Registering a learning application with the MultiLA administration backend<a class="headerlink" href="#registering-a-learning-application-with-the-multila-administration-backend" title="Link to this heading">¶</a></h2>
 <p>Each learning application for which you want to collect tracking data is required to be registered in the administration interface that is available under <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/admin/</span></code> after you installed it on a server as explained in chapter “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>”.</p>
 <p>After logging in to the administration interface, go to <em>API &gt; Applications</em> and select <em>Add application</em>. You will see a form as follows:</p>
 <a class="reference internal image-reference" href="_images/admin-add-app.png"><img alt="_images/admin-add-app.png" class="align-center" src="_images/admin-add-app.png" style="width: 100%;" /></a>
@@ -232,7 +232,7 @@
 <p>Enter a label to identify the gate and select two or more application sessions at the bottom of the form. After saving the form, a unique <em>gate ID</em> will be generated along with an URL. Every visit to that URL will forward the user to one of the application sessions in an alternating manner (i.e. sessions A / B / C / A / B / C / … if you have added three sessions to the gate).</p>
 </section>
 <section id="monitoring-user-tracking">
-<h2>Monitoring user tracking<a class="headerlink" href="#monitoring-user-tracking" title="Link to this heading">¶</a></h2>
+<span id="tracking-monitoring"></span><h2>Monitoring user tracking<a class="headerlink" href="#monitoring-user-tracking" title="Link to this heading">¶</a></h2>
 <p>You can monitor the collection of live tracking and user feedback data. An overview of currently collected data is presented under <em>Data manager &gt; View:</em></p>
 <a class="reference internal image-reference" href="_images/admin-datamngr-view.png"><img alt="_images/admin-datamngr-view.png" class="align-center" src="_images/admin-datamngr-view.png" style="width: 100%;" /></a>
 <p>This overview gives some basic descriptive statistics of the collected data per application, application configuration or application session. By clicking on the small “info” icon in the <em>Num. of feedback items</em> column, you can view the user feedback for a given application, application configuration or application session.</p>
