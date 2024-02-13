@@ -112,6 +112,8 @@
                 
                   <li class="toctree-l2"><a href="#client-server-communication" class="reference internal">Client-server communication</a></li>
                 
+                  <li class="toctree-l2"><a href="#development-of-multila-platform-components" class="reference internal">Development of MultiLA platform components</a></li>
+                
               </ul>
             
           </li>
@@ -254,6 +256,230 @@
 </div>
 </li>
 </ul>
+</section>
+</section>
+<section id="development-of-multila-platform-components">
+<h2>Development of MultiLA platform components<a class="headerlink" href="#development-of-multila-platform-components" title="Link to this heading">¶</a></h2>
+<p>This section shows how to set up your local development environment for working on the MultiLA platform components.</p>
+<section id="general-requirements-and-setup">
+<h3>General requirements and setup<a class="headerlink" href="#general-requirements-and-setup" title="Link to this heading">¶</a></h3>
+<p>The development setup has been tested on Ubuntu Linux but should work on other Unix based platforms (like MacOS) without problems. Windows may require more effort, but should also work. It’s necessary to have recent versions of <a class="reference external" href="https://pandoc.org/">pandoc</a> and <a class="reference external" href="https://www.docker.com/">Docker</a> (for the WebAPI) installed on your system and it’s recommended to have installed <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p>
+<p>It’s recommended to put all components of the MultiLA platform in one folder on your machine. We will refer to this folder as <code class="docutils literal notranslate"><span class="pre">multila/</span></code>. The recommended structure of this directory is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>apps/                   – contains all learning applications
+learnrextra/            – R package from https://github.com/IFAFMultiLA/learnrextra
+TrackingDataScripts/    – tracking data preparation &amp; analysis from https://github.com/IFAFMultiLA/TrackingDataScripts
+webapi/                 – MultiLA Web API from https://github.com/IFAFMultiLA/webapi
+</pre></div>
+</div>
+<p>You should clone the git repositories that you need into the respective folders. The following section describe how to get the respective components working on your machine so that they interact with each other just as on a server.</p>
+</section>
+<section id="webapi-set-up">
+<h3>WebAPI set up<a class="headerlink" href="#webapi-set-up" title="Link to this heading">¶</a></h3>
+<p>After cloning the repository, it’s recommended to create a Makefile that contains shortcuts for important terminal commands that allow you to manage and deploy the project. You can use the following template for the Makefile:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">COMPFILE</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>docker/compose_dev.yml
+<span class="nv">COMP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>COMPFILE<span class="k">)</span>
+<span class="nv">EXEC</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>web
+<span class="nv">EXECDB</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db
+<span class="nv">SERVER</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>&lt;SERVER<span class="w"> </span>FOR<span class="w"> </span>DEPLOYMENT&gt;
+<span class="nv">APPDIR</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>&lt;DIRECTORY<span class="w"> </span>ON<span class="w"> </span>SERVER<span class="w"> </span>FOR<span class="w"> </span>DEPLOYMENT&gt;
+<span class="nv">SERVER_APP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span>:<span class="k">$(</span>APPDIR<span class="k">)</span>
+<span class="nv">RSYNC_COMMON</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-rcv<span class="w"> </span>--exclude-from<span class="o">=</span>.rsyncexclude
+<span class="nv">NOW</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>date<span class="w"> </span>-Is<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s2">&quot;s/://g&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d+<span class="w"> </span>-f<span class="w"> </span><span class="m">1</span>
+
+<span class="nf">up</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>up
+
+<span class="nf">down</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>down
+
+<span class="nf">build</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>build
+
+<span class="nf">create</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>create
+
+<span class="nf">enter</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>/bin/bash<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;web container is not running&quot;</span>
+
+<span class="nf">superuser</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>createsuperuser
+
+<span class="nf">djangoshell</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>shell
+
+<span class="nf">migrations</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>makemigrations
+
+<span class="nf">migrate</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>migrate
+
+<span class="nf">dump</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dumpdata<span class="w"> </span>-o<span class="w"> </span>/fixtures/dump-<span class="sb">`</span><span class="k">$(</span>NOW<span class="k">)</span><span class="sb">`</span>.json.gz<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>dumpdata<span class="w"> </span>-o<span class="w"> </span>data/fixtures/dump-<span class="sb">`</span><span class="k">$(</span>NOW<span class="k">)</span><span class="sb">`</span>.json.gz
+
+<span class="nf">dbbackup</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXECDB<span class="k">)</span><span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;pg_dump -U admin -F c multila &gt; /data_backup/local_dev_multila-`$(NOW)`.pgdump&#39;</span>
+
+<span class="nf">collectstatic</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span>collectstatic
+
+<span class="nf">test</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>api<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>src/manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>api
+
+<span class="nf">sync</span><span class="o">:</span>
+<span class="w">    </span>rsync<span class="w"> </span><span class="k">$(</span>RSYNC_COMMON<span class="k">)</span><span class="w"> </span>.<span class="w"> </span><span class="k">$(</span>SERVER_APP<span class="k">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ssh<span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span><span class="w"> </span><span class="s2">&quot;mv </span><span class="k">$(</span>APPDIR<span class="k">)</span><span class="s2">/Makefile_server </span><span class="k">$(</span>APPDIR<span class="k">)</span><span class="s2">/Makefile&quot;</span>
+
+<span class="nf">testsync</span><span class="o">:</span>
+<span class="w">    </span>rsync<span class="w"> </span><span class="k">$(</span>RSYNC_COMMON<span class="k">)</span><span class="w"> </span>-n<span class="w"> </span>.<span class="w"> </span><span class="k">$(</span>SERVER_APP<span class="k">)</span>
+
+<span class="nf">adminer_tunnel</span><span class="o">:</span>
+<span class="w">    </span>ssh<span class="w"> </span>-N<span class="w"> </span>-L<span class="w"> </span><span class="m">8081</span>:localhost:8081<span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span>
+
+<span class="nf">server_restart_web</span><span class="o">:</span>
+<span class="w">    </span>ssh<span class="w"> </span><span class="k">$(</span>SERVER<span class="k">)</span><span class="w"> </span><span class="s1">&#39;cd $(APPDIR) &amp;&amp; make restart_web&#39;</span>
+</pre></div>
+</div>
+<p>You should also create a second Makefile, named <code class="docutils literal notranslate"><span class="pre">Makefile_server</span></code>, that will be copied to the server on deployment and contains management commands to be run on the server:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">COMPFILE</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>docker/compose_prod.yml
+<span class="nv">COMP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>COMPFILE<span class="k">)</span>
+<span class="nv">EXEC</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>web
+<span class="nv">EXECDB</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db
+<span class="nv">NOW</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>date<span class="w"> </span>-Is<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s2">&quot;s/://g&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d+<span class="w"> </span>-f<span class="w"> </span><span class="m">1</span>
+
+<span class="nf">up</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="nf">logs</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="nf">down</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>down
+
+<span class="nf">restart_web</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>restart<span class="w"> </span>web
+
+<span class="nf">build</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>build
+
+<span class="nf">create</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>COMP<span class="k">)</span><span class="w"> </span>create
+
+<span class="nf">enter</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>/bin/bash
+
+<span class="nf">migrate</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+
+<span class="nf">check</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>check<span class="w"> </span>--deploy
+
+<span class="nf">test</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>api
+
+<span class="nf">superuser</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXEC<span class="k">)</span><span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+
+<span class="nf">copy_static</span><span class="o">:</span>
+<span class="w">    </span>cp<span class="w"> </span>-r<span class="w"> </span>static_files/*<span class="w"> </span>/var/www/api_static_files/
+
+<span class="nf">dbbackup</span><span class="o">:</span>
+<span class="w">    </span>docker<span class="w"> </span><span class="k">$(</span>EXECDB<span class="k">)</span><span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;pg_dump -U admin -F c multila &gt; /data_backup/multila-`$(NOW)`.pgdump&#39;</span>
+</pre></div>
+</div>
+<p>There are two ways to set up a local development environment: either by using a Python virtual environment <em>(venv)</em>
+on the local machine to run the Python interpreter or by using a Python interpreter inside a Docker container. The
+latter is currently harder to set up in conjunction with an IDE.</p>
+<section id="option-1-using-a-venv-on-the-local-machine">
+<h4>Option 1: Using a venv on the local machine<a class="headerlink" href="#option-1-using-a-venv-on-the-local-machine" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>create a Python 3.11 virtual environment and activate it (e.g. via <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">venv</span></code> in the project root
+directory and then activating it via <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">venv/bin/activate</span></code>)</p></li>
+<li><p>install the required packages via pip: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p></li>
+<li><p>create a project in your IDE, set up the Python interpreter as the one you just created in the virtual environment</p></li>
+<li><p>copy <code class="docutils literal notranslate"><span class="pre">docker/compose_dev_db_only.yml</span></code> to <code class="docutils literal notranslate"><span class="pre">docker/compose_dev.yml</span></code></p></li>
+<li><p>start the docker services for the first time via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">up</span></code> or via your IDE’s docker interface</p>
+<ul>
+<li><p><strong>note:</strong> the first start of the “web” service may fail, since the database is initialized in parallel and may not
+be ready yet when “web” is started – simply starting the services as second time should solve the problem</p></li>
+</ul>
+</li>
+<li><p>optional: create a launch configuration for Django in your IDE</p></li>
+<li><p>start the web application using the launch configuration in your IDE or use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/manage.py</span> <span class="pre">runserver</span></code></p></li>
+</ul>
+</section>
+<section id="option-2-using-a-python-interpreter-inside-a-docker-container">
+<h4>Option 2: Using a Python interpreter inside a docker container<a class="headerlink" href="#option-2-using-a-python-interpreter-inside-a-docker-container" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>copy <code class="docutils literal notranslate"><span class="pre">docker/compose_dev_full.yml</span></code> to <code class="docutils literal notranslate"><span class="pre">docker/compose_dev.yml</span></code></p></li>
+<li><p>create a project in your IDE, set up a connection to Docker and set up to use the Python interpreter inside the
+<code class="docutils literal notranslate"><span class="pre">multila-web</span></code> service</p>
+<ul>
+<li><p>for set up with PyCharm Professional, <a class="reference external" href="https://www.jetbrains.com/help/pycharm/using-docker-compose-as-a-remote-interpreter.html">see here</a></p></li>
+</ul>
+</li>
+<li><p>start all services for a first time</p>
+<ul>
+<li><p><strong>note:</strong> the first start of the “web” service may fail, since the database is initialized in parallel and may not
+be ready yet when “web” is started – simply starting the services as second time should solve the problem</p></li>
+</ul>
+</li>
+<li><p>alternatively, to manually control the docker services outside your IDE, use the commands specified in the Makefile:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">create</span></code> to create the containers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">up</span></code> to launch all services</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="common-set-up-steps-for-both-options">
+<h4>Common set up steps for both options<a class="headerlink" href="#common-set-up-steps-for-both-options" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>when all services were started successfully, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">migrate</span></code> to run the initial database migrations</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">superuser</span></code> to create a backend admin user</p></li>
+<li><p>the web application is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code></p></li>
+<li><p>a simple database administration web interface is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/admin</span></code></p></li>
+<li><p>to check if everything works, you should run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="learnextra-r-package-setup">
+<h3>learnextra R package setup<a class="headerlink" href="#learnextra-r-package-setup" title="Link to this heading">¶</a></h3>
+<p>The <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">learnrextra</a> R package is a central part of the MultiLA software platform. It’s an extension to the <a class="reference external" href="https://rstudio.github.io/learnr/">learnr</a> to create learning applications that allow to anonymously track usage data and collect this data via the web API. It furthermore provides some extra features to learnr such as an optional summary panel and the ability to create several variants of a single base learning application via configurations.</p>
+<section id="installation">
+<h4>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>install <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> if you haven’t yet</p></li>
+<li><p>then install all R dependencies via <code class="docutils literal notranslate"><span class="pre">renv::restore()</span></code></p></li>
+<li><p>also install <a class="reference external" href="https://nodejs.org/">NodeJS</a> and the <a class="reference external" href="https://www.npmjs.com/">Node package manager (npm)</a></p></li>
+<li><p>then run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code> to install all JavaScript dependencies</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">build</span></code> to check if building the JavaScript sources works</p></li>
+</ul>
+</section>
+<section id="project-structure">
+<h4>Project structure<a class="headerlink" href="#project-structure" title="Link to this heading">¶</a></h4>
+<p>Folder <code class="docutils literal notranslate"><span class="pre">inst/rmarkdown/templates/tutorial</span></code>:</p>
+<ul class="simple">
+<li><p>template for creating new learning applications</p></li>
+<li><p>sub-folder <code class="docutils literal notranslate"><span class="pre">resources</span></code> contains main JavaScript code, additional CSS and HTML</p></li>
+</ul>
+<p>Folder <code class="docutils literal notranslate"><span class="pre">learnrextra-js</span></code>:</p>
+<ul class="simple">
+<li><p>contains JavaScript code for additional custom packages that need to be built locally (see section below)</p></li>
+<li><p>sub-folder <code class="docutils literal notranslate"><span class="pre">format</span></code> contains JavaScript code for the <code class="docutils literal notranslate"><span class="pre">tutorial</span></code> object</p></li>
+<li><p>sub-folder <code class="docutils literal notranslate"><span class="pre">musjs</span></code> contains JavaScript code for a modified variant of the <a class="reference external" href="https://github.com/ineventapp/musjs">musjs project</a></p></li>
+</ul>
+<p>Folder <code class="docutils literal notranslate"><span class="pre">R</span></code>:</p>
+<ul class="simple">
+<li><p>contains R code for the few functions that this packages exposes</p></li>
+</ul>
+</section>
+<section id="building-custom-javascript-packages">
+<h4>Building custom JavaScript packages<a class="headerlink" href="#building-custom-javascript-packages" title="Link to this heading">¶</a></h4>
+<p>npm run build</p>
+</section>
+<section id="building-the-documentation">
+<h4>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading">¶</a></h4>
+<p>devtools::document()</p>
+</section>
 </section>
 </section>
 </section>
