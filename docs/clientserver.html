@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-      <title>Client-server communication</title>
+      <title>&lt;no title&gt;</title>
     
           <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
           <link rel="stylesheet" href="_static/theme.css " type="text/css" />
@@ -137,7 +137,7 @@
   <ul class="breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
     
-    <li>Client-server communication</li>
+    <li>&lt;no title&gt;</li>
   </ul>
   
 
@@ -148,68 +148,7 @@
 <hr>
           <div class="content" role="main" v-pre>
             
-  <section id="client-server-communication">
-<span id="clientserver"></span><h1>Client-server communication<a class="headerlink" href="#client-server-communication" title="Link to this heading">¶</a></h1>
-<ul class="simple">
-<li><p>client-server communication happens on the basis of a RESTful web API implemented in this repository</p></li>
-<li><p>the implementation is done in <code class="docutils literal notranslate"><span class="pre">api/views.py</span></code></p></li>
-<li><p>the API exposes an OpenAPI schema under the URL <code class="docutils literal notranslate"><span class="pre">http[s]://&lt;HOST&gt;/openapi</span></code> when <code class="docutils literal notranslate"><span class="pre">settings.DEBUG</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
-</ul>
-<section id="client-server-communication-flowchart">
-<h2>Client-server communication flowchart<a class="headerlink" href="#client-server-communication-flowchart" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>an application session may either require a login or not – this can be configured in the administration backend for
-each application session as “authentication mode”</p></li>
-<li><p>all API endpoints except for <code class="docutils literal notranslate"><span class="pre">session/</span></code> and <code class="docutils literal notranslate"><span class="pre">session_login/</span></code> require an HTTP authorization token, a.k.a
-“user token”, even when no login is required</p></li>
-<li><p>this makes sure that each request to the API is linked to a user – either to a registered user (when a login is
-required) or to an anonymous user that is only identified with a unique code (when no login is required)</p></li>
-</ul>
-<section id="without-login-anonymous">
-<h3>Without login (“anonymous”)<a class="headerlink" href="#without-login-anonymous" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>doesn’t require an account</p></li>
-<li><p>user authentication is based on a user token that is generated on first visit and then stored to cookies for re-use</p></li>
-</ul>
-<a class="reference internal image-reference" href="_images/client-server-noauth.png"><img alt="_images/client-server-noauth.png" src="_images/client-server-noauth.png" style="width: 100%;" /></a>
-</section>
-<section id="with-login">
-<h3>With login<a class="headerlink" href="#with-login" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>requires that the user has registered an account with email and password</p></li>
-</ul>
-<a class="reference internal image-reference" href="_images/client-server-login.png"><img alt="_images/client-server-login.png" src="_images/client-server-login.png" style="width: 100%;" /></a>
-</section>
-</section>
-<section id="application-configuration">
-<h2>Application configuration<a class="headerlink" href="#application-configuration" title="Link to this heading">¶</a></h2>
-<ul>
-<li><p>to each application, a configuration can be passed when starting the application session</p></li>
-<li><p>the API sends the configuration as JSON object after the initial session request (anonymous session) or after log in
-(session that requires login) – this is displayed as <code class="docutils literal notranslate"><span class="pre">app_config</span></code> key in the above figures</p></li>
-<li><p>on the client side, the <em>adaptivelearnr</em> R package handles reading the configuration and setting up the application
-accordingly</p></li>
-<li><p>the application configuration JSON object has the following format and options:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">HTML</span> <span class="n">element</span> <span class="n">IDs</span> <span class="n">to</span> <span class="n">exclude</span><span class="o">&gt;</span><span class="p">],</span>
-  <span class="s2">&quot;js&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">JavaScript</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
-  <span class="s2">&quot;css&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">CSS</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
-  <span class="s2">&quot;feedback&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span> <span class="c1"># enable/disable specific user feedback features</span>
-  <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># enable/disable displaying summary</span>
-  <span class="s2">&quot;tracking&quot;</span><span class="p">:</span> <span class="p">{</span>       <span class="c1"># enable/disable specific tracking features</span>
-    <span class="s2">&quot;mouse&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>    <span class="c1"># mouse tracking w/ mus.js</span>
-    <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>   <span class="c1"># tracking of input changes</span>
-    <span class="s2">&quot;attribute_changes&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># tracking of attribute changes</span>
-    <span class="s2">&quot;chapters&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span>  <span class="c1"># tracking of switching betw. chapters</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-</section>
-
+  
 
           </div>
           <div class="page-nav">

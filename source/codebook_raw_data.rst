@@ -3,9 +3,7 @@
 Codebook for MultiLA web API raw tracking data
 ==============================================
 
-This data export archive contains three files in CSV format, all of
-which can be joined via common identifiers that are documented below and
-highlighted in **bold.**
+The data export archive that can be downloaded from the MultiLA administration interface in the *Data manager > Export* view contains three files in CSV format, all of which can be joined via common identifiers that are documented below and highlighted in **bold.**
 
 File ``app_sessions.csv``
 -------------------------
