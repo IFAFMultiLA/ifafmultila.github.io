@@ -278,16 +278,19 @@ Common set up steps for both options
 - a simple database administration web interface is then available under ``http://localhost:8080/admin``
 - to check if everything works, you should run ``make test``
 
-learnextra R package setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+learnrextra R package setup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The `learnrextra`_ R package is a central part of the MultiLA software platform. It's an extension to the `learnr`_ to create learning applications that allow to anonymously track usage data and collect this data via the web API. It furthermore provides some extra features to learnr such as an optional summary panel and the ability to create several variants of a single base learning application via configurations.
+
+For local development, it's recommended that you clone this repository on your machine. Then, either create a new learning application as explained in ":doc:`learning_apps`" or use the `test application <https://github.com/IFAFMultiLA/learnrextra_testapp>`_. However, make sure that you install learnrextra in your learning application from the local path of the cloned repository (``renv::install("<LOCAL PATH TO REPOSITORY>")``).
 
 Installation
 """"""""""""
 
 - install `renv`_ if you haven't yet
 - then install all R dependencies via ``renv::restore()``
+- run "Check" in the RStudio "Build" panel to check if R package building works
 - also install `NodeJS <https://nodejs.org/>`_ and the `Node package manager (npm) <https://www.npmjs.com/>`_
 - then run ``npm install`` to install all JavaScript dependencies
 - run ``npm run build`` to check if building the JavaScript sources works
@@ -313,12 +316,13 @@ Folder ``R``:
 Building custom JavaScript packages
 """""""""""""""""""""""""""""""""""
 
-npm run build
-
+Every time you change JavaScript code for one of the custom JavaScript packages in the ``learnrextra-js`` folder, you need to re-build these packages via ``npm run build``. The built code is then automatically copied to ``inst/rmarkdown/templates/tutorial/resources``.
 
 Building the documentation
 """"""""""""""""""""""""""
 
-devtools::document()
+To build the documentation for the R functions of this package, you need to run the R command ``devtools::document()``.
 
+Learning application setup
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 

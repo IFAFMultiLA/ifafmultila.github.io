@@ -441,14 +441,16 @@ be ready yet when “web” is started – simply starting the services as secon
 </ul>
 </section>
 </section>
-<section id="learnextra-r-package-setup">
-<h3>learnextra R package setup<a class="headerlink" href="#learnextra-r-package-setup" title="Link to this heading">¶</a></h3>
+<section id="learnrextra-r-package-setup">
+<h3>learnrextra R package setup<a class="headerlink" href="#learnrextra-r-package-setup" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">learnrextra</a> R package is a central part of the MultiLA software platform. It’s an extension to the <a class="reference external" href="https://rstudio.github.io/learnr/">learnr</a> to create learning applications that allow to anonymously track usage data and collect this data via the web API. It furthermore provides some extra features to learnr such as an optional summary panel and the ability to create several variants of a single base learning application via configurations.</p>
+<p>For local development, it’s recommended that you clone this repository on your machine. Then, either create a new learning application as explained in “<a class="reference internal" href="learning_apps.html"><span class="doc">Creating learning applications</span></a>” or use the <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp">test application</a>. However, make sure that you install learnrextra in your learning application from the local path of the cloned repository (<code class="docutils literal notranslate"><span class="pre">renv::install(&quot;&lt;LOCAL</span> <span class="pre">PATH</span> <span class="pre">TO</span> <span class="pre">REPOSITORY&gt;&quot;)</span></code>).</p>
 <section id="installation">
 <h4>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>install <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> if you haven’t yet</p></li>
 <li><p>then install all R dependencies via <code class="docutils literal notranslate"><span class="pre">renv::restore()</span></code></p></li>
+<li><p>run “Check” in the RStudio “Build” panel to check if R package building works</p></li>
 <li><p>also install <a class="reference external" href="https://nodejs.org/">NodeJS</a> and the <a class="reference external" href="https://www.npmjs.com/">Node package manager (npm)</a></p></li>
 <li><p>then run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code> to install all JavaScript dependencies</p></li>
 <li><p>run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">build</span></code> to check if building the JavaScript sources works</p></li>
@@ -474,12 +476,15 @@ be ready yet when “web” is started – simply starting the services as secon
 </section>
 <section id="building-custom-javascript-packages">
 <h4>Building custom JavaScript packages<a class="headerlink" href="#building-custom-javascript-packages" title="Link to this heading">¶</a></h4>
-<p>npm run build</p>
+<p>Every time you change JavaScript code for one of the custom JavaScript packages in the <code class="docutils literal notranslate"><span class="pre">learnrextra-js</span></code> folder, you need to re-build these packages via <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">build</span></code>. The built code is then automatically copied to <code class="docutils literal notranslate"><span class="pre">inst/rmarkdown/templates/tutorial/resources</span></code>.</p>
 </section>
 <section id="building-the-documentation">
 <h4>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading">¶</a></h4>
-<p>devtools::document()</p>
+<p>To build the documentation for the R functions of this package, you need to run the R command <code class="docutils literal notranslate"><span class="pre">devtools::document()</span></code>.</p>
 </section>
+</section>
+<section id="learning-application-setup">
+<h3>Learning application setup<a class="headerlink" href="#learning-application-setup" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 </section>
