@@ -112,8 +112,42 @@ It's recommended to put all components of the MultiLA platform in one folder on 
 
 You should clone the git repositories that you need into the respective folders. The following section describe how to get the respective components working on your machine so that they interact with each other just as on a server.
 
-WebAPI set up
-^^^^^^^^^^^^^
+WebAPI
+^^^^^^
+
+The MultiLA web API collects the tracking data from the learning applications. It also provides an administration interface for registering learning applications, setting up experiments and managing tracking data. It's based on `Django`_ and the `Django REST framework <https://www.django-rest-framework.org/>`_.
+
+Relevant documentation parts in used frameworks
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+Django:
+
+- Models and databases (`tutorial <https://docs.djangoproject.com/en/4.2/intro/tutorial02/>`_ /
+  `topic guide <https://docs.djangoproject.com/en/4.2/topics/db/>`_)
+- Views (`tutorial <https://docs.djangoproject.com/en/4.2/intro/tutorial03/>`_ /
+  `topic guide <https://docs.djangoproject.com/en/4.2/topics/http/views/>`_)
+- Automated admin interface (`tutorial <https://docs.djangoproject.com/en/4.2/intro/tutorial02/>`_ /
+  `documentation <https://docs.djangoproject.com/en/4.2/#the-admin>`_)
+- Testing (`topic guide <https://docs.djangoproject.com/en/4.2/topics/testing/>`_)
+
+Django REST framework:
+
+- `Serialization <https://www.django-rest-framework.org/tutorial/1-serialization/>`_
+- `Requests and Responses <https://www.django-rest-framework.org/tutorial/2-requests-and-responses/>`_
+- `Testing <https://www.django-rest-framework.org/api-guide/testing/>`_
+
+Requirements
+""""""""""""
+
+- Docker with Docker Compose v2 (recommended: run Docker in *rootless* mode)
+
+  - all you need is to `install the Docker Engine <https://docs.docker.com/engine/install/>`_ for your operating system (Docker Desktop is  optional)
+  - it is recommended to `set up Docker in rootless mode <https://docs.docker.com/engine/security/rootless/>`_ if your operating system supports it
+
+- Python 3.11 if not running the web application in a Docker container
+
+Initial setup
+"""""""""""""
 
 After cloning the repository, it's recommended to create a Makefile that contains shortcuts for important terminal commands that allow you to manage and deploy the project. You can use the following template for the Makefile:
 
@@ -278,6 +312,8 @@ Common set up steps for both options
 - a simple database administration web interface is then available under ``http://localhost:8080/admin``
 - to check if everything works, you should run ``make test``
 
+.. _learnrextra-dev:
+
 learnrextra R package setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -313,6 +349,8 @@ Folder ``R``:
 
 - contains R code for the few functions that this packages exposes
 
+.. _dev_learnrextra_rebuild_js:
+
 Building custom JavaScript packages
 """""""""""""""""""""""""""""""""""
 
@@ -326,3 +364,27 @@ To build the documentation for the R functions of this package, you need to run 
 Learning application setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+You should create a new learning application according to the chapter ":doc:`learning_apps`". You must however make sure that you install the learnrextra package from the local path that you used in ":ref:`learnrextra-dev`." For example, when you cloned the learnrextra package in the directory ``multila/learnrextra`` and create a new learning application under ``multila/apps/myapp``, then you should install learnrextra in the learning application *myapp* via ``renv::install("../../learnrextra")`` so that it uses a relative path that points to ``multila/learnrextra``.
+
+After creating a basic version of your new learning app, you should try out that the tracking works locally on your machine. First, make sure that the web API is up and running on port 8000. Then, register a new learning application along with an application configuration and an application session. This learning application will be launched locally on your machine and will be running on ``http://localhost:8001/``. Details on how to register an application are explained in the section ":ref:`tracking_register_app`."
+
+Next, make sure that the local web API endpoint is also set as target API server in the learning application's frontmatter as ``apiserver: http://localhost:8000/`` (see ":ref:`learning_apps_frontmatter`"). Then, start your learning application locally on the fixed port 8001 (by default RStudio will always use a different free port). You can do so by running the following command in R:
+
+.. code-block:: R
+
+    rmarkdown::run("<RMARKDOWN_DOCUMENT>.Rmd", shiny_args = list(port = 8001, launch.browser = FALSE))
+
+When you created the application session in the MultiLA administration interface, an URL with an unique session identifier was created such as ``http://localhost:8001/?sess=xyz``. Visit this URL with a browser while the web API and the learning application are running. This should start the learning application and, after giving consent, also start a tracking session. You can check that a tracking session was created and tracking data is being collected by navigating to *Data manager > Tracking sessions* in the MultiLA administration interface (see ":ref:`tracking_monitoring`"). If no tracking session was created, check the JavaScript console in the learning application for errors.
+
+Reloading changes during local development
+""""""""""""""""""""""""""""""""""""""""""
+
+When developing a new learning application, you can simply rebuild and relaunch the learning application with the command above when you want to review your changes. If you make changes to the learnrextra package code however, more effort is needed: First, you may need to rebuild JavaScript packages as explained in ":ref:`dev_learnrextra_rebuild_js`". Then, you will need to re-install the package in your learning application before you rebuild und relaunch it. A shortcut for that may be written in a Makefile like so:
+
+.. code-block:: makefile
+
+    devserver:
+        -rm <RMARKDOWN_DOCUMENT>.html
+        R -e 'renv::install("<LOCAL_PATH_TO_LEARNREXTRA_REPO>");rmarkdown::run("<RMARKDOWN_DOCUMENT>.Rmd", shiny_args = list(port = 8001, launch.browser = FALSE))'
+
+You can then use ``make devserver`` to automatically re-install learnrextra from the local repository and relaunch the learning application.

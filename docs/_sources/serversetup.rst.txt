@@ -40,7 +40,9 @@ On the server, navigate to the app folder and open an R session there (by simply
 
 Please note that you need to run ``renv::snapshot()`` locally every time you update/install packages and that you also need to copy the updated ``renv.lock`` to the app folder on the server and run ``renv::restore()`` within an R session there.
 
-Check that the application was sucessfully deployed by visiting the respective URL in your browser (depends on the Shiny server setup). If anything fails, check the Shiny logs (``~/ShinyApps/log``, ``/var/log/shiny-server/access.log``, ``/var/log/shiny-server.log``).
+Check that the application was successfully deployed by visiting the respective URL in your browser (depends on the Shiny server setup). If anything fails, check the Shiny logs (``~/ShinyApps/log``, ``/var/log/shiny-server/access.log``, ``/var/log/shiny-server.log``).
+
+When you publish an update for your learning application, you must also set a new timestamp to a special file named ``restart.txt`` in the learning application project folder on the server via ``touch restart.txt``.
 
 Setting up the web API and the administration interface
 -------------------------------------------------------

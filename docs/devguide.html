@@ -273,8 +273,42 @@ webapi/                 – MultiLA Web API from https://github.com/IFAFMultiLA/
 </div>
 <p>You should clone the git repositories that you need into the respective folders. The following section describe how to get the respective components working on your machine so that they interact with each other just as on a server.</p>
 </section>
-<section id="webapi-set-up">
-<h3>WebAPI set up<a class="headerlink" href="#webapi-set-up" title="Link to this heading">¶</a></h3>
+<section id="webapi">
+<h3>WebAPI<a class="headerlink" href="#webapi" title="Link to this heading">¶</a></h3>
+<p>The MultiLA web API collects the tracking data from the learning applications. It also provides an administration interface for registering learning applications, setting up experiments and managing tracking data. It’s based on <a class="reference external" href="https://www.djangoproject.com/">Django</a> and the <a class="reference external" href="https://www.django-rest-framework.org/">Django REST framework</a>.</p>
+<section id="relevant-documentation-parts-in-used-frameworks">
+<h4>Relevant documentation parts in used frameworks<a class="headerlink" href="#relevant-documentation-parts-in-used-frameworks" title="Link to this heading">¶</a></h4>
+<p>Django:</p>
+<ul class="simple">
+<li><p>Models and databases (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/intro/tutorial02/">tutorial</a> /
+<a class="reference external" href="https://docs.djangoproject.com/en/4.2/topics/db/">topic guide</a>)</p></li>
+<li><p>Views (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/intro/tutorial03/">tutorial</a> /
+<a class="reference external" href="https://docs.djangoproject.com/en/4.2/topics/http/views/">topic guide</a>)</p></li>
+<li><p>Automated admin interface (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/intro/tutorial02/">tutorial</a> /
+<a class="reference external" href="https://docs.djangoproject.com/en/4.2/#the-admin">documentation</a>)</p></li>
+<li><p>Testing (<a class="reference external" href="https://docs.djangoproject.com/en/4.2/topics/testing/">topic guide</a>)</p></li>
+</ul>
+<p>Django REST framework:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.django-rest-framework.org/tutorial/1-serialization/">Serialization</a></p></li>
+<li><p><a class="reference external" href="https://www.django-rest-framework.org/tutorial/2-requests-and-responses/">Requests and Responses</a></p></li>
+<li><p><a class="reference external" href="https://www.django-rest-framework.org/api-guide/testing/">Testing</a></p></li>
+</ul>
+</section>
+<section id="requirements">
+<h4>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Docker with Docker Compose v2 (recommended: run Docker in <em>rootless</em> mode)</p>
+<ul>
+<li><p>all you need is to <a class="reference external" href="https://docs.docker.com/engine/install/">install the Docker Engine</a> for your operating system (Docker Desktop is  optional)</p></li>
+<li><p>it is recommended to <a class="reference external" href="https://docs.docker.com/engine/security/rootless/">set up Docker in rootless mode</a> if your operating system supports it</p></li>
+</ul>
+</li>
+<li><p>Python 3.11 if not running the web application in a Docker container</p></li>
+</ul>
+</section>
+<section id="initial-setup">
+<h4>Initial setup<a class="headerlink" href="#initial-setup" title="Link to this heading">¶</a></h4>
 <p>After cloning the repository, it’s recommended to create a Makefile that contains shortcuts for important terminal commands that allow you to manage and deploy the project. You can use the following template for the Makefile:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">COMPFILE</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>docker/compose_dev.yml
 <span class="nv">COMP</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>COMPFILE<span class="k">)</span>
@@ -388,6 +422,7 @@ webapi/                 – MultiLA Web API from https://github.com/IFAFMultiLA/
 <p>There are two ways to set up a local development environment: either by using a Python virtual environment <em>(venv)</em>
 on the local machine to run the Python interpreter or by using a Python interpreter inside a Docker container. The
 latter is currently harder to set up in conjunction with an IDE.</p>
+</section>
 <section id="option-1-using-a-venv-on-the-local-machine">
 <h4>Option 1: Using a venv on the local machine<a class="headerlink" href="#option-1-using-a-venv-on-the-local-machine" title="Link to this heading">¶</a></h4>
 <ul class="simple">
@@ -442,7 +477,7 @@ be ready yet when “web” is started – simply starting the services as secon
 </section>
 </section>
 <section id="learnrextra-r-package-setup">
-<h3>learnrextra R package setup<a class="headerlink" href="#learnrextra-r-package-setup" title="Link to this heading">¶</a></h3>
+<span id="learnrextra-dev"></span><h3>learnrextra R package setup<a class="headerlink" href="#learnrextra-r-package-setup" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra">learnrextra</a> R package is a central part of the MultiLA software platform. It’s an extension to the <a class="reference external" href="https://rstudio.github.io/learnr/">learnr</a> to create learning applications that allow to anonymously track usage data and collect this data via the web API. It furthermore provides some extra features to learnr such as an optional summary panel and the ability to create several variants of a single base learning application via configurations.</p>
 <p>For local development, it’s recommended that you clone this repository on your machine. Then, either create a new learning application as explained in “<a class="reference internal" href="learning_apps.html"><span class="doc">Creating learning applications</span></a>” or use the <a class="reference external" href="https://github.com/IFAFMultiLA/learnrextra_testapp">test application</a>. However, make sure that you install learnrextra in your learning application from the local path of the cloned repository (<code class="docutils literal notranslate"><span class="pre">renv::install(&quot;&lt;LOCAL</span> <span class="pre">PATH</span> <span class="pre">TO</span> <span class="pre">REPOSITORY&gt;&quot;)</span></code>).</p>
 <section id="installation">
@@ -475,7 +510,7 @@ be ready yet when “web” is started – simply starting the services as secon
 </ul>
 </section>
 <section id="building-custom-javascript-packages">
-<h4>Building custom JavaScript packages<a class="headerlink" href="#building-custom-javascript-packages" title="Link to this heading">¶</a></h4>
+<span id="dev-learnrextra-rebuild-js"></span><h4>Building custom JavaScript packages<a class="headerlink" href="#building-custom-javascript-packages" title="Link to this heading">¶</a></h4>
 <p>Every time you change JavaScript code for one of the custom JavaScript packages in the <code class="docutils literal notranslate"><span class="pre">learnrextra-js</span></code> folder, you need to re-build these packages via <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">build</span></code>. The built code is then automatically copied to <code class="docutils literal notranslate"><span class="pre">inst/rmarkdown/templates/tutorial/resources</span></code>.</p>
 </section>
 <section id="building-the-documentation">
@@ -485,6 +520,23 @@ be ready yet when “web” is started – simply starting the services as secon
 </section>
 <section id="learning-application-setup">
 <h3>Learning application setup<a class="headerlink" href="#learning-application-setup" title="Link to this heading">¶</a></h3>
+<p>You should create a new learning application according to the chapter “<a class="reference internal" href="learning_apps.html"><span class="doc">Creating learning applications</span></a>”. You must however make sure that you install the learnrextra package from the local path that you used in “<a class="reference internal" href="#learnrextra-dev"><span class="std std-ref">learnrextra R package setup</span></a>.” For example, when you cloned the learnrextra package in the directory <code class="docutils literal notranslate"><span class="pre">multila/learnrextra</span></code> and create a new learning application under <code class="docutils literal notranslate"><span class="pre">multila/apps/myapp</span></code>, then you should install learnrextra in the learning application <em>myapp</em> via <code class="docutils literal notranslate"><span class="pre">renv::install(&quot;../../learnrextra&quot;)</span></code> so that it uses a relative path that points to <code class="docutils literal notranslate"><span class="pre">multila/learnrextra</span></code>.</p>
+<p>After creating a basic version of your new learning app, you should try out that the tracking works locally on your machine. First, make sure that the web API is up and running on port 8000. Then, register a new learning application along with an application configuration and an application session. This learning application will be launched locally on your machine and will be running on <code class="docutils literal notranslate"><span class="pre">http://localhost:8001/</span></code>. Details on how to register an application are explained in the section “<a class="reference internal" href="trackingdata.html#tracking-register-app"><span class="std std-ref">Registering a learning application with the MultiLA administration backend</span></a>.”</p>
+<p>Next, make sure that the local web API endpoint is also set as target API server in the learning application’s frontmatter as <code class="docutils literal notranslate"><span class="pre">apiserver:</span> <span class="pre">http://localhost:8000/</span></code> (see “<a class="reference internal" href="learning_apps.html#learning-apps-frontmatter"><span class="std std-ref">Frontmatter options</span></a>”). Then, start your learning application locally on the fixed port 8001 (by default RStudio will always use a different free port). You can do so by running the following command in R:</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">rmarkdown</span><span class="o">::</span><span class="nf">run</span><span class="p">(</span><span class="s">&quot;&lt;RMARKDOWN_DOCUMENT&gt;.Rmd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">shiny_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8001</span><span class="p">,</span><span class="w"> </span><span class="n">launch.browser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When you created the application session in the MultiLA administration interface, an URL with an unique session identifier was created such as <code class="docutils literal notranslate"><span class="pre">http://localhost:8001/?sess=xyz</span></code>. Visit this URL with a browser while the web API and the learning application are running. This should start the learning application and, after giving consent, also start a tracking session. You can check that a tracking session was created and tracking data is being collected by navigating to <em>Data manager &gt; Tracking sessions</em> in the MultiLA administration interface (see “<a class="reference internal" href="trackingdata.html#tracking-monitoring"><span class="std std-ref">Monitoring user tracking</span></a>”). If no tracking session was created, check the JavaScript console in the learning application for errors.</p>
+<section id="reloading-changes-during-local-development">
+<h4>Reloading changes during local development<a class="headerlink" href="#reloading-changes-during-local-development" title="Link to this heading">¶</a></h4>
+<p>When developing a new learning application, you can simply rebuild and relaunch the learning application with the command above when you want to review your changes. If you make changes to the learnrextra package code however, more effort is needed: First, you may need to rebuild JavaScript packages as explained in “<a class="reference internal" href="#dev-learnrextra-rebuild-js"><span class="std std-ref">Building custom JavaScript packages</span></a>”. Then, you will need to re-install the package in your learning application before you rebuild und relaunch it. A shortcut for that may be written in a Makefile like so:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nf">devserver</span><span class="o">:</span>
+<span class="w">    </span>-rm<span class="w"> </span>&lt;RMARKDOWN_DOCUMENT&gt;.html
+<span class="w">    </span>R<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;renv::install(&quot;&lt;LOCAL_PATH_TO_LEARNREXTRA_REPO&gt;&quot;);rmarkdown::run(&quot;&lt;RMARKDOWN_DOCUMENT&gt;.Rmd&quot;, shiny_args = list(port = 8001, launch.browser = FALSE))&#39;</span>
+</pre></div>
+</div>
+<p>You can then use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">devserver</span></code> to automatically re-install learnrextra from the local repository and relaunch the learning application.</p>
+</section>
 </section>
 </section>
 </section>

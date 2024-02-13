@@ -29,6 +29,8 @@ Usage
 
 You can now create your learning application in RMarkdown syntax. See the `learnr`_ documentation for how to do that. You will learn there how to add text, figures, interactive illustrations, equations, code exercises, quiz questions, videos and more to your learning application.
 
+.. _learning_apps_frontmatter:
+
 Frontmatter options
 ^^^^^^^^^^^^^^^^^^^
 

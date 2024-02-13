@@ -20,6 +20,8 @@ In the chapter ":doc:`serversetup`", you set up a server with the web API that a
 
 This will make sure that the deployed learning applications know where to send the collected data.
 
+.. _tracking_register_app:
+
 Registering a learning application with the MultiLA administration backend
 --------------------------------------------------------------------------
 
@@ -87,6 +89,8 @@ If you want to use the MultiLA platform to do A/B testing for your learning appl
     :width: 100%
 
 Enter a label to identify the gate and select two or more application sessions at the bottom of the form. After saving the form, a unique *gate ID* will be generated along with an URL. Every visit to that URL will forward the user to one of the application sessions in an alternating manner (i.e. sessions A / B / C / A / B / C / ... if you have added three sessions to the gate).
+
+.. _tracking_monitoring:
 
 Monitoring user tracking
 ------------------------
