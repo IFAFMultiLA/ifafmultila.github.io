@@ -7,6 +7,21 @@ Welcome to the documentation for the *MultiLA* software platform. This platform 
 
 This software platform was developed as part of the `IFAF MultiLA project`_ at the `HTW Berlin`_ and `HWR Berlin`_.
 
+.. container:: images
+
+    .. image:: img/ifaf_logo.jpg
+        :width: 200px
+        :target: `IFAF Berlin`_
+
+    .. image:: img/htw_logo.jpg
+        :width: 200px
+        :target: `HTW Berlin`_
+
+    .. image:: img/hwr_logo.png
+        :width: 200px
+        :target: `HWR Berlin`_
+
+
 Main features
 -------------
 
@@ -52,14 +67,16 @@ Indices and tables
 Based on open-source projects
 -----------------------------
 
-.. image:: img/learnr.png
-    :width: 100px
-    :target: `learnr`_
+.. container:: images
 
-.. image:: img/shiny.png
-    :width: 100px
-    :target: `Shiny`_
+    .. image:: img/learnr.png
+        :width: 100px
+        :target: `learnr`_
 
-.. image:: img/django.resized.png
-    :width: 100px
-    :target: `Django`_
+    .. image:: img/shiny.png
+        :width: 100px
+        :target: `Shiny`_
+
+    .. image:: img/django.resized.png
+        :width: 100px
+        :target: `Django`_
