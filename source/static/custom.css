@@ -1,0 +1,10 @@
+.container.images {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.container.images img {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}

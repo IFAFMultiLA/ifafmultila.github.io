@@ -67,7 +67,11 @@ with open('rst_epilog.rst') as f:
 #
 
 html_theme = "press"
-# html_static_path = ['static']
+html_static_path = ['static']
+
+html_css_files = [
+    'custom.css',
+]
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = '%sdoc' % project
