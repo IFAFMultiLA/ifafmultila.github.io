@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'MultiLA'
+project = 'MultiLA software platform'
 copyright = f'{date.today().year}, Markus Konrad'
 author = 'Markus Konrad'
 

@@ -19,6 +19,7 @@ html:
 	@$(SPHINXBUILD) -b $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 codebook_pdfs:
+	- mkdir codebooks
 	pandoc -o codebooks/codebook_raw_data.pdf source/codebook_raw_data.rst
 	pandoc -o codebooks/codebook_prepared_data.pdf source/codebook_prepared_data.rst
 

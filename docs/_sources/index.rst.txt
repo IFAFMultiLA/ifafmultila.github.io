@@ -1,7 +1,7 @@
 .. webapi documentation master file
 
-MultiLA software plattform
-==========================
+MultiLA software platform
+=========================
 
 Welcome to the documentation for the *MultiLA* software platform. This platform allows you to create web-based, interactive learning applications and track the user interactions with them for learning analytics.
 
