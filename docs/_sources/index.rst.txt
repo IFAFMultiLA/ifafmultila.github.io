@@ -33,7 +33,7 @@ Main features
 - dynamic summaries for learning applications
 - web-based administration interface for publishing learning applications, setting up variants and experiments and downloading collected data
 - data preparation and analysis scripts to get started with learning analytics for the collected data
-- self-hosted solution to run in a Docker environment and a R shiny server
+- self-hosted solution to run in a Docker environment and an R shiny server
 
 Structure of the documentation
 ------------------------------
@@ -57,12 +57,6 @@ Table of contents
     codebook_raw_data
     codebook_prepared_data
 
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
 Based on open-source projects
 -----------------------------
