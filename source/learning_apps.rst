@@ -5,6 +5,10 @@ Creating learning applications
 
 The *MultiLA* software platform authoring tool is based on an extension for the R package `learnr`_. This extension is called `learnrextra`_ and is so far not available on CRAN, but can be installed via GitHub (see instructions below). Writing learning applications or tutorials works the same as with learnr, but learnrextra provides some additional features which will be explained below.
 
+.. note::
+
+    It's also possible to use `learnrextra`_ in standard Shiny applications and hence allow to enable the tracking features in those applications. See the ":ref:`learnrextra_in_shiny`" section below.
+
 Installation
 ------------
 
@@ -14,20 +18,23 @@ Installation
 
 1. (optional) Create a new RStudio project with `renv`_ for each new learning application.
 2. Install the `learnrextra`_ package from GitHub, e.g. via ``renv::install("https://github.com/IFAFMultiLA/learnrextra")`` or from a local folder if you've cloned the repository (``renv::install("<LOCAL PATH TO REPOSITORY>")``).
-3. Install the `gradethis`_ package from GitHub, e.g. via ``renv::install("https://github.com/rstudio/gradethis")``.
+3. (optional) Install the `gradethis`_ package from GitHub, e.g. via ``renv::install("https://github.com/rstudio/gradethis")`` if you want to use code exercises and check them.
 4. Restart RStudio (unfortunately this is needed by RStudio in order to load the installed templates required for the next step).
-5. Create an RMarkdown document via *File > New file > RMarkdown document ...* and select *From template > Interactive tutorial (learnrextra)*.
-6. Optionally update the language in the markdown *frontmatter* (header).
-7. Check that generating ("knitting") the document works by clicking "Run document".
 
-You can find a minimal RMarkdown-based learning application in the `learnrextra_testapp <https://github.com/IFAFMultiLA/learnrextra_testapp>`_ repository.
+You can now either create an RMarkdown-based application (a learnr app) or a Shiny-based application. For the former, do the following:
 
-Note that it is also possible to use the tracking functionality of *learnrextra* in a standard R `Shiny`_ application. For this to work, you only need to load the learnrextra package and call ``use_learnrextra()`` in the UI code of your app. See the `learnrextra_testapp_shiny <https://github.com/IFAFMultiLA/learnrextra_testapp_shiny>`_ repository for a minimal Shiny application with learnrextra.
+1. Create an RMarkdown document via *File > New file > RMarkdown document ...* and select *From template > Interactive tutorial (learnrextra)*.
+2. Optionally update the language in the markdown *frontmatter* (header).
+3. Check that generating ("knitting") the document works by clicking "Run document".
 
-Usage
------
+If you want to create a Shiny-based application, read on in the ":ref:`learnrextra_in_shiny`" section.
+
+Usage in RMarkdown-based applications (learnr apps)
+---------------------------------------------------
 
 You can now create your learning application in RMarkdown syntax. See the `learnr`_ documentation for how to do that. You will learn there how to add text, figures, interactive illustrations, equations, code exercises, quiz questions, videos and more to your learning application.
+
+You can find a minimal RMarkdown-based learning application for illustrative purposes in the `learnrextra_testapp <https://github.com/IFAFMultiLA/learnrextra_testapp>`_ repository.
 
 .. _learning_apps_frontmatter:
 
@@ -109,7 +116,7 @@ If you add ``{.replace}`` behind the headline, this will cause to completely rep
 .. _embed_dataprotection_trackingconsent:
 
 Data protection and tracking consent notes
-------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You should embed the relevant text for the data protection and tracking consent notes in your learning application. To do so, place them within a ``tracking_consent_text`` and ``data_protection_text`` block, respectively. You can use any Markdown or HTML formatting.
 
@@ -126,6 +133,42 @@ You should embed the relevant text for the data protection and tracking consent 
     <place data protection notes here>
 
     :::
+
+
+.. _learnrextra_in_shiny:
+
+Usage in Shiny applications
+---------------------------
+
+If you want to develop a learning application using Shiny instead of RMarkdown, you can also use the `learnrextra`_ package to enable user interaction tracking. You need to load the library in your ``app.R`` file, set the URL for the API server and optionally set the language:
+
+.. code-block:: r
+
+    library(learnrextra)
+
+    options("learnrextra.apiserver" = "http://localhost:8000")
+    options("learnrextra.language" = "en")
+
+Then, simply use the ``use_learnrextra()`` library in your UI code to enable it. You can optionally pass paths to HTML snippets for the tracking consent and data protection notes via the ``consentmodal`` and ``dataprotectmodal`` parameters. These paths must be relative to your Shiny project path. In order to show a field with the link to the data protection notes and optional login information, you should use the ``info_display()`` function in your UI code. An example for the UI code looks like this:
+
+.. code-block:: r
+
+    ui <- fluidPage(
+        # set up learnrextra; optionally point to HTML files with tracking consent and data protection notes
+        use_learnrextra(consentmodal = "www/trackingconsent.html", dataprotectmodal = "www/dataprotect.html"),
+
+        fluidRow(
+            column(
+                width = 12,
+                info_display()   # show link for data protection and optional login information
+            )
+        ),
+
+        # ... all other UI code
+    )
+
+
+See also the `learnrextra_testapp_shiny <https://github.com/IFAFMultiLA/learnrextra_testapp_shiny>`_ repository for a minimal Shiny application with learnrextra.
 
 
 Deployment
