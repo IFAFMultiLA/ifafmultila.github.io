@@ -86,6 +86,8 @@
                 
                   <li class="toctree-l2"><a href="#usage" class="reference internal">Usage</a></li>
                 
+                  <li class="toctree-l2"><a href="#data-protection-and-tracking-consent-notes" class="reference internal">Data protection and tracking consent notes</a></li>
+                
                   <li class="toctree-l2"><a href="#deployment" class="reference internal">Deployment</a></li>
                 
               </ul>
@@ -211,8 +213,8 @@
 </div>
 <p>There are two options for this output type:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">language</span></code> is an ISO-639 two-letter language code for the language used in the learning application and sets the language of the learning application interface.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">apiserver</span></code> is the endpoint of the web API used to collect the tracking data; by default it’s set to send to port 8000 on localhost, e.g. on a local development machine; the following chapter will explain more about this.</p></li>
+<li><p>Option <code class="docutils literal notranslate"><span class="pre">language</span></code> is an ISO-639 two-letter language code for the language used in the learning application and sets the language of the learning application interface. <code class="docutils literal notranslate"><span class="pre">learnr</span></code> supports many languages but <code class="docutils literal notranslate"><span class="pre">learnrextra</span></code> at the moment only supports English (<code class="docutils literal notranslate"><span class="pre">en</span></code>) and German (<code class="docutils literal notranslate"><span class="pre">de</span></code>). The elements of the interface that are provided by <code class="docutils literal notranslate"><span class="pre">learnrextra</span></code> will be in English by default, if you use any other language than German.</p></li>
+<li><p>Option <code class="docutils literal notranslate"><span class="pre">apiserver</span></code> is the endpoint of the web API used to collect the tracking data; by default it’s set to send to port 8000 on localhost, e.g. on a local development machine. The following chapter will explain more about this.</p></li>
 </ul>
 <p>Furthermore you should add the follwing line to the initial R <em>setup</em> code chunk (as it is also set by default in the template):</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rmarkdown</span><span class="o">::</span><span class="nf">find_pandoc</span><span class="p">(</span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
@@ -255,6 +257,23 @@ Replaced content underneath this headline.
 </pre></div>
 </div>
 </section>
+</section>
+<section id="data-protection-and-tracking-consent-notes">
+<span id="embed-dataprotection-trackingconsent"></span><h2>Data protection and tracking consent notes<a class="headerlink" href="#data-protection-and-tracking-consent-notes" title="Link to this heading">¶</a></h2>
+<p>You should embed the relevant text for the data protection and tracking consent notes in your learning application. To do so, place them within a <code class="docutils literal notranslate"><span class="pre">tracking_consent_text</span></code> and <code class="docutils literal notranslate"><span class="pre">data_protection_text</span></code> block, respectively. You can use any Markdown or HTML formatting.</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>::: tracking_consent_text
+
+&lt;place tracking consent notes here&gt;
+
+:::
+
+::: data_protection_text
+
+&lt;place data protection notes here&gt;
+
+:::
+</pre></div>
+</div>
 </section>
 <section id="deployment">
 <h2>Deployment<a class="headerlink" href="#deployment" title="Link to this heading">¶</a></h2>

@@ -49,8 +49,8 @@ For a learnrextra based learning application, the "output" option in the frontma
 
 There are two options for this output type:
 
-- ``language`` is an ISO-639 two-letter language code for the language used in the learning application and sets the language of the learning application interface.
-- ``apiserver`` is the endpoint of the web API used to collect the tracking data; by default it's set to send to port 8000 on localhost, e.g. on a local development machine; the following chapter will explain more about this.
+- Option ``language`` is an ISO-639 two-letter language code for the language used in the learning application and sets the language of the learning application interface. ``learnr`` supports many languages but ``learnrextra`` at the moment only supports English (``en``) and German (``de``). The elements of the interface that are provided by ``learnrextra`` will be in English by default, if you use any other language than German.
+- Option ``apiserver`` is the endpoint of the web API used to collect the tracking data; by default it's set to send to port 8000 on localhost, e.g. on a local development machine. The following chapter will explain more about this.
 
 Furthermore you should add the follwing line to the initial R *setup* code chunk (as it is also set by default in the template):
 
@@ -105,6 +105,28 @@ If you add ``{.replace}`` behind the headline, this will cause to completely rep
     Replaced content underneath this headline.
 
     :::
+
+.. _embed_dataprotection_trackingconsent:
+
+Data protection and tracking consent notes
+------------------------------------------
+
+You should embed the relevant text for the data protection and tracking consent notes in your learning application. To do so, place them within a ``tracking_consent_text`` and ``data_protection_text`` block, respectively. You can use any Markdown or HTML formatting.
+
+.. code-block:: markdown
+
+    ::: tracking_consent_text
+
+    <place tracking consent notes here>
+
+    :::
+
+    ::: data_protection_text
+
+    <place data protection notes here>
+
+    :::
+
 
 Deployment
 ----------

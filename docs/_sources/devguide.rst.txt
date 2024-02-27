@@ -361,6 +361,13 @@ Building the documentation
 
 To build the documentation for the R functions of this package, you need to run the R command ``devtools::document()``.
 
+Translations
+""""""""""""
+
+``learnrextra`` at the moment only supports English and German. You can add support for more languages by editing ``inst/rmarkdown/templates/tutorial/resources/translations.json``.
+
+Custom data protection and tracking consent notes in any language can be added by following ":ref:`embed_dataprotection_trackingconsent`."
+
 Learning application setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
