@@ -35,6 +35,62 @@ Main features
 - data preparation and analysis scripts to get started with learning analytics for the collected data
 - self-hosted solution to run in a Docker environment and an R shiny server
 
+Live example and screenshots
+----------------------------
+
+An example learning application is available at `rshiny.f4.htw-berlin.de/BayesTheorem/ <https://rshiny.f4.htw-berlin.de/BayesTheorem/>`_. There is no demo of the administration interface publicly available. However, screenshots of the administration interface are among the following images:
+
+.. container:: gallery
+
+    .. image:: img/screenshots/example_app_bayes_01_thumb.png
+        :width: 220px
+        :target: _static/example_app_bayes_01.png
+
+    .. image:: img/screenshots/example_app_bayes_02_thumb.png
+        :width: 220px
+        :target: _static/example_app_bayes_02.png
+
+    .. image:: img/screenshots/example_app_bayes_03_thumb.png
+        :width: 220px
+        :target: _static/example_app_bayes_03.png
+
+    .. image:: img/screenshots/admin_01_thumb.png
+        :width: 220px
+        :target: _static/admin_01.png
+
+    .. image:: img/screenshots/admin_02_thumb.png
+        :width: 220px
+        :target: _static/admin_02.png
+
+    .. image:: img/screenshots/admin_03_thumb.png
+        :width: 220px
+        :target: _static/admin_03.png
+
+    .. image:: img/screenshots/admin_04_thumb.png
+        :width: 220px
+        :target: _static/admin_04.png
+
+    .. image:: img/screenshots/admin_05_thumb.png
+        :width: 220px
+        :target: _static/admin_05.png
+
+    .. image:: img/screenshots/admin_06_thumb.png
+        :width: 220px
+        :target: _static/admin_06.png
+
+    .. image:: img/screenshots/admin_07_thumb.png
+        :width: 220px
+        :target: _static/admin_07.png
+
+    .. image:: img/screenshots/trackingdata_01_thumb.png
+        :width: 220px
+        :target: _static/trackingdata_01.png
+
+    .. image:: img/screenshots/trackingdata_02_thumb.png
+        :width: 220px
+        :target: _static/trackingdata_02.png
+
+
 Structure of the documentation
 ------------------------------
 

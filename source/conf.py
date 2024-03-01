@@ -67,7 +67,7 @@ with open('rst_epilog.rst') as f:
 #
 
 html_theme = "press"
-html_static_path = ['static']
+html_static_path = ['static', 'img/screenshots']
 
 html_css_files = [
     'custom.css',
