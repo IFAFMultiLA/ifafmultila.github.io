@@ -8,3 +8,19 @@
     top: 50%;
     transform: translateY(-50%);
 }
+
+.container.gallery {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 0.5em;
+}
+
+.container.gallery img {
+    border: 1px solid #4aaf7c;
+    max-width: 220px;
+    max-height: 120px;
+    overflow: clip;
+    margin-bottom: 0.5em;
+}
