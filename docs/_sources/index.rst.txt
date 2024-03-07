@@ -38,7 +38,7 @@ Main features
 Live example and screenshots
 ----------------------------
 
-An example learning application is available at `rshiny.f4.htw-berlin.de/BayesTheorem/ <https://rshiny.f4.htw-berlin.de/BayesTheorem/>`_. There is no demo of the administration interface publicly available. However, screenshots of the administration interface are amongst the following images:
+An example learning application is available at `rshiny.f4.htw-berlin.de/BayesTheorem/ <https://rshiny.f4.htw-berlin.de/BayesTheorem/>`_. There is no demo of the administration interface publicly available. However, screenshots of the administration interface are among the following images:
 
 .. container:: gallery
 
