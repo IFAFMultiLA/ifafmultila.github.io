@@ -134,6 +134,11 @@ You should embed the relevant text for the data protection and tracking consent 
 
     :::
 
+The data protection and tracking consent notes will be displayed as modal dialogs as for example shown in this image:
+
+.. image:: img/trackingconsent-example.png
+    :align: center
+    :width: 100%
 
 .. _learnrextra_in_shiny:
 
