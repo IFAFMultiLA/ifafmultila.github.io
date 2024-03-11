@@ -21,13 +21,11 @@ Installation
 3. (optional) Install the `gradethis`_ package from GitHub, e.g. via ``renv::install("https://github.com/rstudio/gradethis")`` if you want to use code exercises and check them.
 4. Restart RStudio (unfortunately this is needed by RStudio in order to load the installed templates required for the next step).
 
-You can now either create an RMarkdown-based application (a learnr app) or a Shiny-based application. For the former, do the following:
+You can now either create an RMarkdown-based application (a learnr app) or a Shiny-based application. For the former, continue with the following steps. For the latter, read on in the ":ref:`learnrextra_in_shiny`" section.
 
 1. Create an RMarkdown document via *File > New file > RMarkdown document ...* and select *From template > Interactive tutorial (learnrextra)*.
 2. Optionally update the language in the markdown *frontmatter* (header).
 3. Check that generating ("knitting") the document works by clicking "Run document".
-
-If you want to create a Shiny-based application, read on in the ":ref:`learnrextra_in_shiny`" section.
 
 Usage in RMarkdown-based applications (learnr apps)
 ---------------------------------------------------
