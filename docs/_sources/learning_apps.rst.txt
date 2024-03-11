@@ -149,7 +149,7 @@ If you want to develop a learning application using Shiny instead of RMarkdown, 
     options("learnrextra.apiserver" = "http://localhost:8000")
     options("learnrextra.language" = "en")
 
-Then, simply use the ``use_learnrextra()`` library in your UI code to enable it. You can optionally pass paths to HTML snippets for the tracking consent and data protection notes via the ``consentmodal`` and ``dataprotectmodal`` parameters. These paths must be relative to your Shiny project path. In order to show a field with the link to the data protection notes and optional login information, you should use the ``info_display()`` function in your UI code. An example for the UI code looks like this:
+Then, simply use the ``use_learnrextra()`` library in your UI code to enable it. You can optionally pass paths to HTML snippets for the tracking consent and data protection notes via the ``consentmodal`` and ``dataprotectmodal`` parameters. These paths must be relative to your Shiny project path. See `trackingconsent.html <https://github.com/IFAFMultiLA/learnrextra_testapp_shiny/blob/main/www/trackingconsent.html>`_ and `dataprotect.html <https://github.com/IFAFMultiLA/learnrextra_testapp_shiny/blob/main/www/dataprotect.html>`_ for how the HTML snippets should be structured. In order to show a field with the link to the data protection notes and optional login information, you should use the ``info_display()`` function in your UI code. An example for the UI code looks like this:
 
 .. code-block:: r
 
