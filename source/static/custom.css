@@ -11,16 +11,25 @@
 
 .container.gallery {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto;
     align-items: center;
     justify-content: center;
     grid-gap: 0.5em;
 }
 
 .container.gallery img {
-    border: 1px solid #4aaf7c;
-    max-width: 220px;
-    max-height: 120px;
+    border: 1px solid #eaecef;
+    max-width: 330px;
+    max-height: 180px;
+    object-fit: cover;
     overflow: clip;
     margin-bottom: 0.5em;
+}
+
+.container.gallery figcaption {
+    font-size: 0.8em;
+}
+
+.container.gallery figcaption p {
+    margin: 0
 }

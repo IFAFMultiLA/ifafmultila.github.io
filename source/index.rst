@@ -42,54 +42,29 @@ An example learning application is available at `rshiny.f4.htw-berlin.de/BayesTh
 
 .. container:: gallery
 
-    .. image:: img/screenshots/example_app_bayes_01_thumb.png
-        :width: 220px
-        :target: _static/example_app_bayes_01.png
-
-    .. image:: img/screenshots/example_app_bayes_02_thumb.png
-        :width: 220px
+    .. figure:: img/screenshots/example_app_bayes_02_thumb.png
+        :width: 330px
         :target: _static/example_app_bayes_02.png
 
-    .. image:: img/screenshots/example_app_bayes_03_thumb.png
-        :width: 220px
-        :target: _static/example_app_bayes_03.png
+        A learning application about Bayes' Theorem featuring interactive graphics and the dynamic summary panel on the right side.
 
-    .. image:: img/screenshots/admin_01_thumb.png
-        :width: 220px
+    .. figure:: img/screenshots/admin_01_thumb.png
+        :width: 330px
         :target: _static/admin_01.png
 
-    .. image:: img/screenshots/admin_02_thumb.png
-        :width: 220px
-        :target: _static/admin_02.png
+        The overview of registered applications in the administration interface.
 
-    .. image:: img/screenshots/admin_03_thumb.png
-        :width: 220px
-        :target: _static/admin_03.png
-
-    .. image:: img/screenshots/admin_04_thumb.png
-        :width: 220px
-        :target: _static/admin_04.png
-
-    .. image:: img/screenshots/admin_05_thumb.png
-        :width: 220px
+    .. figure:: img/screenshots/admin_05_thumb.png
+        :width: 330px
         :target: _static/admin_05.png
 
-    .. image:: img/screenshots/admin_06_thumb.png
-        :width: 220px
-        :target: _static/admin_06.png
+        The overview of tracking sessions in the administration interface.
 
-    .. image:: img/screenshots/admin_07_thumb.png
-        :width: 220px
-        :target: _static/admin_07.png
-
-    .. image:: img/screenshots/trackingdata_01_thumb.png
-        :width: 220px
-        :target: _static/trackingdata_01.png
-
-    .. image:: img/screenshots/trackingdata_02_thumb.png
-        :width: 220px
+    .. figure:: img/screenshots/trackingdata_02_thumb.png
+        :width: 330px
         :target: _static/trackingdata_02.png
 
+        Visualized mouse movements from a tracking session.
 
 Structure of the documentation
 ------------------------------
