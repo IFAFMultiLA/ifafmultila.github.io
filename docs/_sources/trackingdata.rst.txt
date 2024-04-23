@@ -46,7 +46,7 @@ First, select the application for which you want to create a configuration. Next
 .. code-block::
 
     {
-      "exclude": [<HTML element IDs to exclude>],
+      "exclude": [<HTML element selectors to exclude>],
       "js": [<additional JavaScript files to load>],
       "css": [<additional CSS files to load>],
       "feedback": <bool>, # enable/disable specific user feedback features
