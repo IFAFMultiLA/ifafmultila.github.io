@@ -103,17 +103,23 @@ Contains data on events produced by users within a tracking session.
 -  ``event_time``: time when the event took place – UTC date and time in
    format ``Y-M-D H:M:S.ms``
 -  ``event_type``: type of the event – categorical;
-   ``"device_info_update"``, ``"input_change"``, ``"learnr_event_*"``
-   (see below for possible *learnr* events in ``*`` placeholder) or
-   ``"mouse"``
+   ``"device_info_update"``, ``"visibility_change"``, ``"input_change"``,
+   ``"learnr_event_*"`` (see below for possible *learnr* events in ``*``
+   placeholder) or ``"mouse"``
 -  ``event_value``: event data – JSON; depends on ``event_type``:
 
    -  for ``"device_info_update"``: changed window and/or main content
       sizes as as in ``track_sess_device_info`` column in
       ``tracking_sessions.csv``
-   -  for ``"learnr_event_*"``:
+   -  for ``"visibility_change"``:
+      `document visibility state change <https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event>`_;
+      object with key `state` that can be either of value `"visible"`
+      or `"hidden"``
+   -  for ``"learnr_event_*"``: see
+      `learnr documentation <https://pkgs.rstudio.com/learnr/articles/publishing.html#events>`_
+      and "learnr events" section below
    -  for ``"input_change"``: an object with the following keys and
-      values –
+      values:
 
       - ``id``: HTML ID of the tracked input element – may be empty
       - ``xpath``: XPath to the tracked input element
