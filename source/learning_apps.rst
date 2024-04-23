@@ -111,6 +111,38 @@ If you add ``{.replace}`` behind the headline, this will cause to completely rep
 
     :::
 
+.. _embed_surveys:
+
+User feedback and surveys
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When employing learning analytics with your learning application, embedding survey questions may be necessary. The learnrextra package provides a simple user feedback system that is displayed by default at the end of each chapter and includes a five-star rating and a free text field. For specific survey questions however, you can repurpose learnr's quiz questions by marking all answers as "correct" as shown in the following example:
+
+.. code-block::
+
+    ```{r survey_choices_example}
+    question("Did you like this learning application?",
+      answer("y", label = "Yes.", correct = TRUE),
+      answer("n", label = "No.", correct = TRUE),
+      answer("dk", label = "Don't know.", correct = TRUE),
+      type = "learnr_radio",   # force to use radio choice inputs
+      allow_retry = FALSE,
+      correct = "Thanks."
+    )
+    ```
+
+    ```{r survey_freetext}
+    question_text("What would you improve in the learning application?",
+      answer_fn(correct, label = "survey_freeform"),
+      allow_retry = FALSE,
+      correct = "Thanks."
+    )
+    ```
+
+In the tracking data, the provided answers will show up with the event type ``learnr_event_question_submission`` and the respective code chunk label.
+
+Future versions of learnrextra may provide a more convenient way to specify surveys.
+
 .. _embed_dataprotection_trackingconsent:
 
 Data protection and tracking consent notes

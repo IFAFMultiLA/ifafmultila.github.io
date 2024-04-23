@@ -263,6 +263,32 @@ Replaced content underneath this headline.
 </pre></div>
 </div>
 </section>
+<section id="user-feedback-and-surveys">
+<span id="embed-surveys"></span><h3>User feedback and surveys<a class="headerlink" href="#user-feedback-and-surveys" title="Link to this heading">¶</a></h3>
+<p>When employing learning analytics with your learning application, embedding survey questions may be necessary. The learnrextra package provides a simple user feedback system that is displayed by default at the end of each chapter and includes a five-star rating and a free text field. For specific survey questions however, you can repurpose learnr’s quiz questions by marking all answers as “correct” as shown in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r survey_choices_example}
+question(&quot;Did you like this learning application?&quot;,
+  answer(&quot;y&quot;, label = &quot;Yes.&quot;, correct = TRUE),
+  answer(&quot;n&quot;, label = &quot;No.&quot;, correct = TRUE),
+  answer(&quot;dk&quot;, label = &quot;Don&#39;t know.&quot;, correct = TRUE),
+  type = &quot;learnr_radio&quot;,   # force to use radio choice inputs
+  allow_retry = FALSE,
+  correct = &quot;Thanks.&quot;
+)
+```
+
+```{r survey_freetext}
+question_text(&quot;What would you improve in the learning application?&quot;,
+  answer_fn(correct, label = &quot;survey_freeform&quot;),
+  allow_retry = FALSE,
+  correct = &quot;Thanks.&quot;
+)
+```
+</pre></div>
+</div>
+<p>In the tracking data, the provided answers will show up with the event type <code class="docutils literal notranslate"><span class="pre">learnr_event_question_submission</span></code> and the respective code chunk label.</p>
+<p>Future versions of learnrextra may provide a more convenient way to specify surveys.</p>
+</section>
 <section id="data-protection-and-tracking-consent-notes">
 <span id="embed-dataprotection-trackingconsent"></span><h3>Data protection and tracking consent notes<a class="headerlink" href="#data-protection-and-tracking-consent-notes" title="Link to this heading">¶</a></h3>
 <p>You should embed the relevant text for the data protection and tracking consent notes in your learning application. To do so, place them within a <code class="docutils literal notranslate"><span class="pre">tracking_consent_text</span></code> and <code class="docutils literal notranslate"><span class="pre">data_protection_text</span></code> block, respectively. You can use any Markdown or HTML formatting.</p>
