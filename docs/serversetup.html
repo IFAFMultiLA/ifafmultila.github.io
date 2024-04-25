@@ -176,11 +176,15 @@
 <h3>Server setup<a class="headerlink" href="#server-setup" title="Link to this heading">¶</a></h3>
 <p>The server needs to have R installed. It’s highly recommended to use <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> during development and also for deployment, so you should install this package also on the server.</p>
 <p>For hosting learning applications, you need to install and setup a Shiny server as explained in the <a class="reference external" href="https://docs.posit.co/shiny-server/">Shiny administrator’s guide</a>. You must also install a recent version of <a class="reference external" href="https://pandoc.org/">pandoc</a> on the server (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">pandoc</span></code> on Debian or Ubuntu based Linux systems).</p>
-<p>It’s recommended to implement at least the following security measures on the server:</p>
-<ul class="simple">
-<li><p>Run the Shiny applications via an HTTPS proxy (as explained <a class="reference external" href="https://emeraldreverie.org/1/01/01/">this blog post</a>).</p></li>
-<li><p>Restrict R code execution on the server via RApparmor (see <a class="reference external" href="https://rstudio.github.io/learnr/articles/publishing.html#start-and-cleanup-hooks">learnr documentation</a>).</p></li>
-</ul>
+<p>In order to deliver the learning applications via HTTPS, you should run the Shiny applications through a proxy (as explained <a class="reference external" href="https://emeraldreverie.org/1/01/01/">this blog post</a>) such as Apache or Nginx. Make sure to use a valid SSL certificate for HTTPS, e.g. provided via <a class="reference external" href="https://letsencrypt.org/">Let’s Encrypt</a>. Configure the proxy to forward all HTTP requests to HTTPS.</p>
+</section>
+<section id="server-security-measures">
+<h3>Server security measures<a class="headerlink" href="#server-security-measures" title="Link to this heading">¶</a></h3>
+<p>If you’re hosting learning applications that include programming tasks, you should understand that anybody using your learning applications can run R code directly on your server. This has severe security implications, so you should make sure to have at least the following security measures in place:</p>
+<ol class="arabic simple">
+<li><p>The R process that runs the Shiny server (and hence the learning applications) should only have access to the learning applications. It’s best to create a separate user for that process (or even for each learning application) and then follow the Shiny server setup guide on <a class="reference external" href="https://docs.posit.co/shiny-server/#host-per-user-application-directories">Per-User Application Directories</a> and <a class="reference external" href="https://docs.posit.co/shiny-server/#let-users-manage-their-own-applications">User Managed Applications</a>.</p></li>
+<li><p>Restrict R code execution on the server via RApparmor (see <a class="reference external" href="https://rstudio.github.io/learnr/articles/publishing.html#start-and-cleanup-hooks">learnr documentation</a>) and consider using a custom AppArmor profile for R code exercises (see <a class="reference external" href="https://github.com/jeroen/RAppArmor">RAppArmor documentation</a>).</p></li>
+</ol>
 </section>
 <section id="learning-application-deployment">
 <h3>Learning application deployment<a class="headerlink" href="#learning-application-deployment" title="Link to this heading">¶</a></h3>

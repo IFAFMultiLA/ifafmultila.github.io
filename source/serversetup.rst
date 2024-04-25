@@ -15,10 +15,15 @@ The server needs to have R installed. It's highly recommended to use `renv`_ dur
 
 For hosting learning applications, you need to install and setup a Shiny server as explained in the `Shiny administrator's guide <https://docs.posit.co/shiny-server/>`_. You must also install a recent version of `pandoc <https://pandoc.org/>`_ on the server (``sudo apt install pandoc`` on Debian or Ubuntu based Linux systems).
 
-It's recommended to implement at least the following security measures on the server:
+In order to deliver the learning applications via HTTPS, you should run the Shiny applications through a proxy (as explained `this blog post <https://emeraldreverie.org/1/01/01/>`_) such as Apache or Nginx. Make sure to use a valid SSL certificate for HTTPS, e.g. provided via `Let's Encrypt <https://letsencrypt.org/>`_. Configure the proxy to forward all HTTP requests to HTTPS.
 
-- Run the Shiny applications via an HTTPS proxy (as explained `this blog post <https://emeraldreverie.org/1/01/01/>`_).
-- Restrict R code execution on the server via RApparmor (see `learnr documentation <https://rstudio.github.io/learnr/articles/publishing.html#start-and-cleanup-hooks>`_).
+Server security measures
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you're hosting learning applications that include programming tasks, you should understand that anybody using your learning applications can run R code directly on your server. This has severe security implications, so you should make sure to have at least the following security measures in place:
+
+1. The R process that runs the Shiny server (and hence the learning applications) should only have access to the learning applications. It's best to create a separate user for that process (or even for each learning application) and then follow the Shiny server setup guide on `Per-User Application Directories <https://docs.posit.co/shiny-server/#host-per-user-application-directories>`_ and `User Managed Applications <https://docs.posit.co/shiny-server/#let-users-manage-their-own-applications>`_.
+2. Restrict R code execution on the server via RApparmor (see `learnr documentation <https://rstudio.github.io/learnr/articles/publishing.html#start-and-cleanup-hooks>`_) and consider using a custom AppArmor profile for R code exercises (see `RAppArmor documentation <https://github.com/jeroen/RAppArmor>`_).
 
 Learning application deployment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
