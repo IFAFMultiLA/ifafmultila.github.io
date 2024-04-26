@@ -41,23 +41,7 @@ For each learning application, you can create several *application configuration
     :align: center
     :width: 100%
 
-First, select the application for which you want to create a configuration. Next, create a label and optionally modify the default configuration code. The configuration code is a JSON structure with the following options:
-
-.. code-block::
-
-    {
-      "exclude": [<HTML element selectors to exclude>],
-      "js": [<additional JavaScript files to load>],
-      "css": [<additional CSS files to load>],
-      "feedback": <bool>, # enable/disable specific user feedback features
-      "summary": <bool>,  # enable/disable displaying summary
-      "tracking": {       # enable/disable specific tracking features
-        "mouse": <bool>,    # mouse tracking w/ mus.js
-        "inputs": <bool>,   # tracking of input changes
-        "attribute_changes": <bool>,  # tracking of attribute changes
-        "chapters": <bool>  # tracking of switching betw. chapters
-      }
-    }
+First, select the application for which you want to create a configuration. Next, create a label and optionally modify the default configuration.
 
 After you created one or more application configurations, you finally have to create at least one *application session.* An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL that you can share. To create an application session, go to *API > Application sessions > Add* and you will be presented the following form:
 
