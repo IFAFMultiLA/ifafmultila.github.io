@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-      <title>Working with tracking data</title>
+      <title>User interactions tracking for learning analytics</title>
     
           <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
           <link rel="stylesheet" href="_static/theme.css " type="text/css" />
@@ -94,7 +94,7 @@
         
           <li class="toctree-l1 current">
             
-              <a href="#" class="reference internal current">Working with tracking data</a>
+              <a href="#" class="reference internal current">User interactions tracking for learning analytics</a>
             
 
             
@@ -156,7 +156,7 @@
   <ul class="breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
     
-    <li>Working with tracking data</li>
+    <li>User interactions tracking for learning analytics</li>
   </ul>
   
 
@@ -175,8 +175,8 @@
 <hr>
           <div class="content" role="main" v-pre>
             
-  <section id="working-with-tracking-data">
-<span id="tracking-data"></span><h1>Working with tracking data<a class="headerlink" href="#working-with-tracking-data" title="Link to this heading">¶</a></h1>
+  <section id="user-interactions-tracking-for-learning-analytics">
+<span id="tracking-data"></span><h1>User interactions tracking for learning analytics<a class="headerlink" href="#user-interactions-tracking-for-learning-analytics" title="Link to this heading">¶</a></h1>
 <section id="setting-up-a-learning-application-for-tracking">
 <h2>Setting up a learning application for tracking<a class="headerlink" href="#setting-up-a-learning-application-for-tracking" title="Link to this heading">¶</a></h2>
 <p>In the chapter “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>”, you set up a server with the web API that acts as endpoint at <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/</span></code> for collecting the tracking data that comes from the learning applications. For each application that you deploy, you need to set this endpoint in the frontmatter options of its RMarkdown file under <code class="docutils literal notranslate"><span class="pre">apiserver</span></code>, e.g.:</p>
@@ -195,21 +195,17 @@
 <p>Each learning application for which you want to collect tracking data is required to be registered in the administration interface that is available under <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/admin/</span></code> after you installed it on a server as explained in chapter “<a class="reference internal" href="serversetup.html"><span class="doc">Hosting learning applications and the web API</span></a>”.</p>
 <p>After logging in to the administration interface, go to <em>API &gt; Applications</em> and select <em>Add application</em>. You will see a form as follows:</p>
 <a class="reference internal image-reference" href="_images/admin-add-app.png"><img alt="_images/admin-add-app.png" class="align-center" src="_images/admin-add-app.png" style="width: 100%;" /></a>
-<p>Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>.</p>
-<p>For each learning application, you can create several <em>application configuration.</em> These allow you to create different variants of the same base application. You need to at least create one default configuration, so go to <em>API &gt; Application configurations &gt; Add</em>. You will see the following form:</p>
-<a class="reference internal image-reference" href="_images/admin-add-config.png"><img alt="_images/admin-add-config.png" class="align-center" src="_images/admin-add-config.png" style="width: 100%;" /></a>
-<p>First, select the application for which you want to create a configuration. Next, create a label and optionally modify the default configuration.</p>
-<p>After you created one or more application configurations, you finally have to create at least one <em>application session.</em> An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL that you can share. To create an application session, go to <em>API &gt; Application sessions &gt; Add</em> and you will be presented the following form:</p>
+<p>Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>. For each learning application, you can create several <em>application configurations.</em> These allow you to create different variants of the same base application. You need to at least create one default configuration, so you should fill in at least the <em>configuration label</em> for the first configuration that is displayed directly underneath <em>application configurations</em> in the form. After saving the form, you will see a list of applications and application configurations:</p>
+<a class="reference internal image-reference" href="_images/admin-list.png"><img alt="_images/admin-list.png" class="align-center" src="_images/admin-list.png" style="width: 100%;" /></a>
+<p>After you created one or more application configurations, you finally have to create at least one <em>application session.</em> An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL that you can share. To create an application session, click on the <em>Add session</em> link underneath the desired application configuration in the applications list. You will be presented the following form:</p>
 <a class="reference internal image-reference" href="_images/admin-add-session.png"><img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" style="width: 100%;" /></a>
-<p>Select the application configuration (and hence the target learning application) and specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). It’s main purpose is to allow tracking users across different devices and time distinct user sessions. If you don’t need that, you should disable user authentication.</p>
+<p>You can specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). It’s main purpose is to allow tracking users across different devices and time distinct user sessions. If you don’t need that, you should disable user authentication.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This hierarchy of <em>applications → application configurations → application sessions</em> allows to create several variants of a single learning application (e.g. for A/B testing – see below) and furthermore allows to bind tracking to specific events, e.g. by creating a session for a specific teaching course or workshop. You will then later be able to download and analyse data for these specific application sessions.</p>
 </div>
-<p>After saving, a unique session ID will be created along with a shareable URL that has the format <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/?sess=&lt;UNIQUE_ID&gt;</span></code>, as you can also see in the following screenshot:</p>
-<a class="reference internal image-reference" href="_images/admin-add-session.png"><img alt="_images/admin-add-session.png" class="align-center" src="_images/admin-add-session.png" style="width: 100%;" /></a>
-<p>The URL is very important: If visiting this URL and consenting to data collection, a <em>tracking session</em> will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.</p>
-<p>Note that it is also possible to set a “default application session.” This means that every time someone visits the learning application under its base URL <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>, the collected data will be automatically associated with the default application session. If no default application session is set, a user will either be forwared to the last application session she or he visited for that application or otherwise tracking will either be disabled. You can set a default application session under <em>API &gt; Applications.</em></p>
+<p>After saving, a unique session ID will be created along with a shareable URL that has the format <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/?sess=&lt;UNIQUE_ID&gt;</span></code>. This URL is then also displayed in the applications list. The URL is very important: If visiting this URL and consenting to data collection, a <em>tracking session</em> will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.</p>
+<p>Note that it is also possible to set a “default application session.” This means that every time someone visits the learning application under its base URL <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/myapp/</span></code>, the collected data will be automatically associated with the default application session. If no default application session is set, a user will either be forwarded to the last application session she or he visited for that application or otherwise tracking will be disabled. You can set a default application session under <em>API &gt; Applications</em> by selecting an application and setting the <em>default application session</em> in the form. The default application session will then be highlighted in the application list in bold font.</p>
 </section>
 <section id="optional-creating-application-sessions-gates-for-a-b-tests">
 <h2>(Optional) Creating application sessions gates for A/B tests<a class="headerlink" href="#optional-creating-application-sessions-gates-for-a-b-tests" title="Link to this heading">¶</a></h2>
