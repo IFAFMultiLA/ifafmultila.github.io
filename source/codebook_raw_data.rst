@@ -103,9 +103,9 @@ Contains data on events produced by users within a tracking session.
 -  ``event_time``: time when the event took place – UTC date and time in
    format ``Y-M-D H:M:S.ms``
 -  ``event_type``: type of the event – categorical;
-   ``"device_info_update"``, ``"visibility_change"``, ``"input_change"``,
-   ``"learnr_event_*"`` (see below for possible *learnr* events in ``*``
-   placeholder) or ``"mouse"``
+   ``"device_info_update"``, ``"visibility_change"``, ``"summary_shown"``,
+   ``"summary_topic_added"``, ``"input_change"``, ``"learnr_event_*"``
+   (see below for possible *learnr* events in ``*`` placeholder) or ``"mouse"``
 -  ``event_value``: event data – JSON; depends on ``event_type``:
 
    -  for ``"device_info_update"``: changed window and/or main content
@@ -115,6 +115,11 @@ Contains data on events produced by users within a tracking session.
       `document visibility state change <https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event>`_;
       object with key `state` that can be either of value `"visible"`
       or `"hidden"``
+   -  for ``"summary_shown"``: always ``null``; simply indicates that the
+      summary panel was first shown at that time
+   -  for ``"summary_topic_added"``: an object with ``id`` (summary content
+      HTML ID) and ``key`` (summary content index as
+      ``<chapter index>.<summary content index>``)
    -  for ``"learnr_event_*"``: see
       `learnr documentation <https://pkgs.rstudio.com/learnr/articles/publishing.html#events>`_
       and "learnr events" section below
