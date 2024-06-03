@@ -33,25 +33,30 @@ After logging in to the administration interface, go to *API > Applications* and
     :align: center
     :width: 100%
 
-Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``. For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form. After saving the form, you will see a list of applications and application configurations:
+Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``. For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form. After saving the form, you will see a list of applications along with their application configurations and application sessions:
 
 .. image:: img/admin-list.png
     :align: center
     :width: 100%
 
-After you created one or more application configurations, you finally have to create at least one *application session.* An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL that you can share. To create an application session, click on the *Add session* link underneath the desired application configuration in the applications list. You will be presented the following form:
+Application sessions and sharable URLs for tracking
+---------------------------------------------------
+
+An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL in the format ``<my-app-url>/?sess=<UNIQUE_ID>`` that you can share. This URL is then also displayed in the applications list. The URL is very important: If visiting this URL and consenting to data collection, a *tracking session* will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.
+
+For each new configuration, a standard application session is automatically created, but you can add more application sessions, if you need to. This can for example be beneficial when you want to collect data for a certain occasion, e.g. a lab exercise. If you create an application session for this occasion, you can share the generated URL and will later know that the collected data refers to that event.
+
+To create an application session, click on the *Add session* link underneath the desired application configuration in the applications list. You will be presented the following form:
 
 .. image:: img/admin-add-session.png
     :align: center
     :width: 100%
 
-You can specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). It's main purpose is to allow tracking users across different devices and time distinct user sessions. If you don't need that, you should disable user authentication.
+You can specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). Its main purpose is to allow tracking users across different devices and time as distinct user sessions. If you don't need that, you should disable user authentication.
 
 .. note:: This hierarchy of *applications → application configurations → application sessions* allows to create several variants of a single learning application (e.g. for A/B testing – see below) and furthermore allows to bind tracking to specific events, e.g. by creating a session for a specific teaching course or workshop. You will then later be able to download and analyse data for these specific application sessions.
 
-After saving, a unique session ID will be created along with a shareable URL that has the format ``https://<SERVER>/myapp/?sess=<UNIQUE_ID>``. This URL is then also displayed in the applications list. The URL is very important: If visiting this URL and consenting to data collection, a *tracking session* will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.
-
-Note that it is also possible to set a "default application session." This means that every time someone visits the learning application under its base URL ``https://<SERVER>/myapp/``, the collected data will be automatically associated with the default application session. If no default application session is set, a user will either be forwarded to the last application session she or he visited for that application or otherwise tracking will be disabled. You can set a default application session under *API > Applications* by selecting an application and setting the *default application session* in the form. The default application session will then be highlighted in the application list in bold font.
+Note that it is also possible to set a "default application session." This means that every time someone visits the learning application under its base URL ``<my-app-url>`` (without the ``?sess=...`` suffix), the collected data will be automatically associated with the default application session. If no default application session is set, a user will either be forwarded to the last application session she or he visited for that application or otherwise tracking will be disabled. You can set a default application session under *API > Applications* by selecting an application and setting the *default application session* in the form. The default application session will then be highlighted in the application list in bold font.
 
 (Optional) Creating application sessions gates for A/B tests
 ------------------------------------------------------------
