@@ -66,6 +66,22 @@ An example learning application is available at `rshiny.f4.htw-berlin.de/BayesTh
 
         Visualized mouse movements from a tracking session.
 
+Besides the learning application about Bayes' theorem, we also published learning applications about discrete and continuous probability distributions. These are however only available in German.
+
+.. container:: gallery
+
+    .. figure:: img/screenshots/discrete_prob_distrib_app_thumb.png
+        :width: 330px
+        :target: https://rshiny.f4.htw-berlin.de/WVDiskret/
+
+        Learning application about discrete probability distributions.
+
+    .. figure:: img/screenshots/cont_prob_distrib_app_thumb.png
+        :width: 330px
+        :target: https://rshiny.f4.htw-berlin.de/WVStetig/
+
+        Learning application about continuous probability distributions.
+
 Structure of the documentation
 ------------------------------
 

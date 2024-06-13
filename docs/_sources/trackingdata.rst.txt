@@ -44,7 +44,7 @@ Application sessions and sharable URLs for tracking
 
 An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL in the format ``<my-app-url>/?sess=<UNIQUE_ID>`` that you can share. This URL is then also displayed in the applications list. The URL is very important: If visiting this URL and consenting to data collection, a *tracking session* will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.
 
-For each new configuration, a standard application session is automatically created, but you can add more application sessions, if you need to. This can for example be beneficial when you want to collect data for a certain occasion, e.g. a lab exercise. If you create an application session for this occasion, you can share the generated URL and will later know that the collected data only refers to that event.
+For each new configuration, a standard application session is automatically created, but you can add more application sessions, if you need to. This can for example be beneficial when you want to collect data for a certain occasion, e.g. a lab exercise. If you create an application session for this occasion, you can share the generated URL and will later know that the collected data refers to that event.
 
 To create an application session, click on the *Add session* link underneath the desired application configuration in the applications list. You will be presented the following form:
 
