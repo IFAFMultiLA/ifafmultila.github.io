@@ -93,7 +93,7 @@
         
           <li class="toctree-l1 ">
             
-              <a href="trackingdata.html" class="reference internal ">Working with tracking data</a>
+              <a href="trackingdata.html" class="reference internal ">User interactions tracking for learning analytics</a>
             
 
             
@@ -183,7 +183,27 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">initial_contentscroll_width</span></code>: initial content scroll area width; numeric</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">initial_contentscroll_height</span></code>: initial content scroll area height; numeric</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">event_time</span></code>: time the event took place; POSIXct time with millisecond accuracy</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: event type; factor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: event type; factor; one of the following:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">chapter</span></code>: change to another chapter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">click</span></code>: mouse click or touch at X = <code class="docutils literal notranslate"><span class="pre">coord1</span></code>, Y = <code class="docutils literal notranslate"><span class="pre">coord2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">contentscroll</span></code>: scroll within the main content panel by <code class="docutils literal notranslate"><span class="pre">coord1</span></code> pixels in horizontal direction (usually 0)
+and <code class="docutils literal notranslate"><span class="pre">coord2</span></code> pixels in vertical direction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_result</span></code>: code exercise result after evaluation with details in <code class="docutils literal notranslate"><span class="pre">value</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ex_submit</span></code>: code exercise submission with details in <code class="docutils literal notranslate"><span class="pre">value</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: key input for a text or numerical input field with details in <code class="docutils literal notranslate"><span class="pre">value</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input_change</span></code>: changed input value for a slider with details in <code class="docutils literal notranslate"><span class="pre">value</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mouse</span></code>: mouse movement to X = <code class="docutils literal notranslate"><span class="pre">coord1</span></code>, Y = <code class="docutils literal notranslate"><span class="pre">coord2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">question_submit</span></code>: quiz question submission and result with details in <code class="docutils literal notranslate"><span class="pre">value</span></code>; multiple answers are formatted
+there as <code class="docutils literal notranslate"><span class="pre">[answer1,</span> <span class="pre">answer2,</span> <span class="pre">...</span> <span class="pre">answern]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scroll</span></code>: scroll of the whole website (not the main content panel) by <code class="docutils literal notranslate"><span class="pre">coord1</span></code> pixels in horizontal direction
+(usually 0) and <code class="docutils literal notranslate"><span class="pre">coord2</span></code> pixels in vertical direction; this should only happen when the browser window is very
+small; in most cases <code class="docutils literal notranslate"><span class="pre">contentscroll</span></code> is what you need instead;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">summary_shown</span></code>: dynamic summary panel is presented for the first time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">summary_topic_added</span></code>: content was added to the dynamic summary panel with the content ID in <code class="docutils literal notranslate"><span class="pre">value</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visibility_change</span></code>: visibility status in <code class="docutils literal notranslate"><span class="pre">value</span></code>; either “hidden” when the browser window with the application is completely occluded, minimized or invisible, else “visible”</p></li>
+</ul>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">chapter_index</span></code>: content chapter index; integer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">chapter_id</span></code>: content chapter ID label; factor</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ex_label</span></code>: question or exercise label; factor</p></li>
@@ -193,7 +213,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">ex_correct</span></code>: learnr code exercise result assessment – correct or uncorrect; logical</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">xpath</span></code>: XPath to HTML element related to the event (if any); character string</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">css</span></code>: CSS selector to HTML element related to the event (if any); character string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value related to the event; for input events this is the value that was entered; for code exercises this is the code the user submitted; for question exercises, this is the submitted answer (multiple answers are formatted as <code class="docutils literal notranslate"><span class="pre">[answer1,</span> <span class="pre">answer2,</span> <span class="pre">...</span> <span class="pre">answern]</span></code>); character string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value related to the event; see <code class="docutils literal notranslate"><span class="pre">type</span></code>; character string</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">coord1</span></code>: X coordinate for spatial events like mouse moves or clicks; numeric</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">coord2</span></code>: Y coordinate for spatial events like mouse moves or clicks; numeric</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">win_width</span></code>: current client browser window width at the time when the event occurred; numeric</p></li>

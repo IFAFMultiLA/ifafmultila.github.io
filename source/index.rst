@@ -35,8 +35,8 @@ Main features
 - data preparation and analysis scripts to get started with learning analytics for the collected data
 - self-hosted solution to run in a Docker environment and an R shiny server
 
-Live example and screenshots
-----------------------------
+Live examples and screenshots
+-----------------------------
 
 An example learning application is available at `rshiny.f4.htw-berlin.de/BayesTheorem/ <https://rshiny.f4.htw-berlin.de/BayesTheorem/>`_. There is no demo of the administration interface publicly available. However, screenshots of the administration interface are among the following images:
 
