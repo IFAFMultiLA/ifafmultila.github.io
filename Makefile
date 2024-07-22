@@ -25,7 +25,8 @@ codebook_pdfs:
 
 copy_codebooks: codebooks
 	cp codebooks/codebook_raw_data.pdf ../webapi/data/codebook.pdf
-	cp codebooks/codebook_prepared_data.pdf ../TrackingDataScripts/
+	cp codebooks/codebook_prepared_data.pdf ../TrackingDataScripts/data/prepared/
+	cp codebooks/codebook_raw_data.pdf ../TrackingDataScripts/data/raw/
 
 clean:
 	-rm -rI docs/*

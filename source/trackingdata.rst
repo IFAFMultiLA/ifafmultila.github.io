@@ -52,7 +52,7 @@ To create an application session, click on the *Add session* link underneath the
     :align: center
     :width: 100%
 
-You can specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name and password (no user email or other data). Its main purpose is to allow tracking users across different devices and time as distinct user sessions. If you don't need that, you should disable user authentication.
+You can specify whether users should need to authenticate via login. Note that the authentication mode is very minimal: it only consists of a user name, i.e. a self-chosen pseudonym, and password (no user email or other data). Its main purpose is to allow tracking users across different devices and time as distinct user sessions. If you don't need that, you should disable user authentication.
 
 .. note:: This hierarchy of *applications → application configurations → application sessions* allows to create several variants of a single learning application (e.g. for A/B testing – see below) and furthermore allows to bind tracking to specific events, e.g. by creating a session for a specific teaching course or workshop. You will then later be able to download and analyse data for these specific application sessions.
 

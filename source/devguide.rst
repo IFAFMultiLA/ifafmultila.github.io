@@ -65,7 +65,7 @@ Without login ("anonymous"):
 
 With login:
 
-- requires that the user has registered an account with email and password
+- requires that the user has registered an account with user name (self-chosen pseudonym) and password
 
 .. image:: img/client-server-login.png
     :width: 100%
