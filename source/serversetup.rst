@@ -100,6 +100,8 @@ Initial deployment
         ports:
           - "8000:8000"
         environment:
+          - 'BASE_URL=<SET_BASE_URL_HERE>'
+          - 'ALLOWED_HOSTS=<SET_SERVER_IP_HERE>'
           - 'POSTGRES_USER=admin'
           - 'POSTGRES_PASSWORD=<CHANGE_THIS>'
           - 'POSTGRES_DB=multila'
