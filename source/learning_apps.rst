@@ -164,6 +164,40 @@ You should embed the relevant text for the data protection and tracking consent 
 
     :::
 
+You can make the tracking consent information adaptive depending on the tracking configuration. By this, only the items that are actually being recording will also be displayed in the tracking consent information:
+
+.. code-block:: markdown
+
+    ::: tracking_consent_text
+
+    [ ... more text ... ]
+
+    The recorded data include the following information:
+
+    <ul>
+        <li>Start and end time of the website usage</li>
+        <li class="trackingdata-ip">IP address</li>
+        <li class="trackingdata-user_agent">Browser software</li>
+        <li class="trackingdata-device_info">Device type and browser window size</li>
+        <li class="trackingdata-visibility">Display status of the browser window</li>
+        <li class="trackingdata-mouse">Mouse movements</li>
+        <li class="trackingdata-clicks">Clicks or taps</li>
+        <li class="trackingdata-scrolling">Scroll movements</li>
+        <li class="trackingdata-inputs">Changes to control elements (for interactive graphics, etc.)</li>
+        <li class="trackingdata-attribute_changes">Changes to HTML elements</li>
+        <li class="trackingdata-chapters">Information about page transitions</li>
+        <li class="trackingdata-summary">Display and update of the summary bar</li>
+        <li class="trackingdata-exercise_hint">Information while filling out code tasks (display of the hint)</li>
+        <li class="trackingdata-exercise_submitted">Information while filling out code tasks (submission)</li>
+        <li class="trackingdata-exercise_result">Information while filling out code tasks (result)</li>
+        <li class="trackingdata-question_submission">Information while filling out quizzes (given answers, result)</li>
+        <li class="trackingdata-video_progress">Information about video playback</li>
+    </ul>
+
+    [ ... more text ... ]
+
+    :::
+
 The data protection and tracking consent notes will be displayed as modal dialogs as for example shown in this image:
 
 .. image:: img/trackingconsent-example.png

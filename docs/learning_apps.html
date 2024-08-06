@@ -106,7 +106,7 @@
         
           <li class="toctree-l1 ">
             
-              <a href="trackingdata.html" class="reference internal ">Working with tracking data</a>
+              <a href="trackingdata.html" class="reference internal ">User interactions tracking for learning analytics</a>
             
 
             
@@ -301,6 +301,38 @@ question_text(&quot;What would you improve in the learning application?&quot;,
 ::: data_protection_text
 
 &lt;place data protection notes here&gt;
+
+:::
+</pre></div>
+</div>
+<p>You can make the tracking consent information adaptive depending on the tracking configuration. By this, only the items that are actually being recording will also be displayed in the tracking consent information:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>::: tracking_consent_text
+
+[ ... more text ... ]
+
+The recorded data include the following information:
+
+&lt;ul&gt;
+    &lt;li&gt;Start and end time of the website usage&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-ip&quot;&gt;IP address&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-user_agent&quot;&gt;Browser software&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-device_info&quot;&gt;Device type and browser window size&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-visibility&quot;&gt;Display status of the browser window&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-mouse&quot;&gt;Mouse movements&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-clicks&quot;&gt;Clicks or taps&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-scrolling&quot;&gt;Scroll movements&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-inputs&quot;&gt;Changes to control elements (for interactive graphics, etc.)&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-attribute_changes&quot;&gt;Changes to HTML elements&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-chapters&quot;&gt;Information about page transitions&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-summary&quot;&gt;Display and update of the summary bar&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-exercise_hint&quot;&gt;Information while filling out code tasks (display of the hint)&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-exercise_submitted&quot;&gt;Information while filling out code tasks (submission)&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-exercise_result&quot;&gt;Information while filling out code tasks (result)&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-question_submission&quot;&gt;Information while filling out quizzes (given answers, result)&lt;/li&gt;
+    &lt;li class=&quot;trackingdata-video_progress&quot;&gt;Information about video playback&lt;/li&gt;
+&lt;/ul&gt;
+
+[ ... more text ... ]
 
 :::
 </pre></div>

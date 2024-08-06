@@ -33,7 +33,7 @@ After logging in to the administration interface, go to *API > Applications* and
     :align: center
     :width: 100%
 
-Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``. For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form. After saving the form, you will see a list of applications along with their application configurations and application sessions:
+Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``. For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application and also allow you to configure the tracking behavior. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form. After saving the form, you will see a list of applications along with their application configurations and application sessions:
 
 .. image:: img/admin-list.png
     :align: center
