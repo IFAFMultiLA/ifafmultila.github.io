@@ -25,15 +25,14 @@ This software platform was developed as part of the `IFAF MultiLA project`_ at t
 Main features
 -------------
 
-- create interactive learning applications via RMarkdown notation or as standard Shiny applications using an extension to the popular `learnr`_ R package
+- create interactive learning applications via RMarkdown notation or as standard Shiny applications using the R package `learnrextra_` (an extension to the popular `learnr`_ R package)
 - highly granular, configurable and anonymous tracking of user interactions with the learning applications: mouse movements, clicks, exercise submissions, etc.
-- user device category (desktop, tablet, smartphone) detection
-- support for A/B-testing experiments
+- support for A/B-testing experiments and integrated surveys
 - configurable learning applications: write base applications once, create variants via configurations
 - dynamic summaries for learning applications
 - web-based administration interface for publishing learning applications, setting up variants and experiments and downloading collected data
 - data preparation and analysis scripts to get started with learning analytics for the collected data
-- self-hosted solution to run in a Docker environment and an R shiny server
+- own your data – self-hosted open-source solution to run in a Docker environment and an R shiny server
 
 Live examples and screenshots
 -----------------------------

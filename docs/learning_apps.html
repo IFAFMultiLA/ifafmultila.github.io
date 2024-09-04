@@ -265,29 +265,86 @@ Replaced content underneath this headline.
 </section>
 <section id="user-feedback-and-surveys">
 <span id="embed-surveys"></span><h3>User feedback and surveys<a class="headerlink" href="#user-feedback-and-surveys" title="Link to this heading">¶</a></h3>
-<p>When employing learning analytics with your learning application, embedding survey questions may be necessary. The learnrextra package provides a simple user feedback system that is displayed by default at the end of each chapter and includes a five-star rating and a free text field. For specific survey questions however, you can repurpose learnr’s quiz questions by marking all answers as “correct” as shown in the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r survey_choices_example}
-question(&quot;Did you like this learning application?&quot;,
-  answer(&quot;y&quot;, label = &quot;Yes.&quot;, correct = TRUE),
-  answer(&quot;n&quot;, label = &quot;No.&quot;, correct = TRUE),
-  answer(&quot;dk&quot;, label = &quot;Don&#39;t know.&quot;, correct = TRUE),
-  type = &quot;learnr_radio&quot;,   # force to use radio choice inputs
-  allow_retry = FALSE,
-  correct = &quot;Thanks.&quot;
-)
-```
+<p>When employing learning analytics with your learning application, embedding survey questions may be necessary. The learnrextra package provides a simple user feedback system that is displayed by default at the end of each chapter and includes a five-star rating and a free text field. For specific survey questions however, you can use the functions <code class="docutils literal notranslate"><span class="pre">survey()</span></code> and <code class="docutils literal notranslate"><span class="pre">survey_likert()</span></code> also provided by the package. The following code shows an example code chunk with the four types of survey items that can be created with the <code class="docutils literal notranslate"><span class="pre">survey()</span></code> function: single-choice, multiple-choice, numeric input and free text input. The survey items definition must be passed as a nested list, where each list entry corresponds to an item.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r survey_example}
+library(learnrextra)
 
-```{r survey_freetext}
-question_text(&quot;What would you improve in the learning application?&quot;,
-  answer_fn(correct, label = &quot;survey_freeform&quot;),
-  allow_retry = FALSE,
-  correct = &quot;Thanks.&quot;
+survey(
+    list(
+        list(
+            text = &quot;Is this just a test?&quot;,
+            answers = c(&quot;Yes&quot;, &quot;No&quot;)
+        ),
+        list(
+            text = &quot;Here comes a question with labelled answers:&quot;,
+            answers = c(&quot;a&quot; = &quot;Option 1&quot;,     # use named vectors
+                        &quot;b&quot; = &quot;Option 2&quot;,     # to denote
+                        &quot;c&quot; = &quot;Option 2&quot;)     # answer labels
+        ),
+        list(
+            text = &quot;This is a multiple choice question:&quot;,
+            answers = c(&quot;a&quot; = &quot;Option A&quot;,
+                        &quot;b&quot; = &quot;Option B&quot;,
+                        &quot;c&quot; = &quot;Option C&quot;),
+            type = &quot;learnr_checkbox&quot;
+        ),
+        list(
+            text = &quot;What&#39;s your age?&quot;,
+            label = &quot;survey-age&quot;,    # you can also set custom labels for questions
+            type = &quot;learnr_numeric&quot;,
+            question_args = list(    # pass additional options
+                min = 18,
+                max = 100,
+                step = 1
+            )
+        ),
+        list(
+            text = &quot;What do you think about this app?&quot;,
+            label = &quot;survey-comment&quot;,
+            type = &quot;learnr_text&quot;
+        )
+    ),
+    caption = &quot;Survey&quot;,
+    message = &quot;Thank you.&quot;
 )
 ```
 </pre></div>
 </div>
-<p>In the tracking data, the provided answers will show up with the event type <code class="docutils literal notranslate"><span class="pre">learnr_event_question_submission</span></code> and the respective code chunk label.</p>
-<p>Future versions of learnrextra may provide a more convenient way to specify surveys.</p>
+<p>The following code shows how to use the <code class="docutils literal notranslate"><span class="pre">survey_likert()</span></code> function. You pass a (named) character vector of questions and, corresponding to each question, a list of answer options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r survey_likert_example}
+library(learnrextra)
+
+survey_likert(
+    items = c(
+        &quot;use_during_lessons&quot; = &quot;We should use such apps more during the lessons.&quot;,
+        &quot;app_general&quot; = &quot;In general, I find this app ...&quot;,
+        &quot;recommend&quot; = &quot;I would recommend this app to others.&quot;
+    ),
+    levels = list(
+        c(&quot;fully disagree&quot;, &quot;rather disagree&quot;, &quot;neutral&quot;, &quot;rather agree&quot;, &quot;fully agree&quot;),
+        paste0(&quot;... &quot;, c(&quot;very bad&quot;, &quot;rather bad&quot;, &quot;mediocre&quot;, &quot;rather good&quot;, &quot;very good&quot;), &quot;.&quot;),
+        c(&quot;yes&quot;, &quot;no&quot;, &quot;don&#39;t know&quot;)
+    ),
+    caption = &quot;Survey&quot;,
+    message = &quot;Thank you.&quot;
+)
+</pre></div>
+</div>
+<p>If all items should have the same answer options, you can simplify the <code class="docutils literal notranslate"><span class="pre">levels</span></code> parameter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r survey_likert_example}
+library(learnrextra)
+
+survey_likert(
+    items = c(
+        &quot;use_during_lessons&quot; = &quot;We should use such apps more during the lessons.&quot;,
+        &quot;app_general&quot; = &quot;In general, I find this app really good.&quot;,
+        &quot;recommend&quot; = &quot;I would recommend this app to others.&quot;
+    ),
+    levels = c(&quot;fully disagree&quot;, &quot;rather disagree&quot;, &quot;neutral&quot;, &quot;rather agree&quot;, &quot;fully agree&quot;)
+)
+</pre></div>
+</div>
+<p>In the tracking data, the provided answers will show up with the event type <code class="docutils literal notranslate"><span class="pre">learnr_event_question_submission</span></code> and the respective question labels (either automatically generated or set via <code class="docutils literal notranslate"><span class="pre">label</span></code> option in item definitions). For details, see the R help pages for the respective functions of learnrextra.</p>
 </section>
 <section id="data-protection-and-tracking-consent-notes">
 <span id="embed-dataprotection-trackingconsent"></span><h3>Data protection and tracking consent notes<a class="headerlink" href="#data-protection-and-tracking-consent-notes" title="Link to this heading">¶</a></h3>

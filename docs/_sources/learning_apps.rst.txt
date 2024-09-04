@@ -116,32 +116,92 @@ If you add ``{.replace}`` behind the headline, this will cause to completely rep
 User feedback and surveys
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When employing learning analytics with your learning application, embedding survey questions may be necessary. The learnrextra package provides a simple user feedback system that is displayed by default at the end of each chapter and includes a five-star rating and a free text field. For specific survey questions however, you can repurpose learnr's quiz questions by marking all answers as "correct" as shown in the following example:
+When employing learning analytics with your learning application, embedding survey questions may be necessary. The learnrextra package provides a simple user feedback system that is displayed by default at the end of each chapter and includes a five-star rating and a free text field. For specific survey questions however, you can use the functions ``survey()`` and ``survey_likert()`` also provided by the package. The following code shows an example code chunk with the four types of survey items that can be created with the ``survey()`` function: single-choice, multiple-choice, numeric input and free text input. The survey items definition must be passed as a nested list, where each list entry corresponds to an item.
 
 .. code-block::
 
-    ```{r survey_choices_example}
-    question("Did you like this learning application?",
-      answer("y", label = "Yes.", correct = TRUE),
-      answer("n", label = "No.", correct = TRUE),
-      answer("dk", label = "Don't know.", correct = TRUE),
-      type = "learnr_radio",   # force to use radio choice inputs
-      allow_retry = FALSE,
-      correct = "Thanks."
+    ```{r survey_example}
+    library(learnrextra)
+
+    survey(
+        list(
+            list(
+                text = "Is this just a test?",
+                answers = c("Yes", "No")
+            ),
+            list(
+                text = "Here comes a question with labelled answers:",
+                answers = c("a" = "Option 1",     # use named vectors
+                            "b" = "Option 2",     # to denote
+                            "c" = "Option 2")     # answer labels
+            ),
+            list(
+                text = "This is a multiple choice question:",
+                answers = c("a" = "Option A",
+                            "b" = "Option B",
+                            "c" = "Option C"),
+                type = "learnr_checkbox"
+            ),
+            list(
+                text = "What's your age?",
+                label = "survey-age",    # you can also set custom labels for questions
+                type = "learnr_numeric",
+                question_args = list(    # pass additional options
+                    min = 18,
+                    max = 100,
+                    step = 1
+                )
+            ),
+            list(
+                text = "What do you think about this app?",
+                label = "survey-comment",
+                type = "learnr_text"
+            )
+        ),
+        caption = "Survey",
+        message = "Thank you."
     )
     ```
 
-    ```{r survey_freetext}
-    question_text("What would you improve in the learning application?",
-      answer_fn(correct, label = "survey_freeform"),
-      allow_retry = FALSE,
-      correct = "Thanks."
+The following code shows how to use the ``survey_likert()`` function. You pass a (named) character vector of questions and, corresponding to each question, a list of answer options:
+
+.. code-block::
+
+    ```{r survey_likert_example}
+    library(learnrextra)
+
+    survey_likert(
+        items = c(
+            "use_during_lessons" = "We should use such apps more during the lessons.",
+            "app_general" = "In general, I find this app ...",
+            "recommend" = "I would recommend this app to others."
+        ),
+        levels = list(
+            c("fully disagree", "rather disagree", "neutral", "rather agree", "fully agree"),
+            paste0("... ", c("very bad", "rather bad", "mediocre", "rather good", "very good"), "."),
+            c("yes", "no", "don't know")
+        ),
+        caption = "Survey",
+        message = "Thank you."
     )
-    ```
 
-In the tracking data, the provided answers will show up with the event type ``learnr_event_question_submission`` and the respective code chunk label.
+If all items should have the same answer options, you can simplify the ``levels`` parameter:
 
-Future versions of learnrextra may provide a more convenient way to specify surveys.
+.. code-block::
+
+    ```{r survey_likert_example}
+    library(learnrextra)
+
+    survey_likert(
+        items = c(
+            "use_during_lessons" = "We should use such apps more during the lessons.",
+            "app_general" = "In general, I find this app really good.",
+            "recommend" = "I would recommend this app to others."
+        ),
+        levels = c("fully disagree", "rather disagree", "neutral", "rather agree", "fully agree")
+    )
+
+In the tracking data, the provided answers will show up with the event type ``learnr_event_question_submission`` and the respective question labels (either automatically generated or set via ``label`` option in item definitions). For details, see the R help pages for the respective functions of learnrextra.
 
 .. _embed_dataprotection_trackingconsent:
 
