@@ -25,7 +25,7 @@ This software platform was developed as part of the `IFAF MultiLA project`_ at t
 Main features
 -------------
 
-- create interactive learning applications via RMarkdown notation or as standard Shiny applications using the R package `learnrextra_` (an extension to the popular `learnr`_ R package)
+- create interactive learning applications via RMarkdown notation or as standard Shiny applications using the R package `learnrextra`_ (an extension to the popular `learnr`_ R package)
 - highly granular, configurable and anonymous tracking of user interactions with the learning applications: mouse movements, clicks, exercise submissions, etc.
 - support for A/B-testing experiments and integrated surveys
 - configurable learning applications: write base applications once, create variants via configurations
