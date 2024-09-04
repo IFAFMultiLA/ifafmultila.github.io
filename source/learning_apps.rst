@@ -190,7 +190,7 @@ If all items should have the same answer options, you can simplify the ``levels`
 .. code-block::
 
     ```{r survey_likert_example}
-    library(learnrextra)
+    # assuming that learnrextra library is loaded
 
     survey_likert(
         items = c(
@@ -200,8 +200,28 @@ If all items should have the same answer options, you can simplify the ``levels`
         ),
         levels = c("fully disagree", "rather disagree", "neutral", "rather agree", "fully agree")
     )
+    ```
 
 In the tracking data, the provided answers will show up with the event type ``learnr_event_question_submission`` and the respective question labels (either automatically generated or set via ``label`` option in item definitions). For details, see the R help pages for the respective functions of learnrextra.
+
+Mathematical expressions in quiz question answers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The learnrextra package also provides a new set of functions ``question_mathexpression()``, ``question_mathexpression_probability()`` and ``question_mathexpression_percentage()`` that allow users to give answers in the form of simple mathematical expressions, which will be evaluated and checked against an expected result. Only summation, difference, multiplication, division and power operators are allowed, along with parentheses. This allows users to provide answers like ``3 * 1.14 + 1/(2^3)`` being evaluated and check against the correct result. The ``question_mathexpression_probability()`` function additional checks for the entered result being in range [0, 1] and gives respective hints, if not. The function ``question_mathexpression_percentage()`` also allows users to use the "%" character in the input. The following shows an example code chunk:
+
+.. code-block::
+
+    ```{r q_mathexpr_example}
+    # assuming that learnrextra library is loaded
+
+    question_mathexpression_probability(
+        "What's the probability of getting two times \"head\" when
+         flipping a fair coin twice?",
+        1/4
+    )
+    ```
+
+See the R help page of the respective functions for details.
 
 .. _embed_dataprotection_trackingconsent:
 
