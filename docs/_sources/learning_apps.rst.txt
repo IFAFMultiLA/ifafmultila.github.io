@@ -207,7 +207,9 @@ In the tracking data, the provided answers will show up with the event type ``le
 Mathematical expressions in quiz question answers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The learnrextra package also provides a new set of functions ``question_mathexpression()``, ``question_mathexpression_probability()`` and ``question_mathexpression_percentage()`` that allow users to give answers in the form of simple mathematical expressions, which will be evaluated and checked against an expected result. Only summation, difference, multiplication, division and power operators are allowed, along with parentheses. This allows users to provide answers like ``3 * 1.14 + 1/(2^3)`` being evaluated and check against the correct result. The ``question_mathexpression_probability()`` function additional checks for the entered result being in range [0, 1] and gives respective hints, if not. The function ``question_mathexpression_percentage()`` also allows users to use the "%" character in the input. The following shows an example code chunk:
+The learnrextra package also provides a new set of functions ``question_mathexpression()``, ``question_mathexpression_probability()`` and ``question_mathexpression_percentage()`` that allow users to give answers in the form of simple mathematical expressions, which will be evaluated and checked against an expected result. By default, only basic arithmetic operators, square root, logarithms, exponentials, trigonometric and combinatoric functions are allowed. This can be controlled via the ``allowed_symbols`` argument. The default behavior allows users to provide answers like ``3 * 1.14 + 1/(2^3)`` or ``sin(0.5*pi)``. At the same time, this prevents possible security issues as it is not possible to call any R functions besides those defined in ``allowed_symbols``.
+
+The ``question_mathexpression_probability()`` function additional checks for the entered result being in range [0, 1] and gives respective hints, if not. The function ``question_mathexpression_percentage()`` also allows users to use the "%" character in the input. The following shows an example code chunk:
 
 .. code-block::
 
