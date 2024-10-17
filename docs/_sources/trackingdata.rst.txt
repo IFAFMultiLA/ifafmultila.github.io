@@ -1,7 +1,7 @@
 .. _tracking_data:
 
-User interactions tracking for learning analytics
-=================================================
+App deployment and data collection for learning analytics
+=========================================================
 
 
 Setting up a learning application for tracking
@@ -22,10 +22,60 @@ This will make sure that the deployed learning applications know where to send t
 
 .. _tracking_register_app:
 
-Registering a learning application with the MultiLA administration backend
---------------------------------------------------------------------------
+Learning application deployment and registration
+------------------------------------------------
 
-Each learning application for which you want to collect tracking data is required to be registered in the administration interface that is available under ``https://<SERVER>/api/admin/`` after you installed it on a server as explained in chapter ":doc:`serversetup`".
+Each learning application needs to be *deployed* (i.e. transferred to a Shiny server) and *registered* in the administration backend. This administration interface is available under ``https://<SERVER>/api/admin/`` after you installed it on a server.
+
+While a deployed app can be used without registration, it is necessary to register your app in the backend in order to collect tracking data and run experiments. Depending on how the backend system was set up (see ":ref:`backend_installation`"), there are two ways to deploy and register your apps:
+
+Option 1: Deployment and registration via the administration interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you set up the administration and API backend to support the app deployment via upload, all you have to do in order to deploy and register your app is the following:
+
+1. Use `renv`_ in your learning app project.
+2. Create a snapshot of the necessary packages for your learning app by running ``renv::snapshot()``. This will create a ``renv.lock`` file that lists all dependencies of your application.
+3. Create a ZIP-file containing your learning app along with its ``renv.lock`` file.
+4. After logging in to the administration interface, go to *API > Applications* and select *Add application*. You will see the form displayed below. Give the new learning application a name and select the ZIP-file for upload.
+
+.. image:: img/admin-app-upload.png
+    :align: center
+    :width: 100%
+
+The app will be uploaded and dependencies listed in the ``renv.lock`` file will automatically be installed, if the backend system is set up correctly. If anything fails during dependency installation or when running the app, the respective log files will be shown next to the form. Please note that in the current version, the app installation status and log file display is not automatically updated, i.e. you need to reload the page in your browser for updates.
+
+.. warning:: Most dependency package installations for an app fail due to missing operating system packages. The installation log will provide the respective information in the case of such an error. The server administrator will then have to install the respective system packages and you need to retrigger the installation by re-uploading the application.
+
+For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application and also allow you to configure the tracking behavior. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form.
+
+You can update an existing app by uploading a new ZIP-file. Dependency installation will then be retriggered but already installed R packages will be skipped.
+
+You can still register an application that was not deployed via upload to the administration interface by setting the URL of your manually deployed app in the "URL" form field.
+
+Option 2: Manual learning application deployment and registration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use this option when you the backend system is not set up for app deployment via upload or you don't want to use that feature.
+
+It's highly recommended to use `renv`_ during deployment. First, create a snapshot of the necessary packages for your learning app by running ``renv::snapshot()`` locally. Create a folder for your application on the server. Then copy *only* the following files from your local machine to the app folder on the server:
+
+- RMarkdown document (.Rmd) – make sure to set the ``apiserver`` in the frontmatter options to the URL at which the web API will be available, e.g. ``https://<SERVER>/api/``
+- ``renv.lock`` with all dependencies necessary to run your learning application
+- possible embedded images, CSS, JavaScript, etc. in folder ``images`` or ``www``
+
+On the server, navigate to the app folder and open an R session there (by simply invoking ``R`` in the terminal. There, run the following code to set up renv for the app and install all packages that reported in ``renv.lock``:
+
+.. code-block:: R
+
+    renv::init()
+    renv::restore()
+
+Please note that you need to run ``renv::snapshot()`` locally every time you update/install packages and that you also need to copy the updated ``renv.lock`` to the app folder on the server and run ``renv::restore()`` within an R session there.
+
+Check that the application was successfully deployed by visiting the respective URL in your browser (depends on the Shiny server setup). If anything fails, check the Shiny logs (``~/ShinyApps/log``, ``/var/log/shiny-server/access.log``, ``/var/log/shiny-server.log``).
+
+When you publish an update for your learning application, you must also set a new timestamp to a special file named ``restart.txt`` in the learning application project folder on the server via ``touch restart.txt``.
 
 After logging in to the administration interface, go to *API > Applications* and select *Add application*. You will see a form as follows:
 
@@ -33,18 +83,20 @@ After logging in to the administration interface, go to *API > Applications* and
     :align: center
     :width: 100%
 
-Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``. For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application and also allow you to configure the tracking behavior. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form. After saving the form, you will see a list of applications along with their application configurations and application sessions:
+Give the new learning application a name and most importantly, enter the full URL under which it is available, e.g. ``https://<SERVER>/myapp/``. For each learning application, you can create several *application configurations.* These allow you to create different variants of the same base application and also allow you to configure the tracking behavior. You need to at least create one default configuration, so you should fill in at least the *configuration label* for the first configuration that is displayed directly underneath *application configurations* in the form.
+
+Application sessions and sharable URLs for tracking
+---------------------------------------------------
+
+The applications list shows all your apps that are registered with the backend system.
 
 .. image:: img/admin-list.png
     :align: center
     :width: 100%
 
-Application sessions and sharable URLs for tracking
----------------------------------------------------
+An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL in the format ``https://<SERVER>/api/gate/<UNIQUE_ID>`` that you can share. This URL is then also displayed in the applications list. The URL is very important: If visiting this URL and consenting to data collection, a *tracking session* will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.
 
-An application session is an instance of your configured learning application for which you collect tracking data. Each application session will receive a unique session ID and therefore a unique URL in the format ``<my-app-url>/?sess=<UNIQUE_ID>`` that you can share. This URL is then also displayed in the applications list. The URL is very important: If visiting this URL and consenting to data collection, a *tracking session* will be created for the user and tracking data will be collected as configured in the application configuration while the user interacts with the learning application. This tracking data will be associated with the application session that corresponds to the unique session ID.
-
-For each new configuration, a standard application session is automatically created, but you can add more application sessions, if you need to. This can for example be beneficial when you want to collect data for a certain occasion, e.g. a lab exercise. If you create an application session for this occasion, you can share the generated URL and will later know that the collected data refers to that event.
+For each new configuration, a standard application session is automatically created, but you can add more application sessions, if you need to. This can for example be beneficial when you want to collect data for a certain occasion, e.g. a lab exercise. If you create an application session for this occasion, you can share the generated URL and will later know that the collected data belongs to that event.
 
 To create an application session, click on the *Add session* link underneath the desired application configuration in the applications list. You will be presented the following form:
 
