@@ -22,7 +22,7 @@
     
   <link rel="index" title="Index" href="genindex.html" />
   <link rel="search" title="Search" href="search.html" />
-  <link rel="next" title="User interactions tracking for learning analytics" href="trackingdata.html" />
+  <link rel="next" title="App deployment and data collection for learning analytics" href="trackingdata.html" />
   <link rel="prev" title="Creating learning applications" href="learning_apps.html" /> 
   </head>
 
@@ -102,7 +102,7 @@
         
           <li class="toctree-l1 ">
             
-              <a href="trackingdata.html" class="reference internal ">User interactions tracking for learning analytics</a>
+              <a href="trackingdata.html" class="reference internal ">App deployment and data collection for learning analytics</a>
             
 
             
@@ -159,7 +159,7 @@
   </li>
   <li class="next">
     <a href="trackingdata.html"
-       title="next chapter">User interactions tracking for learning analytics →</a>
+       title="next chapter">App deployment and data collection for learning analytics →</a>
   </li>
 </ul>
   
@@ -169,7 +169,7 @@
             
   <section id="hosting-learning-applications-and-the-web-api">
 <span id="serversetup"></span><h1>Hosting learning applications and the web API<a class="headerlink" href="#hosting-learning-applications-and-the-web-api" title="Link to this heading">¶</a></h1>
-<p>This chapter is a guide server setup for the MultiLA software platform either on a server or a local development machine. Note that only Unix-based operating systems (Linux, MacOS) are covered by this guide. The software should run on Windows systems as well but may require different setup steps.</p>
+<p>This chapter is a guide server setup for the MultiLA software platform either on a server or a local development machine. Note that only Unix-based operating systems (Linux, MacOS) are covered by this guide. The software should run on Windows systems as well, but may require different setup steps.</p>
 <section id="hosting-learning-applications">
 <h2>Hosting learning applications<a class="headerlink" href="#hosting-learning-applications" title="Link to this heading">¶</a></h2>
 <section id="server-setup">
@@ -185,42 +185,29 @@
 <li><p>The R process that runs the Shiny server (and hence the learning applications) should only have access to the learning applications. It’s best to create a separate user for that process (or even for each learning application) and then follow the Shiny server setup guide on <a class="reference external" href="https://docs.posit.co/shiny-server/#host-per-user-application-directories">Per-User Application Directories</a> and <a class="reference external" href="https://docs.posit.co/shiny-server/#let-users-manage-their-own-applications">User Managed Applications</a>.</p></li>
 <li><p>Restrict R code execution on the server via RApparmor (see <a class="reference external" href="https://rstudio.github.io/learnr/articles/publishing.html#start-and-cleanup-hooks">learnr documentation</a>) and consider using a custom AppArmor profile for R code exercises (see <a class="reference external" href="https://github.com/jeroen/RAppArmor">RAppArmor documentation</a>).</p></li>
 </ol>
-</section>
-<section id="learning-application-deployment">
-<h3>Learning application deployment<a class="headerlink" href="#learning-application-deployment" title="Link to this heading">¶</a></h3>
-<p>It’s highly recommended to use <a class="reference external" href="https://rstudio.github.io/renv/">renv</a> during deployment.</p>
-<p>First, create a snapshot of the necessary packages for your learning app by running <code class="docutils literal notranslate"><span class="pre">renv::snapshot()</span></code> locally. Create a folder for your application on the server. Then copy <em>only</em> the following files from your local machine to the app folder on the server:</p>
-<ul class="simple">
-<li><p>RMarkdown document (.Rmd) – make sure to set the <code class="docutils literal notranslate"><span class="pre">apiserver</span></code> in the frontmatter options to the URL at which the web API will be available, e.g. <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">renv.lock</span></code> with all dependencies necessary to run your learning application</p></li>
-<li><p>possible embedded images, CSS, JavaScript, etc. in folder <code class="docutils literal notranslate"><span class="pre">images</span></code> or <code class="docutils literal notranslate"><span class="pre">www</span></code></p></li>
-</ul>
-<p>On the server, navigate to the app folder and open an R session there (by simply invoking <code class="docutils literal notranslate"><span class="pre">R</span></code> in the terminal. There, run the following code to set up renv for the app and install all packages that reported in <code class="docutils literal notranslate"><span class="pre">renv.lock</span></code>:</p>
-<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">renv</span><span class="o">::</span><span class="nf">init</span><span class="p">()</span>
-<span class="n">renv</span><span class="o">::</span><span class="nf">restore</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Please note that you need to run <code class="docutils literal notranslate"><span class="pre">renv::snapshot()</span></code> locally every time you update/install packages and that you also need to copy the updated <code class="docutils literal notranslate"><span class="pre">renv.lock</span></code> to the app folder on the server and run <code class="docutils literal notranslate"><span class="pre">renv::restore()</span></code> within an R session there.</p>
-<p>Check that the application was successfully deployed by visiting the respective URL in your browser (depends on the Shiny server setup). If anything fails, check the Shiny logs (<code class="docutils literal notranslate"><span class="pre">~/ShinyApps/log</span></code>, <code class="docutils literal notranslate"><span class="pre">/var/log/shiny-server/access.log</span></code>, <code class="docutils literal notranslate"><span class="pre">/var/log/shiny-server.log</span></code>).</p>
-<p>When you publish an update for your learning application, you must also set a new timestamp to a special file named <code class="docutils literal notranslate"><span class="pre">restart.txt</span></code> in the learning application project folder on the server via <code class="docutils literal notranslate"><span class="pre">touch</span> <span class="pre">restart.txt</span></code>.</p>
+<p>For maximum security, you can also consider running each learning application inside a separate Docker container. Setting this up is however beyond the scope of this documentation.</p>
+<p>Deploying a learning application and registering it in the backend system is explained in chapter “<a class="reference internal" href="trackingdata.html#tracking-data"><span class="std std-ref">App deployment and data collection for learning analytics</span></a>”.</p>
 </section>
 </section>
 <section id="setting-up-the-web-api-and-the-administration-interface">
-<h2>Setting up the web API and the administration interface<a class="headerlink" href="#setting-up-the-web-api-and-the-administration-interface" title="Link to this heading">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The following instructions all refer to the <em>webapi</em> component of the MultiLA software platform, which is a <a class="reference external" href="https://www.djangoproject.com/">Django</a> web application running inside a docker container. You must initially clone the current version from its <a class="reference external" href="https://github.com/IFAFMultiLA/webapi">GitHub repository</a>.</p>
-</div>
+<span id="backend-installation"></span><h2>Setting up the web API and the administration interface<a class="headerlink" href="#setting-up-the-web-api-and-the-administration-interface" title="Link to this heading">¶</a></h2>
+<p>The following instructions all refer to the <em>webapi</em> component of the MultiLA software platform, which is a <a class="reference external" href="https://www.djangoproject.com/">Django</a> web application running inside a docker container. You must initially clone the current version from its <a class="reference external" href="https://github.com/IFAFMultiLA/webapi">GitHub repository</a>. The administration interface supports the option to deploy apps directly via upload, which however requires some more setup work. The respective steps for enabling this feature are explained under “<a class="reference internal" href="#setup-app-upload"><span class="std std-ref">(Optional) App upload feature</span></a>”.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h3>
+<p>In order to deploy the MultiLA web API and administration interface, you need access to a server with the following things installed and set up:</p>
 <ul class="simple">
-<li><p>Docker with Docker Compose v2 (recommended: run Docker in <em>rootless</em> mode)</p></li>
-<li><p>an HTTP server such as Apache or nginx used as proxy</p></li>
-<li><p>a valid SSL certificate – <strong>only run this service via HTTPS in production!</strong></p></li>
+<li><p>Docker with Docker Compose v2 (recommended: run Docker in <em>rootless</em> mode),</p></li>
+<li><p>an HTTP service such as Apache or nginx used as proxy and for delivering static files,</p></li>
+<li><p>a valid SSL certificate – <strong>only run this service via HTTPS in production!</strong>.</p></li>
 </ul>
 </section>
 <section id="initial-deployment">
 <h3>Initial deployment<a class="headerlink" href="#initial-deployment" title="Link to this heading">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The following manual assumes that you have an understanding of the command-line interface and permissions system used on Linux servers. The manual doesn’t go into detail about setting up the correct directory and file permissions, so that the server setup is secure. <strong>If you’re unsure about how to set up a Linux server in a secure way, you should get help from an expert.</strong></p>
+</div>
+<p>Make sure that you’ve cloned the <a class="reference external" href="https://github.com/IFAFMultiLA/webapi">webapi GitHub repository</a> locally and change to the directory of the cloned repository in your terminal.</p>
 <ol class="arabic simple">
 <li><p>Create a Docker Compose configuration like the following as <code class="docutils literal notranslate"><span class="pre">docker/compose_prod.yml</span></code>:</p></li>
 </ol>
@@ -253,6 +240,9 @@
 <span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;../src:/code&#39;</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;../data/export:/data_export&#39;</span>
+<span class="w">      </span><span class="c1"># optional for app upload feature: path where deployed apps should be placed</span>
+<span class="w">      </span><span class="c1"># on your server</span>
+<span class="w">      </span><span class="c1"># - &#39;&lt;PATH_TO_APP_UPLOAD_DIRECTORY&gt;:/apps_deployed&#39;</span>
 <span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8000:8000&quot;</span>
 <span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
@@ -268,32 +258,26 @@
 <span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
 </pre></div>
 </div>
-<ol class="arabic" start="2">
-<li><p>Make sure the correct server and directory is entered in <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> under <code class="docutils literal notranslate"><span class="pre">SERVER</span></code> and <code class="docutils literal notranslate"><span class="pre">APPDIR</span></code>. Then run:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">collectstatic</span></code> to copy all static files to the <code class="docutils literal notranslate"><span class="pre">static_files</span></code> directory</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">sync</span></code> to upload all files to the server</p></li>
+<ol class="arabic simple" start="2">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/manage.py</span> <span class="pre">collectstatic</span></code> inside the repository root directory to copy all static files to the <code class="docutils literal notranslate"><span class="pre">static_files</span></code> directory. Then upload all files to your server, e.g. to a directory <code class="docutils literal notranslate"><span class="pre">~/webapi</span></code>.</p></li>
+<li><p>Log in to the server. Create the directory <code class="docutils literal notranslate"><span class="pre">/var/www/api_static_files/</span></code> – this is the directory, where “static files” such as CSS files or images for the administration interface will be located.</p></li>
+<li><p>Change the directory to the location of the uploaded web API source (i.e. <code class="docutils literal notranslate"><span class="pre">~/webapi</span></code>). Then do the following:</p></li>
+</ol>
+<ul class="simple">
+<li><p>copy the static files via <code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">-r</span> <span class="pre">static_files/*</span> <span class="pre">/var/www/api_static_files/</span></code> (you must have the permissions to do so)</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">build</span> <span class="pre">--no-cache</span></code> to build the web API container</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">create</span></code> to create all necessary containers</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">up</span> <span class="pre">-d</span></code> to launch the containers</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">web</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">migrate</span></code> to initialize the DB</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">createsuperuser</span></code> to create a backend admin user; this is the password used for the first login to the administration interface – <strong>use a secure password</strong></p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">check</span> <span class="pre">--deploy</span></code> to check the deployment</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">api</span></code> to run the tests in the deployment environment</p></li>
+<li><p>you may run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">logs</span> <span class="pre">-f</span></code> to view the logs and/or <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">http://0.0.0.0:8000/</span></code> to check if the web server is running</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>On the server, do the following:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">copy_static</span></code> to copy the static files to the directory <code class="docutils literal notranslate"><span class="pre">/var/www/api_static_files/</span></code> (you must have
-the permissions to do so)</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">build</span></code> to build the web application</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">create</span></code> to create the docker containers</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">up</span></code> to launch the containers</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">migrate</span></code> to initialize the DB</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">superuser</span></code> to create a backend admin user – <strong>use a secure password</strong></p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check</span></code> to check the deployment</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> to run the tests in the deployment environment</p></li>
-<li><p>you may run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">logs</span></code> and/or <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">http://0.0.0.0:8000/</span></code> to check if the web server is running</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p>On the server, create an HTTP proxy to forward HTTP requests to the server to the docker container running the web application. For example, a configuration for the Apache webserver that forwards all requests to <code class="docutils literal notranslate"><span class="pre">https://&lt;HOST&gt;/api/</span></code> would use the following:</p>
+<ol class="arabic simple" start="5">
+<li><p>On the server, setup your HTTP service (e.g. Apache or nginx) to do two tasks: 1) it must serve the static files at <code class="docutils literal notranslate"><span class="pre">/var/www/api_static_files</span></code> and 2) it must forward HTTP requests from outside to the server on to the docker container that runs the web application (proxy server).</p></li>
+</ol>
+<p>An example configuration for the Apache webserver that delivers static files at <code class="docutils literal notranslate"><span class="pre">https://&lt;HOST&gt;/api_static_files/</span></code> and forwards all requests at <code class="docutils literal notranslate"><span class="pre">https://&lt;HOST&gt;/api/</span></code> to the Docker container would use the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># setup static files (and prevent them to be passed through the proxy)
 ProxyPass /api_static_files !
 Alias /api_static_files /var/www/api_static_files
@@ -303,24 +287,23 @@ ProxyPass /api/ http://0.0.0.0:8000/
 ProxyPassReverse /api/ http://0.0.0.0:8000/
 </pre></div>
 </div>
-</li>
-</ol>
 <p>All requests to <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/</span></code> should then be forwarded to the web application.</p>
-<p>Check that the deployment of the web API was successful by visiting <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/admin/</span></code> and entering your backend admin user credentials (from <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">superuser</span></code>).</p>
+<p>Check that the deployment of the web API was successful by visiting <code class="docutils literal notranslate"><span class="pre">https://&lt;SERVER&gt;/api/admin/</span></code> and entering your backend admin user credentials from the <code class="docutils literal notranslate"><span class="pre">createsuperuser</span></code> step above.</p>
 </section>
 <section id="optional-publishing-updates">
 <h3>(Optional) Publishing updates<a class="headerlink" href="#optional-publishing-updates" title="Link to this heading">¶</a></h3>
 <p>In case there are updates to the web API component, you can do the following:</p>
 <ul class="simple">
-<li><p>locally, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testsync</span></code> and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">sync</span></code> to publish updated files to the server</p></li>
-<li><p>on the server, optional run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">migrate</span></code> to update the database and run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">restart_web</span></code> to restart the web
-application (there is a shortcut <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">server_restart_web</span></code> that you can run <em>locally</em> in order to restart the web
-application on the server)</p></li>
-<li><p>if there are changes in the static files, you should run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">collectstatic</span></code> before <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">sync</span></code> and then run
-<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">copy_static</span></code> on the server</p></li>
-<li><p>if there are changes in the dependencies, you need to rebuild the container as decribed above under
-<em>Initial deployment</em>, point (3)</p></li>
+<li><p>If there are changes in the static files, you should run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/manage.py</span> <span class="pre">collectstatic</span></code> locally first.</p></li>
+<li><p>Publish updated files to the server (it’s recommended to use <code class="docutils literal notranslate"><span class="pre">rsync</span></code> for that).</p></li>
+<li><p>If there are changes in the static files, you need to copy the static files via <code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">-r</span> <span class="pre">static_files/*</span> <span class="pre">/var/www/api_static_files/</span></code> on the server.</p></li>
+<li><p>On the server, optional run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">web</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">migrate</span></code> to update the database.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">restart</span> <span class="pre">web</span></code> to restart the web application.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If there are changes in the dependencies, you need to rebuild the container as decribed above under <em>Initial deployment</em>, point 4.</p>
+</div>
 </section>
 <section id="optional-db-administration-interface">
 <h3>(Optional) DB administration interface<a class="headerlink" href="#optional-db-administration-interface" title="Link to this heading">¶</a></h3>
@@ -331,15 +314,159 @@ up an SSH tunnel to make it available remotely from your machine. You can do so 
 </pre></div>
 </div>
 <p>, where <code class="docutils literal notranslate"><span class="pre">&lt;USER&gt;&#64;&lt;SERVER&gt;</span></code> are the login name and the host name of the server, where docker containers are running.
-A shortcut is available in the Makefile as <code class="docutils literal notranslate"><span class="pre">adminer_tunnel</span></code>. You can then go to <code class="docutils literal notranslate"><span class="pre">http://localhost:8081/</span></code> in your
+You can then go to <code class="docutils literal notranslate"><span class="pre">http://localhost:8081/</span></code> in your
 browser and login to the Postgres server (not MySQL!) using the <code class="docutils literal notranslate"><span class="pre">POSTGRES_USER</span></code> and <code class="docutils literal notranslate"><span class="pre">POSTGRES_PASSWORD</span></code> listed in
 the environment variabless of the docker compose file.</p>
 </section>
 <section id="optional-db-backups">
 <h3>(Optional) DB backups<a class="headerlink" href="#optional-db-backups" title="Link to this heading">¶</a></h3>
-<p>You can use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dbbackup</span></code> on the server to generate a PostgreSQL database dump with the current timestamp under
-<code class="docutils literal notranslate"><span class="pre">data/backups/</span></code>. It’s advisable to run this command regularly, e.g. via a cronjob, and then copy the database dumps
-to a backup destination e.g. via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">download_dbbackup</span></code>.</p>
+<p>You can use</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">docker</span><span class="o">/</span><span class="n">compose_prod</span><span class="o">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">db</span> \
+    <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;pg_dump -U admin -F c multila </span><span class="se">\</span>
+<span class="s1">    &gt; /data_backup/multila-`date -Is | sed &quot;s/://g&quot; | cut -d+ -f 1`.pgdump&#39;</span>
+</pre></div>
+</div>
+<p>on the server to generate a PostgreSQL database dump with the current timestamp under <code class="docutils literal notranslate"><span class="pre">data/backups/</span></code>. It’s advisable to run this command regularly, e.g. via a cronjob, and then copy the database dumps to a backup destination.</p>
+</section>
+<section id="optional-app-upload-feature">
+<span id="setup-app-upload"></span><h3>(Optional) App upload feature<a class="headerlink" href="#optional-app-upload-feature" title="Link to this heading">¶</a></h3>
+<p>In order to use the app upload feature, you first need to create a directory on the server, where uploaded apps will be placed. Hence this directory must be writable for the user that runs the <em>webapi</em> docker container and also for the user that runs the Shiny server. This directory will be called <code class="docutils literal notranslate"><span class="pre">&lt;APP_UPLOAD_DIRECTORY&gt;</span></code> below.</p>
+<p>Next, you need to edit the Docker Compose configuration <code class="docutils literal notranslate"><span class="pre">docker/compose_prod.yml</span></code> to add the following environment variables for the <code class="docutils literal notranslate"><span class="pre">web</span></code> container:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+
+<span class="w">  </span><span class="c1"># [ other services ... ]</span>
+
+<span class="w">  </span><span class="nt">web</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># [ other directives ... ]</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># [ other directives ... ]</span>
+<span class="w">      </span><span class="c1"># path where deployed apps should be placed on your server</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;APP_UPLOAD_PATH=&lt;APP_UPLOAD_DIRECTORY&gt;&#39;</span>
+<span class="w">      </span><span class="c1"># path to app logs (usually &quot;log&quot; inside the upload directory)</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;APP_LOG_PATH=&lt;APP_UPLOAD_DIRECTORY&gt;/log&#39;</span>
+<span class="w">      </span><span class="c1"># base URL for all apps, i.e. the Shiny server URL</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;APP_BASE_URL=&lt;BASE_URL_FOR_UPLOADED_APPS&gt;&#39;</span>
+<span class="w">      </span><span class="c1"># app removal mode; if &quot;delete&quot;, remove the whole app directory; if</span>
+<span class="w">      </span><span class="c1"># &quot;remove.txt&quot; write a remove.txt file in the app directory; otherwise</span>
+<span class="w">      </span><span class="c1"># do nothing</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;APP_REMOVE_MODE=remove.txt&#39;</span>
+<span class="w">      </span><span class="c1"># optional path to a &quot;trigger file&quot; that is updated (via &quot;touch&quot;) whenever</span>
+<span class="w">      </span><span class="c1"># there was a change to any deployed app</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;APP_UPLOAD_TRIGGER_FILE=&lt;APP_UPLOAD_DIRECTORY&gt;/update&#39;</span>
+</pre></div>
+</div>
+<p>Don’t forget to recreate and relaunch the container after these changes. You should now see an “Upload app” field in the “Add application” form. If the file permissions are correctly set, uploading an app should already work. Next, we must set up a service, that will manage the actual deployment of the apps once they’re uploaded or removed.</p>
+<p>For this, we first create a management shell script that iterates through all apps in <code class="docutils literal notranslate"><span class="pre">&lt;APP_UPLOAD_DIRECTORY&gt;</span></code> and performs the management operations that are indicated by special files like <code class="docutils literal notranslate"><span class="pre">install.txt</span></code>. Set <code class="docutils literal notranslate"><span class="pre">&lt;USER&gt;</span></code> to the system user that runs the Shiny apps. Set <code class="docutils literal notranslate"><span class="pre">&lt;GROUP&gt;</span></code> to the system group that should own the app directories. Also, create a directory for deleted apps and set the path in <code class="docutils literal notranslate"><span class="pre">&lt;GRAVEYARD_PATH&gt;</span></code>. Alternatively, set this variable to an empty string to directly remove the files of deleted apps.</p>
+<p>The following script is named <code class="docutils literal notranslate"><span class="pre">manage_deployed_apps.sh</span></code> and will be run as root, so you can place it for example in <code class="docutils literal notranslate"><span class="pre">/root/bin</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">target_usr</span><span class="o">=</span>&lt;USER&gt;
+<span class="nv">target_grp</span><span class="o">=</span>&lt;GROUP&gt;
+<span class="nv">target_permissions</span><span class="o">=</span><span class="m">0775</span>
+<span class="nv">graveyard_path</span><span class="o">=</span><span class="s2">&quot;&lt;GRAVEYARD_PATH&gt;&quot;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$graveyard_path</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$graveyard_path</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;error: graveyard_path is set to &#39;</span><span class="nv">$graveyard_path</span><span class="s2">&#39; but this directory doesn&#39;t exist.&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="c1"># Check if an argument is given</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;error: no path provided.&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;usage: </span><span class="nv">$0</span><span class="s2"> &lt;path&gt;&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nv">deploy_path</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+
+<span class="c1"># Check if the path exists</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$deploy_path</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;error: the path &#39;</span><span class="nv">$deploy_path</span><span class="s2">&#39; does not exist.&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;searching for apps in &#39;</span><span class="nv">$deploy_path</span><span class="s2">&#39; that require an action ...&quot;</span>
+
+<span class="c1"># Iterate through all folders in the given path and print the folder names</span>
+<span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>app<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">/remove.txt&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">baseapp</span><span class="o">=</span><span class="sb">`</span>basename<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span><span class="sb">`</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$graveyard_path</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt; removing app &#39;</span><span class="nv">$baseapp</span><span class="s2">&#39; ...&quot;</span>
+<span class="w">            </span>rm<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt; moving app &#39;</span><span class="nv">$baseapp</span><span class="s2">&#39; to graveyard ...&quot;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$baseapp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>*<span class="s2">&quot;~old-&quot;</span>*<span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">               </span><span class="nv">app_graveyard</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$graveyard_path</span><span class="s2">/</span><span class="nv">$baseapp</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">               </span><span class="nv">app_graveyard</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$graveyard_path</span><span class="s2">/</span><span class="nv">$baseapp</span><span class="s2">-`date -Is`&quot;</span>
+<span class="w">            </span><span class="k">fi</span>
+<span class="w">            </span>mv<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app_graveyard</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="k">fi</span>
+<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">/install.txt&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">/renv.lock&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt; installing dependencies for &#39;</span><span class="k">$(</span>basename<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&#39; ...&quot;</span>
+
+<span class="w">        </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="nv">$target_usr</span>:<span class="nv">$target_grp</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span>
+
+<span class="w">        </span>runuser<span class="w"> </span>-<span class="w"> </span><span class="nv">$target_usr</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;(cd </span><span class="nv">$app</span><span class="s2"> &amp;&amp; R -e &#39;renv::activate()&#39; &amp;&amp; R -e &#39;renv::restore()&#39;)&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$app</span>/install.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span>runuser<span class="w"> </span>-<span class="w"> </span><span class="nv">$target_usr</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;rm </span><span class="nv">$app</span><span class="s2">/install.txt&quot;</span>
+<span class="w">            </span>runuser<span class="w"> </span>-<span class="w"> </span><span class="nv">$target_usr</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;rm -f </span><span class="nv">$app</span><span class="s2">/install_error.txt&quot;</span>
+<span class="w">            </span>runuser<span class="w"> </span>-<span class="w"> </span><span class="nv">$target_usr</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;touch </span><span class="nv">$app</span><span class="s2">/restart.txt&quot;</span>
+<span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt;&gt; done.&quot;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span>runuser<span class="w"> </span>-<span class="w"> </span><span class="nv">$target_usr</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;touch </span><span class="nv">$app</span><span class="s2">/install_error.txt&quot;</span>
+<span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt;&gt; installing dependencies failed. check </span><span class="nv">$app</span><span class="s2">/install.log file.&quot;</span>
+<span class="w">        </span><span class="k">fi</span>
+
+<span class="w">        </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="nv">$target_usr</span>:<span class="nv">$target_grp</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span>
+<span class="w">        </span>chmod<span class="w"> </span><span class="nv">$target_permissions</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$app</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">done</span><span class="w"> </span>&lt;<span class="w"> </span>&lt;<span class="o">(</span>find<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$deploy_path</span><span class="s2">&quot;</span><span class="w"> </span>-mindepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-print0<span class="o">)</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;done.&quot;</span>
+</pre></div>
+</div>
+<p>Next, we create a service that runs the above script every time the <em>trigger file</em> defined in the <code class="docutils literal notranslate"><span class="pre">APP_UPLOAD_TRIGGER_FILE</span></code> variable of the Docker Compose file above is updated. For this, you need to make sure that <em>inotify</em> is installed on the server (the package is named <code class="docutils literal notranslate"><span class="pre">inotify-tools</span></code> on Debian-based Linux systems). We then create a bash script named <code class="docutils literal notranslate"><span class="pre">manage_deployed_apps-service.sh</span></code>, which will also be run as root and can be placed in <code class="docutils literal notranslate"><span class="pre">/root/bin</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">deploy_path</span><span class="o">=</span><span class="s2">&quot;&lt;APP_UPLOAD_DIRECTORY&gt;&quot;</span>
+<span class="nv">watch_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$deploy_path</span><span class="s2">/update&quot;</span>
+<span class="nv">watch_file_owner</span><span class="o">=</span>&lt;USER&gt;
+<span class="nv">mgmt_script</span><span class="o">=</span>/root/bin/manage_deployed_apps.sh
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$deploy_path</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;cannot access app deployment directory &#39;</span><span class="nv">$deploy_path</span><span class="s2">&#39;&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+touch<span class="w"> </span><span class="nv">$watch_file</span>
+chown<span class="w"> </span><span class="nv">$watch_file_owner</span>:<span class="nv">$watch_file_owner</span><span class="w"> </span><span class="nv">$watch_file</span>
+inotifywait<span class="w"> </span>-m<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;%e %w %f&#39;</span><span class="w"> </span><span class="nv">$watch_file</span><span class="w"> </span><span class="se">\</span>
+<span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>event<span class="w"> </span>dir<span class="w"> </span>filename<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span>sleep<span class="w"> </span><span class="m">1</span>
+<span class="w">    </span>./<span class="nv">$mgmt_script</span><span class="w"> </span><span class="nv">$deploy_path</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+<p>Finally, we create a systemd service (if your server doesn’t use systemd for service management, you must adapt the following steps for your respective service management software). For this, we first create a file <code class="docutils literal notranslate"><span class="pre">/lib/systemd/system/multila_manage_deployed_apps.service</span></code> as root with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">MultiLA</span> <span class="n">watch</span> <span class="n">script</span> <span class="k">for</span> <span class="n">managing</span> <span class="n">apps</span> <span class="n">deployed</span> <span class="n">via</span> <span class="n">admin</span> <span class="n">web</span> <span class="n">interface</span><span class="o">.</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">root</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">manage_deployed_apps</span><span class="o">-</span><span class="n">service</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+<p>Then we enable and start the service (also as root):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">multila_manage_deployed_apps</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">multila_manage_deployed_apps</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Check that the service works by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">status</span> <span class="pre">multila_manage_deployed_apps.service</span></code> and by uploading an app via the administration interface. You can see the log for this service with the command <code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">-u</span> <span class="pre">multila_manage_deployed_apps.service</span> <span class="pre">-b</span></code>.</p>
 </section>
 </section>
 </section>
@@ -354,7 +481,7 @@ to a backup destination e.g. via <code class="docutils literal notranslate"><spa
   </li>
   <li class="next">
     <a href="trackingdata.html"
-       title="next chapter">User interactions tracking for learning analytics →</a>
+       title="next chapter">App deployment and data collection for learning analytics →</a>
   </li>
 </ul><div class="footer" role="contentinfo">
       &#169; Copyright 2024, Markus Konrad.

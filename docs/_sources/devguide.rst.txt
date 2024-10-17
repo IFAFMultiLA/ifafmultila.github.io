@@ -101,7 +101,7 @@ This section shows how to set up your local development environment for working 
 General requirements and setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The development setup has been tested on Ubuntu Linux but should work on other Unix based platforms (like MacOS) without problems. Windows may require more effort, but should also work. It's necessary to have recent versions of `pandoc <https://pandoc.org/>`_ and `Docker <https://www.docker.com/>`_ (for the WebAPI) installed on your system and it's recommended to have installed ``make``.
+The development setup has been tested on Ubuntu Linux but should work on other Unix based platforms (like MacOS) without problems. Windows may require more effort, but should also work. It's necessary to have recent versions of `pandoc <https://pandoc.org/>`_ and `Docker <https://www.docker.com/>`_ (for the WebAPI) installed on your system.
 
 It's recommended to put all components of the MultiLA platform in one folder on your machine. We will refer to this folder as ``multila/``. The recommended structure of this directory is as follows::
 
@@ -141,128 +141,13 @@ Requirements
 
 - Docker with Docker Compose v2 (recommended: run Docker in *rootless* mode)
 
-  - all you need is to `install the Docker Engine <https://docs.docker.com/engine/install/>`_ for your operating system (Docker Desktop is  optional)
+  - all you need is to `install the Docker Engine <https://docs.docker.com/engine/install/>`_ for your operating system (Docker Desktop is optional)
   - it is recommended to `set up Docker in rootless mode <https://docs.docker.com/engine/security/rootless/>`_ if your operating system supports it
 
 - Python 3.11 if not running the web application in a Docker container
 
 Initial setup
 """""""""""""
-
-After cloning the repository, it's recommended to create a Makefile that contains shortcuts for important terminal commands that allow you to manage and deploy the project. You can use the following template for the Makefile:
-
-.. code-block:: makefile
-
-    COMPFILE := docker/compose_dev.yml
-    COMP := compose -f $(COMPFILE)
-    EXEC := $(COMP) exec web
-    EXECDB := $(COMP) exec db
-    SERVER := <SERVER FOR DEPLOYMENT>
-    APPDIR := <DIRECTORY ON SERVER FOR DEPLOYMENT>
-    SERVER_APP := $(SERVER):$(APPDIR)
-    RSYNC_COMMON := -rcv --exclude-from=.rsyncexclude
-    NOW := date -Is | sed "s/://g" | cut -d+ -f 1
-
-    up:
-        docker $(COMP) up
-
-    down:
-        docker $(COMP) down
-
-    build:
-        docker $(COMP) build
-
-    create:
-        docker $(COMP) create
-
-    enter:
-        docker $(EXEC) /bin/bash || echo "web container is not running"
-
-    superuser:
-        docker $(EXEC) python manage.py createsuperuser || python src/manage.py createsuperuser
-
-    djangoshell:
-        docker $(EXEC) python manage.py shell || python src/manage.py shell
-
-    migrations:
-        docker $(EXEC) python manage.py makemigrations || python src/manage.py makemigrations
-
-    migrate:
-        docker $(EXEC) python manage.py migrate || python src/manage.py migrate
-
-    dump:
-        docker $(EXEC) python manage.py dumpdata -o /fixtures/dump-`$(NOW)`.json.gz || python src/manage.py dumpdata -o data/fixtures/dump-`$(NOW)`.json.gz
-
-    dbbackup:
-        docker $(EXECDB) /bin/bash -c 'pg_dump -U admin -F c multila > /data_backup/local_dev_multila-`$(NOW)`.pgdump'
-
-    collectstatic:
-        docker $(EXEC) python manage.py collectstatic || python src/manage.py collectstatic
-
-    test:
-        docker $(EXEC) python manage.py test api || python src/manage.py test api
-
-    sync:
-        rsync $(RSYNC_COMMON) . $(SERVER_APP) && ssh $(SERVER) "mv $(APPDIR)/Makefile_server $(APPDIR)/Makefile"
-
-    testsync:
-        rsync $(RSYNC_COMMON) -n . $(SERVER_APP)
-
-    adminer_tunnel:
-        ssh -N -L 8081:localhost:8081 $(SERVER)
-
-    server_restart_web:
-        ssh $(SERVER) 'cd $(APPDIR) && make restart_web'
-
-You should also create a second Makefile, named ``Makefile_server``, that will be copied to the server on deployment and contains management commands to be run on the server:
-
-.. code-block:: makefile
-
-    COMPFILE := docker/compose_prod.yml
-    COMP := compose -f $(COMPFILE)
-    EXEC := $(COMP) exec web
-    EXECDB := $(COMP) exec db
-    NOW := date -Is | sed "s/://g" | cut -d+ -f 1
-
-    up:
-        docker $(COMP) up -d
-
-    logs:
-        docker $(COMP) logs -f
-
-    down:
-        docker $(COMP) down
-
-    restart_web:
-        docker $(COMP) restart web
-
-    build:
-        docker $(COMP) build
-
-    create:
-        docker $(COMP) create
-
-    enter:
-        docker $(EXEC) /bin/bash
-
-    migrate:
-        docker $(EXEC) python manage.py migrate
-
-    check:
-        docker $(EXEC) python manage.py check --deploy
-
-    test:
-        docker $(EXEC) python manage.py test api
-
-    superuser:
-        docker $(EXEC) python manage.py createsuperuser
-
-    copy_static:
-        cp -r static_files/* /var/www/api_static_files/
-
-    dbbackup:
-        docker $(EXECDB) /bin/bash -c 'pg_dump -U admin -F c multila > /data_backup/multila-`$(NOW)`.pgdump'
-
 
 There are two ways to set up a local development environment: either by using a Python virtual environment *(venv)*
 on the local machine to run the Python interpreter or by using a Python interpreter inside a Docker container. The
@@ -276,7 +161,7 @@ Option 1: Using a venv on the local machine
 - install the required packages via pip: ``pip install -r requirements.txt``
 - create a project in your IDE, set up the Python interpreter as the one you just created in the virtual environment
 - copy ``docker/compose_dev_db_only.yml`` to ``docker/compose_dev.yml``
-- start the docker services for the first time via ``make up`` or via your IDE's docker interface
+- start the docker services for the first time via ``docker compose -f docker/compose_dev.yml up`` or via your IDE's docker interface
 
   - **note:** the first start of the "web" service may fail, since the database is initialized in parallel and may not
     be ready yet when "web" is started – simply starting the services as second time should solve the problem
@@ -298,19 +183,15 @@ Option 2: Using a Python interpreter inside a docker container
   - **note:** the first start of the "web" service may fail, since the database is initialized in parallel and may not
     be ready yet when "web" is started – simply starting the services as second time should solve the problem
 
-- alternatively, to manually control the docker services outside your IDE, use the commands specified in the Makefile:
-
-  - ``make create`` to create the containers
-  - ``make up`` to launch all services
 
 Common set up steps for both options
 """"""""""""""""""""""""""""""""""""
 
-- when all services were started successfully, run ``make migrate`` to run the initial database migrations
-- run ``make superuser`` to create a backend admin user
+- when all services were started successfully, run `python src/manage.py migrate`` to run the initial database migrations
+- run ``python src/manage.py createsuperuser`` to create a backend admin user
 - the web application is then available under ``http://localhost:8000``
 - a simple database administration web interface is then available under ``http://localhost:8080/admin``
-- to check if everything works, you should run ``make test``
+- to check if everything works, you should run ``python src/manage.py test api``
 
 .. _learnrextra-dev:
 
