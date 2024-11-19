@@ -177,7 +177,9 @@ on the server to generate a PostgreSQL database dump with the current timestamp 
 
 The MultiLA platform allows to integrate a chatbot in the learning apps as an adaptive learning assistant. The backend will communicate with a chat API provider for this purpose, e.g. with OpenAI's GPT model API. So far, only chat APIs that use OpenAI's web API format are supported (so hosting your own model via LM Studio for example works).
 
-To set up this feature, you will need to edit the ``src/multila/settings_prod.py`` file of the web API backend and replace ``CHATBOT_API = None`` with the following code that you need to adapt to your set up (see code comments below):
+To set up this feature, you first need to install some additional packages inside the web container. To do so, uncomment the line ``# RUN pip install -r requirements_extra.txt`` in ``docker/Dockerfile_prod`` and rebuild the container.
+
+Next, you need to edit the ``src/multila/settings_prod.py`` file of the web API backend and replace ``CHATBOT_API = None`` with the following code that you need to adapt to your set up (see code comments below):
 
 .. code-block:: python
 
