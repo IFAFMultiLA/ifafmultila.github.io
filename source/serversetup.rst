@@ -56,8 +56,6 @@ Make sure that you've cloned the `webapi GitHub repository <https://github.com/I
 
 .. code-block:: yaml
 
-    version: '2'
-
     services:
       # # optional: DB admin web interface accessible on local port 8081
       # adminer:
@@ -113,9 +111,9 @@ Make sure that you've cloned the `webapi GitHub repository <https://github.com/I
 - run ``docker compose -f docker/compose_prod.yml create`` to create all necessary containers
 - run ``docker compose -f docker/compose_prod.yml up -d`` to launch the containers
 - run ``docker compose -f docker/compose_prod.yml exec web python manage.py migrate`` to initialize the DB
-- run ``docker compose -f docker/compose_prod.yml exec python manage.py createsuperuser`` to create a backend admin user; this is the password used for the first login to the administration interface -- **use a secure password**
-- run ``docker compose -f docker/compose_prod.yml exec python manage.py check --deploy`` to check the deployment
-- run ``docker compose -f docker/compose_prod.yml exec python manage.py test api`` to run the tests in the deployment environment
+- run ``docker compose -f docker/compose_prod.yml exec web python manage.py createsuperuser`` to create a backend admin user; this is the password used for the first login to the administration interface -- **use a secure password**
+- run ``docker compose -f docker/compose_prod.yml exec web python manage.py check --deploy`` to check the deployment
+- run ``docker compose -f docker/compose_prod.yml exec web python manage.py test api`` to run the tests in the deployment environment
 - you may run ``docker compose -f docker/compose_prod.yml logs -f`` to view the logs and/or ``curl http://0.0.0.0:8000/`` to check if the web server is running
 
 5. On the server, setup your HTTP service (e.g. Apache or nginx) to do two tasks: 1) it must serve the static files at ``/var/www/api_static_files`` and 2) it must forward HTTP requests from outside to the server on to the docker container that runs the web application (proxy server).
@@ -173,6 +171,69 @@ You can use
         > /data_backup/multila-`date -Is | sed "s/://g" | cut -d+ -f 1`.pgdump'
 
 on the server to generate a PostgreSQL database dump with the current timestamp under ``data/backups/``. It's advisable to run this command regularly, e.g. via a cronjob, and then copy the database dumps to a backup destination.
+
+(Optional) Chatbot feature
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The MultiLA platform allows to integrate a chatbot in the learning apps as an adaptive learning assistant. The backend will communicate with a chat API provider for this purpose, e.g. with OpenAI's GPT model API. So far, only chat APIs that use OpenAI's web API format are supported (so hosting your own model via LM Studio for example works).
+
+To set up this feature, you will need to edit the ``src/multila/settings_prod.py`` file of the web API backend and replace ``CHATBOT_API = None`` with the following code that you need to adapt to your set up (see code comments below):
+
+.. code-block:: python
+
+    CHATBOT_API = {
+        # create a dictionary where labels map to provider options
+        "providers": {  # note that the label is not allowed to use the string ' | '
+            # this is an example using OpenAI's services
+            "openai": {
+                "key": os.environ.get("OPENAI_API_KEY"),
+                "provider": "openai",
+                "available_models": ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o"],
+            },
+            # this is an example of how to use a self-hosted service using LM studio
+            "lm-studio": {
+                "key": "not needed",
+                "provider": "openai",  # LM studio uses the OpenAI API format
+                "setup_options": {"base_url": os.environ.get("MY_LLM_SERVER")},
+                "request_options": dict(max_tokens=500, stop=None, temperature=0.5),
+                "available_models": [
+                    # list your installed models here
+                    ...,
+                ],
+            },
+            # set more providers here
+        },
+        "content_section_identifier_pattern": r"mainContentElem-\d+$",
+         # default system role prompt template per language
+         # use $doc_text placeholder to include the app's text representation in the prompt
+        "system_role_templates": {
+            "en": "You are a teacher in data science and statistics. Consider the following learning material enclosed "
+            'by "---" marks. Before each content section in the document, there is a unique identifier for that '
+            'section denoted as "mainContentElem-#". "#" is a placeholder for a number.'
+            "\n\n---\n\n$doc_text\n\n---\n\nNow give a short answer to the following question and, if possible, refer to "
+            "the learning material. If you are referring to the learning material, end your answer with a new paragraph "
+            'containing only "mainContentElem-#" and replace "#" with the respective section number.',
+            "de": "Du bist Lehrkraft im Bereich Data Science und Statistik. Berücksichtige das folgende "
+            'Lehrmaterial, das durch "---"-Markierungen eingeschlossen ist. Vor jedem Inhaltsabschnitt im Dokument '
+            'gibt es eine eindeutige Kennung für diesen Abschnitt, die mit "mainContentElem-#" angegeben ist. "#" '
+            "ist ein Platzhalter für eine Zahl.\n\n---\n\n$doc_text\n\n---\n\nGib nun eine kurze Antwort auf "
+            "die folgende Frage und beziehe dich, wenn möglich, auf das Lehrmaterial. Wenn du dich auf das "
+            "Lehrmaterial beziehst, beende deine Antwort mit einem neuen Absatz, der ausschließlich den Text "
+            '"mainContentElem-#" enthält und ersetze "#" durch die entsprechende Abschnittsnummer.',
+        },
+         # default user role prompt template per language
+         # use $doc_text placeholder to include the app's text representation in the prompt and $question for the
+         # actual user message
+        "user_role_templates": {
+            "en": "$question",
+            "de": "$question",
+        },
+    }
+
+
+.. note:: Any environment variable such as ``"OPENAI_API_KEY"`` or ``"MY_LLM_SERVER"`` used in the settings file above needs to be added to the Docker Compose configuration in the ``environment:`` section of the "web" container with its respective value.
+
+After restarting the web service container, a new option labelled "Enable chatbot choosing a provider and model" will appear in the administration interface for all application configurations.
 
 .. _setup_app_upload:
 

@@ -84,6 +84,7 @@ Application configuration
       "css": [<additional CSS files to load>],
       "feedback": <bool>, # enable/disable specific user feedback features
       "summary": <bool>,  # enable/disable displaying summary
+      "chatbot": <bool>,  # enable/disable chatbot feature
       "tracking": {       # enable/disable specific tracking features
         "mouse": <bool>,    # mouse tracking w/ mus.js
         "inputs": <bool>,   # tracking of input changes
@@ -190,7 +191,7 @@ Common set up steps for both options
 - when all services were started successfully, run `python src/manage.py migrate`` to run the initial database migrations
 - run ``python src/manage.py createsuperuser`` to create a backend admin user
 - the web application is then available under ``http://localhost:8000``
-- a simple database administration web interface is then available under ``http://localhost:8080/admin``
+- a simple database administration web interface is then available under ``http://localhost:8080``
 - to check if everything works, you should run ``python src/manage.py test api``
 
 .. _learnrextra-dev:

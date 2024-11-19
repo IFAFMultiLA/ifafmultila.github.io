@@ -246,6 +246,7 @@
   <span class="s2">&quot;css&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">additional</span> <span class="n">CSS</span> <span class="n">files</span> <span class="n">to</span> <span class="n">load</span><span class="o">&gt;</span><span class="p">],</span>
   <span class="s2">&quot;feedback&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span> <span class="c1"># enable/disable specific user feedback features</span>
   <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># enable/disable displaying summary</span>
+  <span class="s2">&quot;chatbot&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># enable/disable chatbot feature</span>
   <span class="s2">&quot;tracking&quot;</span><span class="p">:</span> <span class="p">{</span>       <span class="c1"># enable/disable specific tracking features</span>
     <span class="s2">&quot;mouse&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>    <span class="c1"># mouse tracking w/ mus.js</span>
     <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span><span class="p">,</span>   <span class="c1"># tracking of input changes</span>
@@ -356,7 +357,7 @@ be ready yet when “web” is started – simply starting the services as secon
 <li><p>when all services were started successfully, run <cite>python src/manage.py migrate`</cite> to run the initial database migrations</p></li>
 <li><p>run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/manage.py</span> <span class="pre">createsuperuser</span></code> to create a backend admin user</p></li>
 <li><p>the web application is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code></p></li>
-<li><p>a simple database administration web interface is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/admin</span></code></p></li>
+<li><p>a simple database administration web interface is then available under <code class="docutils literal notranslate"><span class="pre">http://localhost:8080</span></code></p></li>
 <li><p>to check if everything works, you should run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/manage.py</span> <span class="pre">test</span> <span class="pre">api</span></code></p></li>
 </ul>
 </section>

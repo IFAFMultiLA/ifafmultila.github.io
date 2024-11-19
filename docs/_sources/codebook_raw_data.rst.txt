@@ -104,7 +104,7 @@ Contains data on events produced by users within a tracking session.
    format ``Y-M-D H:M:S.ms``
 -  ``event_type``: type of the event – categorical;
    ``"device_info_update"``, ``"visibility_change"``, ``"summary_shown"``,
-   ``"summary_topic_added"``, ``"input_change"``, ``"learnr_event_*"``
+   ``"summary_topic_added"``, ``"input_change"``, ``"learnr_event_*"``, ``chatbot_communication``
    (see below for possible *learnr* events in ``*`` placeholder) or ``"mouse"``
 -  ``event_value``: event data – JSON; depends on ``event_type``:
 
@@ -123,6 +123,14 @@ Contains data on events produced by users within a tracking session.
    -  for ``"learnr_event_*"``: see
       `learnr documentation <https://pkgs.rstudio.com/learnr/articles/publishing.html#events>`_
       and "learnr events" section below
+   -  for ``chatbot_communication`` an object with the following keys and
+      values:
+
+      - ``user``: the user prompt
+      - ``assistant``: the bot response
+      - ``assistant_content_section_ref``: the linked content section if provided by bot response
+      - ``model``: the used chat API provider and model
+
    -  for ``"input_change"``: an object with the following keys and
       values:
 

@@ -211,9 +211,7 @@
 <ol class="arabic simple">
 <li><p>Create a Docker Compose configuration like the following as <code class="docutils literal notranslate"><span class="pre">docker/compose_prod.yml</span></code>:</p></li>
 </ol>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2&#39;</span>
-
-<span class="nt">services</span><span class="p">:</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># # optional: DB admin web interface accessible on local port 8081</span>
 <span class="w">  </span><span class="c1"># adminer:</span>
 <span class="w">  </span><span class="c1">#  image: adminer</span>
@@ -269,9 +267,9 @@
 <li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">create</span></code> to create all necessary containers</p></li>
 <li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">up</span> <span class="pre">-d</span></code> to launch the containers</p></li>
 <li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">web</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">migrate</span></code> to initialize the DB</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">createsuperuser</span></code> to create a backend admin user; this is the password used for the first login to the administration interface – <strong>use a secure password</strong></p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">check</span> <span class="pre">--deploy</span></code> to check the deployment</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">api</span></code> to run the tests in the deployment environment</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">web</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">createsuperuser</span></code> to create a backend admin user; this is the password used for the first login to the administration interface – <strong>use a secure password</strong></p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">web</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">check</span> <span class="pre">--deploy</span></code> to check the deployment</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">exec</span> <span class="pre">web</span> <span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">api</span></code> to run the tests in the deployment environment</p></li>
 <li><p>you may run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose_prod.yml</span> <span class="pre">logs</span> <span class="pre">-f</span></code> to view the logs and/or <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">http://0.0.0.0:8000/</span></code> to check if the web server is running</p></li>
 </ul>
 <ol class="arabic simple" start="5">
@@ -327,6 +325,66 @@ the environment variabless of the docker compose file.</p>
 </pre></div>
 </div>
 <p>on the server to generate a PostgreSQL database dump with the current timestamp under <code class="docutils literal notranslate"><span class="pre">data/backups/</span></code>. It’s advisable to run this command regularly, e.g. via a cronjob, and then copy the database dumps to a backup destination.</p>
+</section>
+<section id="optional-chatbot-feature">
+<h3>(Optional) Chatbot feature<a class="headerlink" href="#optional-chatbot-feature" title="Link to this heading">¶</a></h3>
+<p>The MultiLA platform allows to integrate a chatbot in the learning apps as an adaptive learning assistant. The backend will communicate with a chat API provider for this purpose, e.g. with OpenAI’s GPT model API. So far, only chat APIs that use OpenAI’s web API format are supported (so hosting your own model via LM Studio for example works).</p>
+<p>To set up this feature, you will need to edit the <code class="docutils literal notranslate"><span class="pre">src/multila/settings_prod.py</span></code> file of the web API backend and replace <code class="docutils literal notranslate"><span class="pre">CHATBOT_API</span> <span class="pre">=</span> <span class="pre">None</span></code> with the following code that you need to adapt to your set up (see code comments below):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CHATBOT_API</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># create a dictionary where labels map to provider options</span>
+    <span class="s2">&quot;providers&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># note that the label is not allowed to use the string &#39; | &#39;</span>
+        <span class="c1"># this is an example using OpenAI&#39;s services</span>
+        <span class="s2">&quot;openai&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;available_models&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="s2">&quot;gpt-4o&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
+        <span class="c1"># this is an example of how to use a self-hosted service using LM studio</span>
+        <span class="s2">&quot;lm-studio&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;not needed&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;openai&quot;</span><span class="p">,</span>  <span class="c1"># LM studio uses the OpenAI API format</span>
+            <span class="s2">&quot;setup_options&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MY_LLM_SERVER&quot;</span><span class="p">)},</span>
+            <span class="s2">&quot;request_options&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">max_tokens</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+            <span class="s2">&quot;available_models&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="c1"># list your installed models here</span>
+                <span class="o">...</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+        <span class="c1"># set more providers here</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;content_section_identifier_pattern&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;mainContentElem-\d+$&quot;</span><span class="p">,</span>
+     <span class="c1"># default system role prompt template per language</span>
+     <span class="c1"># use $doc_text placeholder to include the app&#39;s text representation in the prompt</span>
+    <span class="s2">&quot;system_role_templates&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a teacher in data science and statistics. Consider the following learning material enclosed &quot;</span>
+        <span class="s1">&#39;by &quot;---&quot; marks. Before each content section in the document, there is a unique identifier for that &#39;</span>
+        <span class="s1">&#39;section denoted as &quot;mainContentElem-#&quot;. &quot;#&quot; is a placeholder for a number.&#39;</span>
+        <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">---</span><span class="se">\n\n</span><span class="s2">$doc_text</span><span class="se">\n\n</span><span class="s2">---</span><span class="se">\n\n</span><span class="s2">Now give a short answer to the following question and, if possible, refer to &quot;</span>
+        <span class="s2">&quot;the learning material. If you are referring to the learning material, end your answer with a new paragraph &quot;</span>
+        <span class="s1">&#39;containing only &quot;mainContentElem-#&quot; and replace &quot;#&quot; with the respective section number.&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;de&quot;</span><span class="p">:</span> <span class="s2">&quot;Du bist Lehrkraft im Bereich Data Science und Statistik. Berücksichtige das folgende &quot;</span>
+        <span class="s1">&#39;Lehrmaterial, das durch &quot;---&quot;-Markierungen eingeschlossen ist. Vor jedem Inhaltsabschnitt im Dokument &#39;</span>
+        <span class="s1">&#39;gibt es eine eindeutige Kennung für diesen Abschnitt, die mit &quot;mainContentElem-#&quot; angegeben ist. &quot;#&quot; &#39;</span>
+        <span class="s2">&quot;ist ein Platzhalter für eine Zahl.</span><span class="se">\n\n</span><span class="s2">---</span><span class="se">\n\n</span><span class="s2">$doc_text</span><span class="se">\n\n</span><span class="s2">---</span><span class="se">\n\n</span><span class="s2">Gib nun eine kurze Antwort auf &quot;</span>
+        <span class="s2">&quot;die folgende Frage und beziehe dich, wenn möglich, auf das Lehrmaterial. Wenn du dich auf das &quot;</span>
+        <span class="s2">&quot;Lehrmaterial beziehst, beende deine Antwort mit einem neuen Absatz, der ausschließlich den Text &quot;</span>
+        <span class="s1">&#39;&quot;mainContentElem-#&quot; enthält und ersetze &quot;#&quot; durch die entsprechende Abschnittsnummer.&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+     <span class="c1"># default user role prompt template per language</span>
+     <span class="c1"># use $doc_text placeholder to include the app&#39;s text representation in the prompt and $question for the</span>
+     <span class="c1"># actual user message</span>
+    <span class="s2">&quot;user_role_templates&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;$question&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;de&quot;</span><span class="p">:</span> <span class="s2">&quot;$question&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any environment variable such as <code class="docutils literal notranslate"><span class="pre">&quot;OPENAI_API_KEY&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;MY_LLM_SERVER&quot;</span></code> used in the settings file above needs to be added to the Docker Compose configuration in the <code class="docutils literal notranslate"><span class="pre">environment:</span></code> section of the “web” container with its respective value.</p>
+</div>
+<p>After restarting the web service container, a new option labelled “Enable chatbot choosing a provider and model” will appear in the administration interface for all application configurations.</p>
 </section>
 <section id="optional-app-upload-feature">
 <span id="setup-app-upload"></span><h3>(Optional) App upload feature<a class="headerlink" href="#optional-app-upload-feature" title="Link to this heading">¶</a></h3>

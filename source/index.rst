@@ -30,7 +30,8 @@ Main features
 - support for A/B-testing experiments and integrated surveys
 - configurable learning applications: write base applications once, create variants via configurations
 - dynamic summaries for learning applications
-- web-based administration interface for publishing learning applications, setting up variants and experiments and downloading collected data
+- optional integration of chatbot APIs (e.g. OpenAI's GPT models) to provide an adaptive learning assistant in the apps
+- web-based administration interface for publishing learning applications simply via upload, setting up variants and experiments and downloading collected data
 - data preparation and analysis scripts to get started with learning analytics for the collected data
 - own your data – self-hosted open-source solution to run in a Docker environment and an R shiny server
 
